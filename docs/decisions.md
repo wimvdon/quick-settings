@@ -2,10 +2,18 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-09: Screener uses Android's dynamic colours, not Snoozer's palette
+
+The owner wants the popup to look like Android's own Quick Settings, so it uses Material 3
+dynamic colours (from the wallpaper) instead of Snoozer's fixed blue palette. This differs from
+the shared rule that dynamic color is off by default; Screener has no settings screen, so there
+is no switch either. The icon keeps the shared icon style. Rejected: a dynamic color switch (it
+would need a settings screen for one option).
+
 ## 2026-11-09: Screener: a tile and a popup, three permissions, no stored data
 
-The template becomes Screener (`to.wim.screener`), Snoozer's sister app with the same
-colours. What it changes decides its permissions: brightness and screen timeout need "Modify
+The template becomes Screener (`to.wim.screener`), Snoozer's sister app (at first with the same
+colours; see the entry above). What it changes decides its permissions: brightness and screen timeout need "Modify
 system settings" (`WRITE_SETTINGS`, the user grants it in Settings); always-on display and tap to
 wake are secure settings, which only `WRITE_SECURE_SETTINGS` may write, and only adb can grant
 that (one command, shown in the popup with a Copy button); the persistent notifications need
