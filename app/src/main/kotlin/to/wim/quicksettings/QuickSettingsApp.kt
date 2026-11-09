@@ -10,7 +10,6 @@ import to.wim.quicksettings.dns.SystemDnsSettings
 import to.wim.quicksettings.notify.Notifications
 import to.wim.quicksettings.screen.ScreenController
 import to.wim.quicksettings.screen.SystemScreenSettings
-import to.wim.quicksettings.shortcut.Shortcuts
 
 class QuickSettingsApp : Application() {
     val controller: ScreenController by lazy { ScreenController(SystemScreenSettings(this)) }
@@ -31,7 +30,6 @@ class QuickSettingsApp : Application() {
     override fun onCreate() {
         super.onCreate()
         Notifications.createChannels(this)
-        Shortcuts.publish(this)
         // Follows changes made anywhere (Settings, the system slider) while the process lives.
         (SystemScreenSettings.watchedUris + SystemDnsSettings.watchedUris).forEach {
             contentResolver.registerContentObserver(it, false, observer)

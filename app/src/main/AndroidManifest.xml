@@ -33,6 +33,9 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
 
         <!-- Invisible target of the launcher shortcuts. Not exported: shortcuts are started with
@@ -43,6 +46,16 @@
             android:exported="false"
             android:noHistory="true"
             android:taskAffinity=""
+            android:theme="@android:style/Theme.NoDisplay" />
+
+        <!-- Second step of a shortcut: does the work in a task of its own, started without
+             FLAG_ACTIVITY_TASK_ON_HOME, so closing it returns to the app the user was in. -->
+        <activity
+            android:name=".shortcut.ShortcutActionActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity="to.wim.quicksettings.shortcut"
             android:theme="@android:style/Theme.NoDisplay" />
 
         <!-- The Screen popup, opened from its tile and notifications. -->
