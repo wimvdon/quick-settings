@@ -8,7 +8,6 @@
     <string name="change_always_on">Siempre activa</string>
     <string name="change_tap_to_wake">Tocar para activar desactivado</string>
     <string name="panel_title">Pantalla</string>
-    <string name="panel_subtitle_default">Todo está predeterminado</string>
     <string name="brightness_title">Brillo</string>
     <string name="brightness_auto">Automático</string>
     <string name="brightness_manual">Manual · %1$d%%</string>
@@ -33,11 +32,6 @@
         <item quantity="one">%d cambiado</item>
         <item quantity="many">%d cambiados</item>
         <item quantity="other">%d cambiados</item>
-    </plurals>
-    <plurals name="panel_subtitle_changes">
-        <item quantity="one">%d ajuste cambiado</item>
-        <item quantity="many">%d ajustes cambiados</item>
-        <item quantity="other">%d ajustes cambiados</item>
     </plurals>
     <plurals name="duration_seconds">
         <item quantity="one">%d segundo</item>

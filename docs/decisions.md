@@ -2,6 +2,15 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-09: The popup grows in itself; the real expand-from-tile animation isn't available
+
+Android's Internet dialog expands out of its tile with System UI's own dialog animator, which
+only System UI can use: an app's tile can only start an activity (`startActivityAndCollapse`) or
+show a plain dialog (`TileService.showDialog`), and neither gets the tile's position or that
+animation. The popup therefore grows in from the top of the screen, where the tile was, with
+Material's emphasized-decelerate easing while the dim fades in. Rejected: `showDialog` (no
+animation either, and Compose in a service dialog needs hand-made lifecycle owners).
+
 ## 2026-11-09: Screener becomes Quick Settings (`to.wim.quicksettings`) with a Private DNS tile
 
 The owner wants one app for their own Quick Settings tiles, so Screener is renamed Quick Settings

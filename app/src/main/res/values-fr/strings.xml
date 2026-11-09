@@ -8,7 +8,6 @@
     <string name="change_always_on">Toujours activé</string>
     <string name="change_tap_to_wake">Toucher pour activer désactivé</string>
     <string name="panel_title">Écran</string>
-    <string name="panel_subtitle_default">Tout est par défaut</string>
     <string name="brightness_title">Luminosité</string>
     <string name="brightness_auto">Auto</string>
     <string name="brightness_manual">Manuelle · %1$d %%</string>
@@ -33,11 +32,6 @@
         <item quantity="one">%d modifié</item>
         <item quantity="many">%d modifiés</item>
         <item quantity="other">%d modifiés</item>
-    </plurals>
-    <plurals name="panel_subtitle_changes">
-        <item quantity="one">%d paramètre modifié</item>
-        <item quantity="many">%d paramètres modifiés</item>
-        <item quantity="other">%d paramètres modifiés</item>
     </plurals>
     <plurals name="duration_seconds">
         <item quantity="one">%d seconde</item>
