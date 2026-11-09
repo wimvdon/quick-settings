@@ -99,7 +99,7 @@ fun PanelScreen(
                 .fillMaxWidth()
                 .wrapContentWidth(Alignment.CenterHorizontally)
                 .widthIn(max = 480.dp)
-                .padding(horizontal = 12.dp, vertical = 12.dp),
+                .padding(horizontal = 16.dp, vertical = 16.dp),
         shape = DialogShape,
         color = MaterialTheme.colorScheme.surfaceContainer,
     ) {

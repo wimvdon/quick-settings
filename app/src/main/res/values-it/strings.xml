@@ -67,8 +67,6 @@
     <string name="main_tile_screen_text">Luminosità, spegnimento, display sempre attivo e tocca per riattivare</string>
     <string name="main_tile_dns_text">Passa dal tuo nome host ad automatico</string>
     <string name="main_add_tile">Aggiungi</string>
-    <string name="main_tiles_manual">Oppure scorri due volte verso il basso, tocca la matita e trascina i riquadri nelle Impostazioni rapide.</string>
-    <string name="main_open_screen">Apri Schermo</string>
     <string name="main_section_permissions">Autorizzazioni</string>
     <string name="main_permission_system">Modificare le impostazioni di sistema</string>
     <string name="main_permission_system_text">Per luminosità e spegnimento schermo</string>
@@ -78,11 +76,8 @@
     <string name="main_permission_secure_text">Per display sempre attivo, tocca per riattivare e DNS privato. Solo un computer può concederlo.</string>
     <string name="main_granted">Consentito</string>
     <string name="main_adb_title">Concederlo con adb</string>
-    <string name="main_adb_steps">1. Impostazioni › Informazioni sul telefono: tocca 7 volte Numero build.\n2. Impostazioni › Sistema › Opzioni sviluppatore: attiva il debug USB.\n3. Collega il telefono a un computer con gli Android platform tools e consentilo.\n4. Esegui questo comando sul computer:</string>
-    <string name="main_dns_current">In uso: %1$s</string>
+    <string name="main_adb_steps">Impostazioni › Informazioni sul telefono: tocca 7 volte Numero build.\nImpostazioni › Sistema › Opzioni sviluppatore: attiva il debug USB.\nCollega il telefono a un computer con gli Android platform tools e consentilo.\nEsegui questo comando sul computer:</string>
     <string name="main_dns_no_hostname">Nessun nome host impostato</string>
-    <string name="main_dns_no_hostname_text">Impostane uno una volta in Impostazioni › Rete e Internet › DNS privato. Il riquadro passerà poi a quello.</string>
-    <string name="main_open_settings">Apri impostazioni</string>
     <string name="notification_dns_title_off">DNS privato disattivato</string>
     <string name="shortcut_dns_short">DNS privato</string>
     <string name="shortcut_dns_long">DNS privato: nome host o automatico</string>
@@ -100,11 +95,12 @@
     <string name="toast_always_on_off">Display sempre attivo: off</string>
     <string name="toast_tap_on">Tocca per riattivare: on</string>
     <string name="toast_tap_off">Tocca per riattivare: off</string>
-    <string name="main_section_shortcuts">Scorciatoie</string>
     <string name="main_shortcuts_intro">Cambia DNS privato, spegnimento, display sempre attivo o tocca per riattivare senza aprire le Impostazioni rapide: dall’icona dell’app, dalla schermata Home o con un gesto.</string>
     <string name="main_shortcut_title">Scorciatoie nella schermata Home</string>
-    <string name="main_shortcut_steps">1. Tieni premuta l’icona dell’app %1$s.\n2. Tocca una scorciatoia per cambiare subito quell’impostazione.\n3. Facoltativo: trascina una scorciatoia nella schermata Home per un accesso con un tocco.</string>
+    <string name="main_shortcut_steps">Tieni premuta l’icona dell’app %1$s.\nTocca una scorciatoia per cambiare subito quell’impostazione.\nFacoltativo: trascina una scorciatoia nella schermata Home per un accesso con un tocco.</string>
     <string name="main_gesture_title">Gesto: tocca il retro del telefono</string>
-    <string name="main_gesture_steps">Disponibile solo sui telefoni Pixel.\n1. Apri Impostazioni › Sistema › Gesti › Quick Tap per avviare azioni.\n2. Attiva Quick Tap e scegli Apri app.\n3. Tocca l’icona delle impostazioni accanto a %1$s e scegli una scorciatoia.\n4. Tocca due volte il retro del telefono per cambiare quell’impostazione.</string>
+    <string name="main_gesture_steps">Apri Impostazioni › Sistema › Gesti › Quick Tap per avviare azioni.\nAttiva Quick Tap e scegli Apri app.\nTocca l’icona delle impostazioni accanto a %1$s e scegli una scorciatoia.\nTocca due volte il retro del telefono per cambiare quell’impostazione.</string>
     <string name="main_gesture_other">Su altri telefoni cerca una funzione di tocco sul retro o di gesti in grado di aprire una scorciatoia dell’app, come RegiStar in Good Lock di Samsung.</string>
+    <string name="main_section_instructions">Istruzioni</string>
+    <string name="main_gesture_pixel_only">Disponibile solo sui telefoni Pixel.</string>
 </resources>

@@ -1,17 +1,19 @@
 package to.wim.quicksettings.ui.main
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
@@ -19,7 +21,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -28,15 +29,16 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import to.wim.quicksettings.R
-import to.wim.quicksettings.dns.DnsMode
-import to.wim.quicksettings.dns.DnsState
 import to.wim.quicksettings.ui.theme.AppShapes
 import to.wim.quicksettings.ui.theme.AppTheme
 
@@ -46,7 +48,6 @@ data class MainUiState(
     val canWriteSystem: Boolean,
     val canWriteSecure: Boolean,
     val canPostNotifications: Boolean,
-    val dns: DnsState,
     val adbCommand: String,
 )
 
@@ -56,11 +57,9 @@ class MainActions(
     val onAllowSystemSettings: () -> Unit = {},
     val onCopyCommand: () -> Unit = {},
     val onAllowNotifications: () -> Unit = {},
-    val onOpenNetworkSettings: () -> Unit = {},
-    val onOpenScreenPanel: () -> Unit = {},
 )
 
-/** How to add the tiles, the permissions they need (with the adb steps) and the DNS hostname. */
+/** Permissions first (with the adb steps), then instructions: tiles, shortcuts, Quick Tap. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
@@ -68,9 +67,10 @@ fun MainScreen(
     actions: MainActions,
     modifier: Modifier = Modifier,
 ) {
+    val appName = stringResource(R.string.app_name)
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        topBar = { TopAppBar(title = { Text(stringResource(R.string.app_name)) }) },
+        topBar = { TopAppBar(title = { Text(appName) }) },
     ) { padding ->
         Column(
             Modifier
@@ -79,30 +79,8 @@ fun MainScreen(
                 .fillMaxWidth()
                 .wrapContentWidth(Alignment.CenterHorizontally)
                 .widthIn(max = 640.dp)
-                .padding(bottom = 24.dp),
+                .padding(bottom = 32.dp),
         ) {
-            Section(stringResource(R.string.main_section_tiles))
-            TileRow(
-                icon = R.drawable.ic_tile_display,
-                title = stringResource(R.string.tile_screen_label),
-                text = stringResource(R.string.main_tile_screen_text),
-                showAdd = state.canAddTilesHere,
-                onAdd = actions.onAddScreenTile,
-            )
-            TileRow(
-                icon = R.drawable.ic_dns,
-                title = stringResource(R.string.tile_dns_label),
-                text = stringResource(R.string.main_tile_dns_text),
-                showAdd = state.canAddTilesHere,
-                onAdd = actions.onAddDnsTile,
-            )
-            Body(stringResource(R.string.main_tiles_manual))
-            Row(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-                OutlinedButton(onClick = actions.onOpenScreenPanel) {
-                    Text(stringResource(R.string.main_open_screen))
-                }
-            }
-
             Section(stringResource(R.string.main_section_permissions))
             PermissionRow(
                 title = stringResource(R.string.main_permission_system),
@@ -124,63 +102,36 @@ fun MainScreen(
             )
             if (!state.canWriteSecure) AdbSteps(state.adbCommand, actions.onCopyCommand)
 
-            Section(stringResource(R.string.tile_dns_label))
-            ListItem(
-                headlineContent = {
-                    Text(
-                        if (state.dns.hasHostname) {
-                            state.dns.hostname.orEmpty()
-                        } else {
-                            stringResource(R.string.main_dns_no_hostname)
-                        },
-                    )
-                },
-                supportingContent = {
-                    Text(
-                        if (state.dns.hasHostname) {
-                            stringResource(R.string.main_dns_current, stringResource(modeLabel(state.dns.mode)))
-                        } else {
-                            stringResource(R.string.main_dns_no_hostname_text)
-                        },
-                    )
-                },
-                leadingContent = { Icon(painterResource(R.drawable.ic_dns), contentDescription = null) },
-                colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+            Section(stringResource(R.string.main_section_instructions))
+            Guide(stringResource(R.string.main_section_tiles))
+            TileRow(
+                icon = R.drawable.ic_tile_display,
+                title = stringResource(R.string.tile_screen_label),
+                text = stringResource(R.string.main_tile_screen_text),
+                showAdd = state.canAddTilesHere,
+                onAdd = actions.onAddScreenTile,
             )
-            Row(Modifier.padding(horizontal = 16.dp)) {
-                OutlinedButton(onClick = actions.onOpenNetworkSettings) {
-                    Text(stringResource(R.string.main_open_settings))
-                }
-            }
+            TileRow(
+                icon = R.drawable.ic_dns,
+                title = stringResource(R.string.tile_dns_label),
+                text = stringResource(R.string.main_tile_dns_text),
+                showAdd = state.canAddTilesHere,
+                onAdd = actions.onAddDnsTile,
+            )
 
-            val appName = stringResource(R.string.app_name)
-            Section(stringResource(R.string.main_section_shortcuts))
+            Guide(stringResource(R.string.main_shortcut_title))
             Body(stringResource(R.string.main_shortcuts_intro))
-            Steps(stringResource(R.string.main_shortcut_title), stringResource(R.string.main_shortcut_steps, appName))
-            Steps(stringResource(R.string.main_gesture_title), stringResource(R.string.main_gesture_steps, appName))
+            NumberedSteps(GuideSteps.split(stringResource(R.string.main_shortcut_steps, appName)), StepsPadding)
+
+            Guide(stringResource(R.string.main_gesture_title))
+            Body(stringResource(R.string.main_gesture_pixel_only))
+            NumberedSteps(GuideSteps.split(stringResource(R.string.main_gesture_steps, appName)), StepsPadding)
             Body(stringResource(R.string.main_gesture_other))
         }
     }
 }
 
-@Composable
-private fun Steps(
-    title: String,
-    steps: String,
-) {
-    Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-        Text(title, style = MaterialTheme.typography.titleMedium)
-        Spacer(Modifier.height(4.dp))
-        Text(steps, style = MaterialTheme.typography.bodyMedium)
-    }
-}
-
-private fun modeLabel(mode: DnsMode): Int =
-    when (mode) {
-        DnsMode.Hostname -> R.string.dns_hostname
-        DnsMode.Opportunistic -> R.string.dns_automatic
-        DnsMode.Off -> R.string.dns_off
-    }
+private val StepsPadding = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
 
 @Composable
 private fun Section(title: String) {
@@ -188,7 +139,23 @@ private fun Section(title: String) {
         title,
         style = MaterialTheme.typography.titleSmall,
         color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 8.dp),
+        modifier =
+            Modifier
+                .padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 8.dp)
+                .semantics { heading() },
+    )
+}
+
+/** A guide's own heading inside the Instructions section. */
+@Composable
+private fun Guide(title: String) {
+    Text(
+        title,
+        style = MaterialTheme.typography.titleMedium,
+        modifier =
+            Modifier
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 4.dp)
+                .semantics { heading() },
     )
 }
 
@@ -200,6 +167,39 @@ private fun Body(text: String) {
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
     )
+}
+
+/** Steps with a number in a primary-coloured circle, like Snoozer's guides. */
+@Composable
+private fun NumberedSteps(
+    steps: List<String>,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        steps.forEachIndexed { index, step ->
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                Box(
+                    modifier =
+                        Modifier
+                            .size(32.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primary),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = (index + 1).toString(),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                    )
+                }
+                Text(
+                    text = step,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.weight(1f).align(Alignment.CenterVertically),
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -260,19 +260,20 @@ private fun AdbSteps(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp),
     ) {
         Column(Modifier.padding(start = 16.dp, end = 8.dp, top = 16.dp, bottom = 4.dp)) {
-            Text(stringResource(R.string.main_adb_title), style = MaterialTheme.typography.titleSmall)
-            Spacer(Modifier.height(8.dp))
             Text(
-                stringResource(R.string.main_adb_steps),
-                style = MaterialTheme.typography.bodyMedium,
+                stringResource(R.string.main_adb_title),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 12.dp).semantics { heading() },
+            )
+            NumberedSteps(
+                GuideSteps.split(stringResource(R.string.main_adb_steps)),
                 modifier = Modifier.padding(end = 8.dp),
             )
-            Spacer(Modifier.height(8.dp))
             Text(
                 command,
                 style = MaterialTheme.typography.bodySmall,
                 fontFamily = FontFamily.Monospace,
-                modifier = Modifier.padding(end = 8.dp),
+                modifier = Modifier.padding(start = 48.dp, top = 8.dp, end = 8.dp),
             )
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                 TextButton(onClick = onCopy) { Text(stringResource(R.string.setup_secure_button)) }
@@ -291,7 +292,6 @@ private fun MainScreenPreview() {
                 canWriteSystem = true,
                 canWriteSecure = false,
                 canPostNotifications = false,
-                dns = DnsState(DnsMode.Hostname, "dns.example.com"),
                 adbCommand = "adb shell pm grant to.wim.quicksettings android.permission.WRITE_SECURE_SETTINGS",
             ),
             MainActions(),
