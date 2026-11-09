@@ -2,6 +2,20 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-09: Shortcuts are published from code, not declared in the manifest
+
+With a shortcut set as Quick Tap, the app the owner was in disappeared and the launcher showed.
+Android adds `FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_TASK_ON_HOME` to
+the first intent of every manifest (`res/xml/shortcuts.xml`) shortcut (AOSP `ShortcutParser`),
+and `TASK_ON_HOME` puts the home screen behind the shortcut's task. The shortcuts are now dynamic
+shortcuts with new ids (a pinned manifest shortcut stays locked under its old id, so reusing it
+would fail) (`Shortcuts.publish`, at app start when they differ and every time the
+main screen shows), whose intent carries only `FLAG_ACTIVITY_NEW_TASK`, so closing the invisible
+`ShortcutActivity` returns to the app the user was in. Quick Tap lists dynamic shortcuts too. The
+debug copy of `shortcuts.xml` is no longer needed: the intent names this build's own package.
+Rejected: keeping the manifest shortcuts and bringing the previous app back afterwards (an app
+can't see other apps' tasks).
+
 ## 2026-11-09: No tile refresh requests; app name translated
 
 `TileService.requestListeningState` only reaches tiles declared as active tiles; ours are not, so
