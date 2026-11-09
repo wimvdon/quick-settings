@@ -1,4 +1,4 @@
-package io.github.impca201.screener.ui.theme
+package to.wim.screener.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Shape

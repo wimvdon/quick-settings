@@ -1,14 +1,14 @@
-package io.github.impca201.screener.tile
+package to.wim.screener.tile
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
-import io.github.impca201.screener.R
-import io.github.impca201.screener.screenerApp
-import io.github.impca201.screener.ui.changeLabel
-import io.github.impca201.screener.ui.panel.PanelActivity
+import to.wim.screener.R
+import to.wim.screener.screenerApp
+import to.wim.screener.ui.changeLabel
+import to.wim.screener.ui.panel.PanelActivity
 
 /**
  * The Quick Settings tile. It lights up while any setting differs from its default and names

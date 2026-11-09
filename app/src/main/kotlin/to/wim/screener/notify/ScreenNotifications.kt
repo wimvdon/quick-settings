@@ -1,4 +1,4 @@
-package io.github.impca201.screener.notify
+package to.wim.screener.notify
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -14,12 +14,12 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import io.github.impca201.screener.R
-import io.github.impca201.screener.screen.BrightnessCurve
-import io.github.impca201.screener.screen.ScreenState
-import io.github.impca201.screener.screenerApp
-import io.github.impca201.screener.ui.panel.PanelActivity
-import io.github.impca201.screener.ui.timeoutText
+import to.wim.screener.R
+import to.wim.screener.screen.BrightnessCurve
+import to.wim.screener.screen.ScreenState
+import to.wim.screener.screenerApp
+import to.wim.screener.ui.panel.PanelActivity
+import to.wim.screener.ui.timeoutText
 
 /**
  * The persistent notifications for manual brightness and the extended screen timeout, each

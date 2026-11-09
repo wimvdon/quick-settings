@@ -1,4 +1,4 @@
-package io.github.impca201.screener.screen
+package to.wim.screener.screen
 
 import android.Manifest
 import android.content.ContentResolver

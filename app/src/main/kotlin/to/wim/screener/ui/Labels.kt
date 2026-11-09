@@ -1,10 +1,10 @@
-package io.github.impca201.screener.ui
+package to.wim.screener.ui
 
 import android.content.res.Resources
 import androidx.annotation.StringRes
-import io.github.impca201.screener.R
-import io.github.impca201.screener.screen.ScreenState
-import io.github.impca201.screener.screen.TimeoutDuration
+import to.wim.screener.R
+import to.wim.screener.screen.ScreenState
+import to.wim.screener.screen.TimeoutDuration
 
 /** Short name of a changed setting, for the tile. */
 @StringRes

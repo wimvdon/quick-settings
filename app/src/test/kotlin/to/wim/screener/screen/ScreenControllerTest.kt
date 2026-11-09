@@ -1,4 +1,4 @@
-package io.github.impca201.screener.screen
+package to.wim.screener.screen
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

@@ -1,4 +1,4 @@
-package io.github.impca201.screener.ui.panel
+package to.wim.screener.ui.panel
 
 import android.Manifest
 import android.content.ClipData
@@ -19,10 +19,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.net.toUri
-import io.github.impca201.screener.screen.ScreenController
-import io.github.impca201.screener.screen.SystemScreenSettings
-import io.github.impca201.screener.screenerApp
-import io.github.impca201.screener.ui.theme.ScreenerTheme
+import to.wim.screener.screen.ScreenController
+import to.wim.screener.screen.SystemScreenSettings
+import to.wim.screener.screenerApp
+import to.wim.screener.ui.theme.ScreenerTheme
 
 /**
  * The popup, shaped like Android's Quick Settings Internet dialog. Opened from the tile, the
