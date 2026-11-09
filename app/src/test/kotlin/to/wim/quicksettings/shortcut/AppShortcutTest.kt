@@ -7,11 +7,11 @@ import org.junit.Test
 
 class AppShortcutTest {
     @Test
-    fun `ids stay the same, so Quick Tap keeps finding the chosen shortcut`() {
-        assertEquals(
-            listOf("toggle_private_dns", "toggle_timeout", "toggle_always_on", "toggle_tap_to_wake"),
-            AppShortcut.entries.map { it.id },
-        )
+    fun `ids don't reuse the old manifest shortcut ids, which Android may keep locked`() {
+        val old = setOf("toggle_private_dns", "toggle_timeout", "toggle_always_on", "toggle_tap_to_wake")
+        assertTrue(AppShortcut.entries.none { it.id in old })
+        val ids = AppShortcut.entries.map { it.id }
+        assertEquals(ids.size, ids.toSet().size)
     }
 
     @Test

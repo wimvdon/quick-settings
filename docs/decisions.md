@@ -8,7 +8,8 @@ With a shortcut set as Quick Tap, the app the owner was in disappeared and the l
 Android adds `FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_TASK_ON_HOME` to
 the first intent of every manifest (`res/xml/shortcuts.xml`) shortcut (AOSP `ShortcutParser`),
 and `TASK_ON_HOME` puts the home screen behind the shortcut's task. The shortcuts are now dynamic
-shortcuts with the same ids (`Shortcuts.publish`, at app start when they differ and every time the
+shortcuts with new ids (a pinned manifest shortcut stays locked under its old id, so reusing it
+would fail) (`Shortcuts.publish`, at app start when they differ and every time the
 main screen shows), whose intent carries only `FLAG_ACTIVITY_NEW_TASK`, so closing the invisible
 `ShortcutActivity` returns to the app the user was in. Quick Tap lists dynamic shortcuts too. The
 debug copy of `shortcuts.xml` is no longer needed: the intent names this build's own package.
