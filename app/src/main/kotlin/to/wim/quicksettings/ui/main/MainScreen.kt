@@ -59,7 +59,7 @@ class MainActions(
     val onAllowNotifications: () -> Unit = {},
 )
 
-/** Permissions first (with the adb steps), then instructions: tiles, shortcuts, Quick Tap. */
+/** Permissions first (with the adb steps), then instructions: tiles and launcher shortcuts. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
@@ -123,10 +123,6 @@ fun MainScreen(
             Body(stringResource(R.string.main_shortcuts_intro))
             NumberedSteps(GuideSteps.split(stringResource(R.string.main_shortcut_steps, appName)), StepsPadding)
 
-            Guide(stringResource(R.string.main_gesture_title))
-            Body(stringResource(R.string.main_gesture_pixel_only))
-            NumberedSteps(GuideSteps.split(stringResource(R.string.main_gesture_steps, appName)), StepsPadding)
-            Body(stringResource(R.string.main_gesture_other))
         }
     }
 }

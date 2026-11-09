@@ -238,13 +238,16 @@ Quick Settings (formerly Screener) is Snoozer's sister app.
   DNS tile and notification), `brightness_medium` and `timer` (the display notifications).
 - Signature element: the Screen popup, laid out like Android's Quick Settings Internet dialog: a
   centred title, one group of rows (24dp outer corners, 4dp where rows meet,
-  2dp apart), manual brightness highlighted in `primaryContainer` like the connected network (the switch
-  rows are never highlighted: their switch already shows the state),
+  2dp apart), manual brightness highlighted in `primaryContainer` like the connected network (the other
+  rows are never highlighted: their control already shows the state). The screen timeout is a
+  segmented button `1 min | 30 min` (neither selected for another value, shown as text),
+  always-on display and tap to wake are switches,
   and Settings / Done at the bottom. It sits in the middle of the screen, like the native
-  dialog, in a floating window that dims the app behind it. It opens with Android's standard
-  dialog animation.
+  dialog, in a floating window that dims the app behind it. It appears without an opening
+  animation: Android is still closing the shade at that moment, and both movements together
+  looked like a flash.
 - Main screen: one list in the settings style, with a `TopAppBar` and two sections: Permissions
-  (with the adb steps), then Instructions (Tiles with Add buttons, Launcher shortcuts, Quick Tap).
+  (with the adb steps), then Instructions (Tiles with Add buttons, Launcher shortcuts).
   Steps are numbered in primary-coloured circles, like Snoozer's guides. No settings, so no Theme or Dynamic color choice: it follows the
   phone's light/dark setting and always uses dynamic colours.
 - Setup needed (a permission missing) shows as a `tertiaryContainer` card above the popup's

@@ -16,6 +16,15 @@ data class ScreenState(
     /** True while the screen timeout is anything other than the default minute. */
     val timeoutExtended: Boolean get() = timeoutMs != DEFAULT_TIMEOUT_MS
 
+    /** Which of the popup's two timeout choices is in use; null for any other value set elsewhere. */
+    val timeoutChoice: TimeoutChoice?
+        get() =
+            when (timeoutMs) {
+                DEFAULT_TIMEOUT_MS -> TimeoutChoice.OneMinute
+                EXTENDED_TIMEOUT_MS -> TimeoutChoice.ThirtyMinutes
+                else -> null
+            }
+
     /** The settings that differ from the app's defaults, in the order they are shown. */
     val changes: List<Change>
         get() =
@@ -27,6 +36,9 @@ data class ScreenState(
             }
 
     enum class Change { Brightness, Timeout, AlwaysOn, TapToWake }
+
+    /** The two screen timeouts the popup offers. */
+    enum class TimeoutChoice(val extended: Boolean) { OneMinute(false), ThirtyMinutes(true) }
 
     companion object {
         const val DEFAULT_TIMEOUT_MS = 60_000

@@ -11,5 +11,8 @@
         <item name="android:windowMinWidthMinor">100%</item>
         <item name="android:backgroundDimAmount">0.4</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
+        <!-- No opening animation: the shade is still sliding away when the popup starts, and the
+             two movements at once looked like a flash. -->
+        <item name="android:windowAnimationStyle">@null</item>
     </style>
 </resources>

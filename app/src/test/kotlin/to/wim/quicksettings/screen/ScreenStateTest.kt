@@ -2,6 +2,7 @@ package to.wim.quicksettings.screen
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -55,5 +56,17 @@ class ScreenStateTest {
         assertEquals(TimeoutDuration(2, TimeoutDuration.Unit.Hours), TimeoutDuration.of(7_200_000))
         assertEquals(TimeoutDuration(90, TimeoutDuration.Unit.Minutes), TimeoutDuration.of(5_400_000))
         assertEquals(TimeoutDuration(0, TimeoutDuration.Unit.Seconds), TimeoutDuration.of(-1))
+    }
+
+    @Test
+    fun `the timeout choice marks 1 or 30 minutes and nothing else`() {
+        assertEquals(ScreenState.TimeoutChoice.OneMinute, ScreenState.DEFAULTS.timeoutChoice)
+        assertEquals(
+            ScreenState.TimeoutChoice.ThirtyMinutes,
+            ScreenState.DEFAULTS.copy(timeoutMs = ScreenState.EXTENDED_TIMEOUT_MS).timeoutChoice,
+        )
+        assertNull(ScreenState.DEFAULTS.copy(timeoutMs = 5 * 60_000).timeoutChoice)
+        assertTrue(ScreenState.TimeoutChoice.ThirtyMinutes.extended)
+        assertFalse(ScreenState.TimeoutChoice.OneMinute.extended)
     }
 }

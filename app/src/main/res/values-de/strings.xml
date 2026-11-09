@@ -27,6 +27,7 @@
     <string name="notification_brightness_title">Manuelle Helligkeit</string>
     <string name="notification_brightness_action">Automatisch</string>
     <string name="notification_timeout_title">Bildschirm-Timeout verlängert</string>
+    <string name="timeout_choice_extended">30 Min.</string>
     <string name="notification_timeout_action">1 Min.</string>
     <plurals name="tile_subtitle_changes">
         <item quantity="one">%d geändert</item>
@@ -85,12 +86,8 @@
     <string name="toast_always_on_off">Always-on-Display aus</string>
     <string name="toast_tap_on">Zum Aktivieren tippen an</string>
     <string name="toast_tap_off">Zum Aktivieren tippen aus</string>
-    <string name="main_shortcuts_intro">Schalte privates DNS, das Timeout, Always-on-Display oder Zum Aktivieren tippen um, ohne die Schnelleinstellungen zu öffnen: über das App-Symbol, den Startbildschirm oder eine Geste.</string>
+    <string name="main_shortcuts_intro">Schalte privates DNS, das Timeout, Always-on-Display oder Zum Aktivieren tippen um, ohne die Schnelleinstellungen zu öffnen: über das App-Symbol oder den Startbildschirm.</string>
     <string name="main_shortcut_title">Verknüpfungen auf dem Startbildschirm</string>
     <string name="main_shortcut_steps">Halte das App-Symbol von %1$s gedrückt.\nTippe auf eine Verknüpfung, um die Einstellung sofort umzuschalten.\nOptional: Ziehe eine Verknüpfung auf den Startbildschirm, um sie mit einem Tippen zu erreichen.</string>
-    <string name="main_gesture_title">Geste: auf die Rückseite tippen</string>
-    <string name="main_gesture_steps">Öffne Einstellungen › System › Bewegungen › Quick Tap zum Starten von Aktionen.\nAktiviere Quick Tap und wähle App öffnen.\nTippe auf das Einstellungssymbol neben %1$s und wähle eine Verknüpfung.\nTippe zweimal auf die Rückseite deines Smartphones, um die Einstellung umzuschalten.</string>
-    <string name="main_gesture_other">Suche auf anderen Geräten nach einer Rückseiten-Tipp- oder Gestenfunktion, die eine App-Verknüpfung öffnen kann, z. B. RegiStar in Samsungs Good Lock.</string>
     <string name="main_section_instructions">Anleitung</string>
-    <string name="main_gesture_pixel_only">Nur auf Pixel-Smartphones verfügbar.</string>
 </resources>

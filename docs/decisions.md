@@ -2,6 +2,18 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-09: Timeout as a segmented button, popup without opening animation, no Quick Tap guide
+
+The screen timeout is a choice between two values, not on/off, so the popup shows it as a
+Material 3 segmented button `1 min | 30 min` (`ScreenState.timeoutChoice`; a value set
+elsewhere selects neither and is shown as text). Rejected: chips (less clearly one-of-two), a
+row that cycles (you can't see what a tap does) and a choice dialog (two taps).
+The popup flashed when opened from the tile: Android closes the shade while the popup's window
+animation plays. The popup theme now has no window animation (`windowAnimationStyle` `@null`).
+Rejected: waiting until the shade has closed (more code; an empty window first, as before).
+The Quick Tap guide is removed from the main screen at the owner's request; the shortcuts still
+work with it. Dutch uses "Scherm altijd aan" for always-on display.
+
 ## 2026-11-09: Shortcuts back in the manifest, no relay
 
 Pixel Quick Tap shows no settings gear for an app without manifest shortcuts: the dynamic

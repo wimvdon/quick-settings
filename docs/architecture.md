@@ -26,7 +26,7 @@ Needs `WRITE_SECURE_SETTINGS` (adb).
   timeout, always-on display and tap to wake, with a toast. Quick Tap can start them too.
 - **Main screen** (`ui/main/`): the launcher entry. Permissions first (with the numbered adb
   steps and a Copy button), then instructions: add the tiles (Android 13+ asks with one tap), the
-  launcher shortcuts and Quick Tap. `GuideSteps` turns a translated block into numbered steps.
+  launcher shortcuts. `GuideSteps` turns a translated block into numbered steps.
 - **Popup** (`ui/panel/`): a floating, centred activity styled like Android's Internet dialog
   (`PanelActivity`), opened from the Screen tile and the notifications. Android closes the shade when an app's tile opens anything. Missing permissions show as setup cards in it.
 - **Notifications** (`notify/Notifications.kt`), in two channels: *Display* (manual brightness,
