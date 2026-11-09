@@ -21,7 +21,7 @@ class DnsTileService : TileService() {
     override fun onStartListening() {
         super.onStartListening()
         render()
-        quickSettingsApp.syncNotifications()
+        quickSettingsApp.sync()
     }
 
     override fun onClick() {

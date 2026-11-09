@@ -21,7 +21,7 @@ class ScreenTileService : TileService() {
         super.onStartListening()
         render()
         // Brings the notifications in step too, in case something changed while we weren't running.
-        quickSettingsApp.syncNotifications()
+        quickSettingsApp.sync()
     }
 
     override fun onClick() {

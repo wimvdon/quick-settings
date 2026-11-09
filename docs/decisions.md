@@ -2,6 +2,14 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-09: No tile refresh requests; app name translated
+
+`TileService.requestListeningState` only reaches tiles declared as active tiles; ours are not, so
+Android ignored the call after every change. It is removed: the tiles redraw when Quick Settings
+opens and when they are tapped. The app name follows each language's own word for Quick Settings
+(Snelle instellingen, Schnelleinstellungen, Réglages rapides, Ajustes rápidos, Impostazioni
+rapide).
+
 ## 2026-11-09: Tiles and popup back to the simple v0.0.4 code
 
 The live-update attempts (tiles watching their settings while the shade is open, drawing the DNS

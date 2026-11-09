@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Quick Settings</string>
+    <string name="app_name">Réglages rapides</string>
     <string name="tile_screen_label">Écran</string>
     <string name="tile_subtitle_default">Par défaut</string>
     <string name="change_brightness">Luminosité manuelle</string>
