@@ -27,6 +27,7 @@
     <string name="notification_brightness_title">Luminosité manuelle</string>
     <string name="notification_brightness_action">Auto</string>
     <string name="notification_timeout_title">Mise en veille prolongée</string>
+    <string name="timeout_choice_extended">30 min</string>
     <string name="notification_timeout_action">1 min</string>
     <plurals name="tile_subtitle_changes">
         <item quantity="one">%d modifié</item>
@@ -89,12 +90,8 @@
     <string name="toast_always_on_off">Écran toujours activé : non</string>
     <string name="toast_tap_on">Toucher pour activer : oui</string>
     <string name="toast_tap_off">Toucher pour activer : non</string>
-    <string name="main_shortcuts_intro">Changez le DNS privé, la mise en veille, l’écran toujours activé ou toucher pour activer sans ouvrir les Réglages rapides : depuis l’icône de l’appli, l’écran d’accueil ou un geste.</string>
+    <string name="main_shortcuts_intro">Changez le DNS privé, la mise en veille, l’écran toujours activé ou toucher pour activer sans ouvrir les Réglages rapides : depuis l’icône de l’appli ou l’écran d’accueil.</string>
     <string name="main_shortcut_title">Raccourcis sur l’écran d’accueil</string>
     <string name="main_shortcut_steps">Appuyez de manière prolongée sur l’icône de %1$s.\nAppuyez sur un raccourci pour changer ce paramètre immédiatement.\nFacultatif : faites glisser un raccourci sur l’écran d’accueil pour y accéder d’un geste.</string>
-    <string name="main_gesture_title">Geste : appuyez au dos du téléphone</string>
-    <string name="main_gesture_steps">Ouvrez Paramètres › Système › Gestes › Quick Tap pour lancer des actions.\nActivez Quick Tap et choisissez Ouvrir une appli.\nAppuyez sur l’icône des paramètres à côté de %1$s et choisissez un raccourci.\nAppuyez deux fois au dos du téléphone pour changer ce paramètre.</string>
-    <string name="main_gesture_other">Sur d’autres téléphones, cherchez une fonction d’appui au dos ou de gestes capable d’ouvrir un raccourci d’appli, comme RegiStar dans Good Lock de Samsung.</string>
     <string name="main_section_instructions">Instructions</string>
-    <string name="main_gesture_pixel_only">Disponible uniquement sur les téléphones Pixel.</string>
 </resources>

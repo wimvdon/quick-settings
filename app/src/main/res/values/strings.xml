@@ -27,6 +27,7 @@
     <string name="notification_brightness_title">Manual brightness</string>
     <string name="notification_brightness_action">Auto</string>
     <string name="notification_timeout_title">Screen timeout extended</string>
+    <string name="timeout_choice_extended">30 min</string>
     <string name="notification_timeout_action">1 min</string>
     <plurals name="tile_subtitle_changes">
         <item quantity="one">%d changed</item>
@@ -85,12 +86,8 @@
     <string name="toast_always_on_off">Always-on display off</string>
     <string name="toast_tap_on">Tap to wake on</string>
     <string name="toast_tap_off">Tap to wake off</string>
-    <string name="main_shortcuts_intro">Switch Private DNS, the screen timeout, always-on display or tap to wake without opening Quick Settings: from the app icon, your home screen or a gesture.</string>
+    <string name="main_shortcuts_intro">Switch Private DNS, the screen timeout, always-on display or tap to wake without opening Quick Settings: from the app icon or your home screen.</string>
     <string name="main_shortcut_title">Launcher shortcuts</string>
     <string name="main_shortcut_steps">Touch and hold the %1$s app icon.\nTap a shortcut to switch that setting at once.\nOptional: drag a shortcut onto your home screen for one-tap access.</string>
-    <string name="main_gesture_title">Gesture: tap the back of your phone</string>
-    <string name="main_gesture_steps">Open Settings › System › Gestures › Quick Tap to start actions.\nTurn on Quick Tap and choose Open app.\nTap the settings icon next to %1$s and pick a shortcut.\nDouble-tap the back of your phone to switch that setting.</string>
-    <string name="main_gesture_other">On other phones, look for a back-tap or gesture feature that can open an app shortcut, such as RegiStar in Samsung’s Good Lock.</string>
     <string name="main_section_instructions">Instructions</string>
-    <string name="main_gesture_pixel_only">Only available on Pixel phones.</string>
 </resources>

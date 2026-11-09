@@ -21,6 +21,9 @@ import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
@@ -136,19 +139,10 @@ fun PanelScreen(
             val rows = 4
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 BrightnessRow(screen, state.canWriteSystem, rowShape(0, rows), actions)
-                SwitchRow(
-                    icon = R.drawable.ic_timer,
-                    title = stringResource(R.string.timeout_title),
-                    summary = timeoutText(LocalResources.current, screen.timeoutMs),
-                    checked = screen.timeoutExtended,
-                    enabled = state.canWriteSystem,
-                    shape = rowShape(1, rows),
-                    onCheckedChange = actions.onTimeoutExtended,
-                )
+                TimeoutRow(screen, state.canWriteSystem, rowShape(1, rows), actions.onTimeoutExtended)
                 SwitchRow(
                     icon = R.drawable.ic_always_on,
                     title = stringResource(R.string.always_on_title),
-                    summary = null,
                     checked = screen.alwaysOn,
                     enabled = state.canWriteSecure,
                     shape = rowShape(2, rows),
@@ -157,7 +151,6 @@ fun PanelScreen(
                 SwitchRow(
                     icon = R.drawable.ic_tap,
                     title = stringResource(R.string.tap_to_wake_title),
-                    summary = null,
                     checked = screen.tapToWake,
                     enabled = state.canWriteSecure,
                     shape = rowShape(3, rows),
@@ -233,11 +226,62 @@ private fun BrightnessRow(
     }
 }
 
+/**
+ * The screen timeout as a choice between its two values. A timeout set elsewhere (say 5 minutes)
+ * is shown as text, with neither choice selected.
+ */
+@Composable
+private fun TimeoutRow(
+    screen: ScreenState,
+    enabled: Boolean,
+    shape: Shape,
+    onExtended: (Boolean) -> Unit,
+) {
+    val (container, content) = rowColors(changed = false)
+    val choice = screen.timeoutChoice
+    Surface(shape = shape, color = container, contentColor = content, modifier = Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.heightIn(min = 24.dp)) {
+                Icon(painterResource(R.drawable.ic_timer), contentDescription = null)
+                Column(Modifier.weight(1f).padding(horizontal = 16.dp)) {
+                    Text(stringResource(R.string.timeout_title), style = MaterialTheme.typography.titleMedium)
+                    if (choice == null) {
+                        Text(
+                            timeoutText(LocalResources.current, screen.timeoutMs),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
+            val options = ScreenState.TimeoutChoice.entries
+            SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(start = 40.dp, top = 8.dp)) {
+                options.forEachIndexed { index, option ->
+                    SegmentedButton(
+                        selected = option == choice,
+                        onClick = { onExtended(option.extended) },
+                        shape = SegmentedButtonDefaults.itemShape(index, options.size),
+                        enabled = enabled,
+                    ) {
+                        Text(
+                            stringResource(
+                                when (option) {
+                                    ScreenState.TimeoutChoice.OneMinute -> R.string.notification_timeout_action
+                                    ScreenState.TimeoutChoice.ThirtyMinutes -> R.string.timeout_choice_extended
+                                },
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 @Composable
 private fun SwitchRow(
     @DrawableRes icon: Int,
     title: String,
-    summary: String?,
     checked: Boolean,
     enabled: Boolean,
     shape: Shape,
@@ -256,13 +300,6 @@ private fun SwitchRow(
             Icon(painterResource(icon), contentDescription = null)
             Column(Modifier.weight(1f).padding(horizontal = 16.dp)) {
                 Text(title, style = MaterialTheme.typography.titleMedium)
-                if (summary != null) {
-                    Text(
-                        summary,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
             }
             // The row handles the click, so the switch itself only shows the state.
             Switch(checked = checked, onCheckedChange = null, enabled = enabled)

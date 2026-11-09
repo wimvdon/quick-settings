@@ -27,6 +27,7 @@
     <string name="notification_brightness_title">Brillo manual</string>
     <string name="notification_brightness_action">Automático</string>
     <string name="notification_timeout_title">Tiempo de espera ampliado</string>
+    <string name="timeout_choice_extended">30 min</string>
     <string name="notification_timeout_action">1 min</string>
     <plurals name="tile_subtitle_changes">
         <item quantity="one">%d cambiado</item>
@@ -89,12 +90,8 @@
     <string name="toast_always_on_off">Pantalla siempre activa: no</string>
     <string name="toast_tap_on">Tocar para activar: sí</string>
     <string name="toast_tap_off">Tocar para activar: no</string>
-    <string name="main_shortcuts_intro">Cambia el DNS privado, el tiempo de espera, la pantalla siempre activa o tocar para activar sin abrir los ajustes rápidos: desde el icono de la app, la pantalla de inicio o un gesto.</string>
+    <string name="main_shortcuts_intro">Cambia el DNS privado, el tiempo de espera, la pantalla siempre activa o tocar para activar sin abrir los ajustes rápidos: desde el icono de la app o la pantalla de inicio.</string>
     <string name="main_shortcut_title">Accesos directos en la pantalla de inicio</string>
     <string name="main_shortcut_steps">Mantén pulsado el icono de la app %1$s.\nToca un acceso directo para cambiar ese ajuste al instante.\nOpcional: arrastra un acceso directo a la pantalla de inicio para usarlo con un toque.</string>
-    <string name="main_gesture_title">Gesto: toca la parte trasera del teléfono</string>
-    <string name="main_gesture_steps">Abre Ajustes › Sistema › Gestos › Quick Tap para iniciar acciones.\nActiva Quick Tap y elige Abrir aplicación.\nToca el icono de ajustes junto a %1$s y elige un acceso directo.\nToca dos veces la parte trasera del teléfono para cambiar ese ajuste.</string>
-    <string name="main_gesture_other">En otros teléfonos, busca una función de toque trasero o de gestos que pueda abrir un acceso directo de app, como RegiStar en Good Lock de Samsung.</string>
     <string name="main_section_instructions">Instrucciones</string>
-    <string name="main_gesture_pixel_only">Solo disponible en teléfonos Pixel.</string>
 </resources>
