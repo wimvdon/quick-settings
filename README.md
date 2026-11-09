@@ -1,6 +1,6 @@
 # Screener
 
-A Quick Settings tile for the screen, Snoozer's sister app. Tap the tile for a popup (laid out
+A Quick Settings tile for the screen, Snoozer's sister app (in Android's own colours). Tap the tile for a popup (laid out
 like Android's Internet dialog) with:
 
 - **Brightness**: a slider that switches auto brightness off and sets the level; the X goes back

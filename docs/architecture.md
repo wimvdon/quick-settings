@@ -34,7 +34,7 @@ app/src/main/kotlin/<package>/
   notify/                  Persistent notifications and their reset buttons.
   tile/                    The Quick Settings tile.
   ui/panel/                The popup: PanelActivity (state, permissions) and PanelScreen (Compose).
-  ui/theme/                Theme.kt (Snoozer's colours), Shapes.kt (shared kit).
+  ui/theme/                Theme.kt (Android's dynamic colours), Shapes.kt (shared kit).
 app/src/main/res/
   values/strings.xml       All user-visible text (English, the default).
   values-xx/strings.xml    Dutch, French, German, Spanish and Italian. Every string must exist in every language.
