@@ -67,8 +67,6 @@
     <string name="main_tile_screen_text">Luminosité, mise en veille, écran toujours activé et toucher pour activer</string>
     <string name="main_tile_dns_text">Bascule entre votre nom d’hôte et automatique</string>
     <string name="main_add_tile">Ajouter</string>
-    <string name="main_tiles_manual">Ou balayez deux fois vers le bas, appuyez sur le crayon et faites glisser les blocs dans vos Réglages rapides.</string>
-    <string name="main_open_screen">Ouvrir Écran</string>
     <string name="main_section_permissions">Autorisations</string>
     <string name="main_permission_system">Modifier les paramètres système</string>
     <string name="main_permission_system_text">Pour la luminosité et la mise en veille</string>
@@ -78,11 +76,8 @@
     <string name="main_permission_secure_text">Pour l’écran toujours activé, toucher pour activer et le DNS privé. Seul un ordinateur peut l’accorder.</string>
     <string name="main_granted">Autorisé</string>
     <string name="main_adb_title">L’accorder avec adb</string>
-    <string name="main_adb_steps">1. Paramètres › À propos du téléphone : appuyez 7 fois sur Numéro de build.\n2. Paramètres › Système › Options pour les développeurs : activez le débogage USB.\n3. Connectez le téléphone à un ordinateur doté des Android platform tools et autorisez-le.\n4. Exécutez cette commande sur l’ordinateur :</string>
-    <string name="main_dns_current">Utilisé : %1$s</string>
+    <string name="main_adb_steps">Paramètres › À propos du téléphone : appuyez 7 fois sur Numéro de build.\nParamètres › Système › Options pour les développeurs : activez le débogage USB.\nConnectez le téléphone à un ordinateur doté des Android platform tools et autorisez-le.\nExécutez cette commande sur l’ordinateur :</string>
     <string name="main_dns_no_hostname">Aucun nom d’hôte défini</string>
-    <string name="main_dns_no_hostname_text">Définissez-en un une fois dans Paramètres › Réseau et Internet › DNS privé. Le bloc basculera ensuite vers lui.</string>
-    <string name="main_open_settings">Ouvrir les paramètres</string>
     <string name="notification_dns_title_off">DNS privé désactivé</string>
     <string name="shortcut_dns_short">DNS privé</string>
     <string name="shortcut_dns_long">DNS privé : nom d’hôte ou automatique</string>
@@ -100,11 +95,12 @@
     <string name="toast_always_on_off">Écran toujours activé : non</string>
     <string name="toast_tap_on">Toucher pour activer : oui</string>
     <string name="toast_tap_off">Toucher pour activer : non</string>
-    <string name="main_section_shortcuts">Raccourcis</string>
     <string name="main_shortcuts_intro">Changez le DNS privé, la mise en veille, l’écran toujours activé ou toucher pour activer sans ouvrir les Réglages rapides : depuis l’icône de l’appli, l’écran d’accueil ou un geste.</string>
     <string name="main_shortcut_title">Raccourcis sur l’écran d’accueil</string>
-    <string name="main_shortcut_steps">1. Appuyez de manière prolongée sur l’icône de %1$s.\n2. Appuyez sur un raccourci pour changer ce paramètre immédiatement.\n3. Facultatif : faites glisser un raccourci sur l’écran d’accueil pour y accéder d’un geste.</string>
+    <string name="main_shortcut_steps">Appuyez de manière prolongée sur l’icône de %1$s.\nAppuyez sur un raccourci pour changer ce paramètre immédiatement.\nFacultatif : faites glisser un raccourci sur l’écran d’accueil pour y accéder d’un geste.</string>
     <string name="main_gesture_title">Geste : appuyez au dos du téléphone</string>
-    <string name="main_gesture_steps">Disponible uniquement sur les téléphones Pixel.\n1. Ouvrez Paramètres › Système › Gestes › Quick Tap pour lancer des actions.\n2. Activez Quick Tap et choisissez Ouvrir une appli.\n3. Appuyez sur l’icône des paramètres à côté de %1$s et choisissez un raccourci.\n4. Appuyez deux fois au dos du téléphone pour changer ce paramètre.</string>
+    <string name="main_gesture_steps">Ouvrez Paramètres › Système › Gestes › Quick Tap pour lancer des actions.\nActivez Quick Tap et choisissez Ouvrir une appli.\nAppuyez sur l’icône des paramètres à côté de %1$s et choisissez un raccourci.\nAppuyez deux fois au dos du téléphone pour changer ce paramètre.</string>
     <string name="main_gesture_other">Sur d’autres téléphones, cherchez une fonction d’appui au dos ou de gestes capable d’ouvrir un raccourci d’appli, comme RegiStar dans Good Lock de Samsung.</string>
+    <string name="main_section_instructions">Instructions</string>
+    <string name="main_gesture_pixel_only">Disponible uniquement sur les téléphones Pixel.</string>
 </resources>

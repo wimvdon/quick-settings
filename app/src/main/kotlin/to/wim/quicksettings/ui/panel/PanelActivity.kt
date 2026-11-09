@@ -44,7 +44,7 @@ class PanelActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        window.setGravity(Gravity.BOTTOM)
+        window.setGravity(Gravity.CENTER)
         setContent {
             AppTheme {
                 uiState.value?.let { state ->

@@ -24,10 +24,11 @@ Needs `WRITE_SECURE_SETTINGS` (adb).
 - **Shortcuts** (`shortcut/ShortcutActivity.kt`, `res/xml/shortcuts.xml` plus a debug copy that
   names the `.debug` package): four static launcher shortcuts that toggle Private DNS, the
   timeout, always-on display and tap to wake, with a toast. Quick Tap can start them too.
-- **Main screen** (`ui/main/`): the launcher entry. Add the tiles (Android 13+ asks with one
-  tap), grant the permissions (with the adb steps and a Copy button) and see the DNS hostname.
-- **Popup** (`ui/panel/`): a floating activity styled like Android's Internet dialog, for the
-  Screen tile. Missing permissions show as setup cards in it.
+- **Main screen** (`ui/main/`): the launcher entry. Permissions first (with the numbered adb
+  steps and a Copy button), then instructions: add the tiles (Android 13+ asks with one tap), the
+  launcher shortcuts and Quick Tap. `GuideSteps` turns a translated block into numbered steps.
+- **Popup** (`ui/panel/`): a floating, centred activity styled like Android's Internet dialog,
+  for the Screen tile. Missing permissions show as setup cards in it.
 - **Notifications** (`notify/Notifications.kt`), in two channels: *Display* (manual brightness,
   button Auto; long timeout, button 1 min) and *Private DNS* (whenever it isn't on the hostname: Off or Automatic; button Hostname).
 - **Rules** (plain Kotlin, unit tested): `screen/ScreenController.kt` switches auto brightness

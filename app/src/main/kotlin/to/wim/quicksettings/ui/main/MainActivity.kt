@@ -25,7 +25,6 @@ import to.wim.quicksettings.quickSettingsApp
 import to.wim.quicksettings.screen.SystemScreenSettings
 import to.wim.quicksettings.tile.DnsTileService
 import to.wim.quicksettings.tile.ScreenTileService
-import to.wim.quicksettings.ui.panel.PanelActivity
 import to.wim.quicksettings.ui.theme.AppTheme
 
 /** The launcher screen: how to add the tiles and grant what they need. */
@@ -66,8 +65,6 @@ class MainActivity : ComponentActivity() {
                                 },
                                 onCopyCommand = ::copyAdbCommand,
                                 onAllowNotifications = ::allowNotifications,
-                                onOpenNetworkSettings = { open(Intent(Settings.ACTION_WIRELESS_SETTINGS)) },
-                                onOpenScreenPanel = { startActivity(PanelActivity.intent(this)) },
                             ),
                     )
                 }
@@ -89,7 +86,6 @@ class MainActivity : ComponentActivity() {
                 canWriteSystem = SystemScreenSettings.canWriteSystem(this),
                 canWriteSecure = SystemScreenSettings.canWriteSecure(this),
                 canPostNotifications = Notifications.canPost(this),
-                dns = quickSettingsApp.dns.read(),
                 adbCommand = adbCommand(),
             )
     }

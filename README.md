@@ -29,16 +29,16 @@ use it with Quick Tap (double-tap the back of a Pixel) or a gesture app such as 
 
 ## Setting it up
 Open the app: its main screen walks through every step.
-1. Tap **Add** next to each tile (Android 13+), or open Quick Settings, tap the pencil and drag
-   **Screen** and **Private DNS** into your tiles.
-2. Allow **Modify system settings** (brightness and timeout) and **Notifications**.
-3. Always-on display, tap to wake and Private DNS need a one-time command from a computer with
+1. Allow **Modify system settings** (brightness and timeout) and **Notifications**.
+2. Always-on display, tap to wake and Private DNS need a one-time command from a computer with
    [adb](https://developer.android.com/tools/adb) (USB debugging on). The main screen has the
    steps and a **Copy** button, or type:
    ```
    adb shell pm grant to.wim.quicksettings android.permission.WRITE_SECURE_SETTINGS
    ```
    For a debug build from a pull request, use `to.wim.quicksettings.debug`.
+3. Under Instructions, tap **Add** next to each tile (Android 13+), or open Quick Settings, tap
+   the pencil and drag **Screen** and **Private DNS** into your tiles.
 
 Built from the Android app template; the sections below are the template's.
 

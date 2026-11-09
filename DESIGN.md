@@ -239,10 +239,11 @@ Quick Settings (formerly Screener) is Snoozer's sister app.
 - Signature element: the Screen popup, laid out like Android's Quick Settings Internet dialog: a
   centred title and status line, one group of rows (24dp outer corners, 4dp where rows meet,
   2dp apart), a changed setting highlighted in `primaryContainer` like the connected network,
-  and Settings / Done at the bottom. It sits at the bottom of the screen in a floating window
-  that dims the app behind it.
-- Main screen: one list with section headers (Tiles, Permissions, Private DNS) in the settings
-  style, with a `TopAppBar`. No settings, so no Theme or Dynamic color choice: it follows the
+  and Settings / Done at the bottom. It sits in the middle of the screen, like the native
+  dialog, in a floating window that dims the app behind it.
+- Main screen: one list in the settings style, with a `TopAppBar` and two sections: Permissions
+  (with the adb steps), then Instructions (Tiles with Add buttons, Launcher shortcuts, Quick Tap).
+  Steps are numbered in primary-coloured circles, like Snoozer's guides. No settings, so no Theme or Dynamic color choice: it follows the
   phone's light/dark setting and always uses dynamic colours.
 - Setup needed (a permission missing) shows as a `tertiaryContainer` card above the popup's
   rows, and the rows it unlocks are disabled; the popup still works for the rest. The main
