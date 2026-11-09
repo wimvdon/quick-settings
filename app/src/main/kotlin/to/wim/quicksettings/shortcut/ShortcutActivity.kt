@@ -1,7 +1,6 @@
 package to.wim.quicksettings.shortcut
 
 import android.app.Activity
-import android.content.pm.ShortcutManager
 import android.os.Bundle
 import android.widget.Toast
 import to.wim.quicksettings.R
@@ -18,9 +17,6 @@ class ShortcutActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val app = quickSettingsApp
-        AppShortcut.entries.firstOrNull { it.action == intent?.action }?.let {
-            getSystemService(ShortcutManager::class.java)?.reportShortcutUsed(it.id)
-        }
         val needsSecure = intent?.action in setOf(ACTION_DNS, ACTION_ALWAYS_ON, ACTION_TAP_TO_WAKE)
         val allowed =
             if (needsSecure) SystemScreenSettings.canWriteSecure(this) else SystemScreenSettings.canWriteSystem(this)
@@ -54,7 +50,7 @@ class ShortcutActivity : Activity() {
     }
 
     companion object {
-        // Published as dynamic shortcuts in Shortcuts.kt (see AppShortcut).
+        // Also named in res/xml/shortcuts.xml (and the debug copy).
         const val ACTION_DNS = "to.wim.quicksettings.action.TOGGLE_PRIVATE_DNS"
         const val ACTION_TIMEOUT = "to.wim.quicksettings.action.TOGGLE_TIMEOUT"
         const val ACTION_ALWAYS_ON = "to.wim.quicksettings.action.TOGGLE_ALWAYS_ON"
