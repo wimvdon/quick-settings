@@ -230,9 +230,10 @@ Quick Settings (formerly Screener) is Snoozer's sister app.
 
 - Colours: Android's own Material 3 dynamic colours (from the wallpaper), like Quick Settings
   itself. The app has no fixed palette of its own (owner's choice, 2026-11-09).
-- Icon: a cogwheel with a white lightning bolt, with a light blue → blue → violet gradient
-  (`#4FC3F7` → `#3D7BFF` → `#5B4FD9`) on white. The teeth reach 31dp from the centre, inside the
-  33dp safe-zone radius. The themed layer cuts the bolt out.
+- Icon: Android's Settings cogwheel (Material `settings`, without its centre hole) with a white
+  lightning bolt, with a light blue → blue → violet gradient (`#4FC3F7` → `#3D7BFF` → `#5B4FD9`)
+  on white. Scaled 2.6× from 24dp, so it reaches about 25dp from the centre, leaving room inside
+  the 33dp safe-zone radius. The themed layer cuts the bolt out.
 - Tile and notification icons are Material 3 icons: `smartphone` (Screen tile), `dns` (Private
   DNS tile and notification), `brightness_medium` and `timer` (the display notifications).
 - Signature element: the Screen popup, laid out like Android's Quick Settings Internet dialog: a
