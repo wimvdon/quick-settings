@@ -7,7 +7,7 @@ Newest first. Add an entry for every notable choice: what was decided, why, and 
 The owner wants the popup to look like Android's own Quick Settings, so it uses Material 3
 dynamic colours (from the wallpaper) instead of Snoozer's fixed blue palette. This differs from
 the shared rule that dynamic color is off by default; Screener has no settings screen, so there
-is no switch either. The icon keeps the shared icon style. Rejected: a dynamic color switch (it
+is no switch either. The icon keeps the shared icon style, with its own gradient (see `DESIGN.md`, "This app"). Rejected: a dynamic color switch (it
 would need a settings screen for one option).
 
 ## 2026-11-09: Screener: a tile and a popup, three permissions, no stored data

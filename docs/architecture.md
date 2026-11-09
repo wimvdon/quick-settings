@@ -11,7 +11,8 @@ Screener changes four screen settings from a Quick Settings tile:
 | Tap to wake | On | Off | `Settings.Secure` `doze_tap_gesture` (Pixel) and `double_tap_to_wake` (AOSP) | `WRITE_SECURE_SETTINGS` (adb) |
 
 - **Tile** (`tile/ScreenTileService.kt`): lit while any setting differs from its default; the
-  subtitle names the change (or "2 changed"). Tapping it opens the popup; long-pressing opens it too.
+  subtitle names the change (or "2 changed"). Tapping it opens the popup; long-pressing opens Android's Display settings
+  (`tile/DisplaySettingsActivity.kt`, an invisible trampoline).
 - **Popup** (`ui/panel/`): a floating activity styled like Android's Internet dialog. It is also
   the launcher entry. Missing permissions show as setup cards in it.
 - **Notifications** (`notify/ScreenNotifications.kt`): one ongoing notification while brightness
@@ -32,7 +33,7 @@ app/src/main/kotlin/<package>/
   screen/                  ScreenState, ScreenController, BrightnessCurve (plain Kotlin, tested)
                            and SystemScreenSettings (reads/writes Android's settings).
   notify/                  Persistent notifications and their reset buttons.
-  tile/                    The Quick Settings tile.
+  tile/                    The Quick Settings tile, and the long-press trampoline to Display settings.
   ui/panel/                The popup: PanelActivity (state, permissions) and PanelScreen (Compose).
   ui/theme/                Theme.kt (Android's dynamic colours), Shapes.kt (shared kit).
 app/src/main/res/

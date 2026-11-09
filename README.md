@@ -10,6 +10,7 @@ like Android's Internet dialog) with:
 - **Always-on display** (default off) and **Tap to wake** (default on).
 
 The tile lights up and names what is changed whenever a setting isn't at its default.
+Long-press it to open Android's Display settings.
 
 ## Setting it up
 1. Install the app, open Quick Settings, tap the pencil (edit) and drag **Screen** into your tiles.
