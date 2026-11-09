@@ -43,6 +43,7 @@ description. In addition, check every now and then (always before a release):
       losing data.
 - [ ] **Tile**: with everything at default the tile is off and says "Default"; change one setting
       and it lights up and names it.
+      Long-pressing the tile opens Android's Display settings.
 - [ ] **Brightness**: drag the slider while auto brightness is on: auto switches off and the
       level follows the slider. The X and the notification's Auto button both bring auto back.
 - [ ] **Timeout**: the switch sets 30 minutes (notification appears); the notification's 1 min
