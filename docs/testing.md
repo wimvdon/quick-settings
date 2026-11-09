@@ -53,8 +53,6 @@ description. In addition, check every now and then (always before a release):
       button switches back.
 - [ ] **Shortcuts**: touch and hold the app icon; each of the four shortcuts switches its
       setting and shows a toast.
-- [ ] **Tiles while the shade is open**: tap a notification button or a shortcut with the shade
-      open; the tile changes at once.
 - [ ] **Changes made elsewhere** (Android's Settings) show up in the tile, popup and notifications.
 
 ## Reading a crash from a release build

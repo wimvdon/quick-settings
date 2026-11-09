@@ -1,15 +1,19 @@
 package to.wim.quicksettings
 
 import android.app.Application
+import android.content.ComponentName
 import android.content.Context
 import android.database.ContentObserver
 import android.os.Handler
 import android.os.Looper
+import android.service.quicksettings.TileService
 import to.wim.quicksettings.dns.DnsController
 import to.wim.quicksettings.dns.SystemDnsSettings
 import to.wim.quicksettings.notify.Notifications
 import to.wim.quicksettings.screen.ScreenController
 import to.wim.quicksettings.screen.SystemScreenSettings
+import to.wim.quicksettings.tile.DnsTileService
+import to.wim.quicksettings.tile.ScreenTileService
 
 class QuickSettingsApp : Application() {
     val controller: ScreenController by lazy { ScreenController(SystemScreenSettings(this)) }
@@ -37,13 +41,17 @@ class QuickSettingsApp : Application() {
     }
 
     /**
-     * Makes the notifications match the current settings. Safe to call often; called after every
-     * change and whenever a tile, the popup or the main screen is shown. The tiles need nothing:
-     * while visible they redraw themselves on every change (WatchingTileService), and asking
-     * Android to rebind them here only made them lag.
+     * Makes the notifications and the tiles match the current settings. Safe to call often;
+     * called after every change and whenever a tile, the popup or the main screen is shown.
      */
-    fun sync() = syncNotifications()
+    fun sync() {
+        syncNotifications()
+        listOf(ScreenTileService::class.java, DnsTileService::class.java).forEach {
+            runCatching { TileService.requestListeningState(this, ComponentName(this, it)) }
+        }
+    }
 
+    /** The notifications only; for the tiles themselves, which are already being redrawn. */
     fun syncNotifications() {
         handler.removeCallbacks(syncLater)
         Notifications.updateDisplay(this, controller.read())

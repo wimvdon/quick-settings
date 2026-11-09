@@ -28,17 +28,13 @@ Needs `WRITE_SECURE_SETTINGS` (adb).
   steps and a Copy button), then instructions: add the tiles (Android 13+ asks with one tap), the
   launcher shortcuts and Quick Tap. `GuideSteps` turns a translated block into numbered steps.
 - **Popup** (`ui/panel/`): a floating, centred activity styled like Android's Internet dialog
-  (`PanelActivity`), opened from the Screen tile and the notifications; `PanelModel` holds its
-  state and actions. Android closes the shade when an app's tile opens anything. Missing permissions show as setup cards in it.
+  (`PanelActivity`), opened from the Screen tile and the notifications. Android closes the shade when an app's tile opens anything. Missing permissions show as setup cards in it.
 - **Notifications** (`notify/Notifications.kt`), in two channels: *Display* (manual brightness,
   button Auto; long timeout, button 1 min) and *Private DNS* (whenever it isn't on the hostname: Off or Automatic; button Hostname).
 - **Rules** (plain Kotlin, unit tested): `screen/ScreenController.kt` switches auto brightness
   off *before* writing a level, because Android ignores a level written in auto mode;
   `BrightnessCurve` maps the slider like Android's own (HLG gamma). `dns/PrivateDns.kt` decides
   what a tap switches to and when the tile is lit or the notification shows.
-- **Tiles stay current while the shade is open**: both extend `WatchingTileService`, which
-  watches their settings with a `ContentObserver` between `onStartListening` and
-  `onStopListening` and redraws on every change.
 - **Keeping in step**: `QuickSettingsApp` watches the settings with a `ContentObserver` while the
   process runs, and the tiles, popup and main screen re-read them whenever they are shown, so
   changes made in Android's Settings show up too.

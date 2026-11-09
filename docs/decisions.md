@@ -2,6 +2,14 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-09: Tiles and popup back to the simple v0.0.4 code
+
+The live-update attempts (tiles watching their settings while the shade is open, drawing the DNS
+tile before writing, `PanelModel`) still left a visible delay on the owner's phone, and the
+popup flashed when it opened. Android decides when a tile's new state appears, so the extra code
+bought little. The tiles redraw when Quick Settings opens and after their own tap again, and
+`PanelActivity` is back to its v0.0.4 form (with the status line still removed).
+
 ## 2026-11-09: Back to the popup activity; the shade can't stay open
 
 Update, same day: on the owner's phone the shade still closed with `TileService.showDialog`.
