@@ -12,7 +12,9 @@ needs the same adb-granted `WRITE_SECURE_SETTINGS` as always-on display, so no n
 The tile toggles hostname ↔ Automatic and never edits the hostname: Android keeps it when
 switching to Automatic, and typing a hostname belongs in Android's own dialog. Notifications are
 split into a Display and a Private DNS channel so either can be silenced on its own. Long-pressing
-a tile goes through one trampoline activity that reads which tile was pressed. Rejected: a
+a tile goes through one trampoline activity that reads which tile was pressed. The Private DNS notification shows whenever the hostname isn't in use (Off or Automatic). Four
+static launcher shortcuts (like Snoozer's) toggle Private DNS, the timeout, always-on display and
+tap to wake, so Quick Tap and gesture apps can use them. Rejected: a
 separate app per tile (two installs, two adb grants) and an in-app hostname field (Android's
 Settings already has one and validates it).
 

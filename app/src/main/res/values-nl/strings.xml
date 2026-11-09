@@ -52,7 +52,7 @@
     <string name="tile_dns_label">Privé-DNS</string>
     <string name="dns_automatic">Automatisch</string>
     <string name="dns_off">Uit</string>
-    <string name="dns_hostname">Je hostnaam</string>
+    <string name="dns_hostname">Hostnaam</string>
     <string name="notification_channel_display">Scherm</string>
     <string name="notification_channel_dns">Privé-DNS</string>
     <string name="notification_dns_title">Privé-DNS op automatisch</string>
@@ -78,4 +78,28 @@
     <string name="main_dns_no_hostname">Geen hostnaam ingesteld</string>
     <string name="main_dns_no_hostname_text">Stel er eenmalig een in via Instellingen › Netwerk en internet › Privé-DNS. De tegel schakelt er daarna naartoe.</string>
     <string name="main_open_settings">Naar instellingen</string>
+    <string name="notification_dns_title_off">Privé-DNS uit</string>
+    <string name="shortcut_dns_short">Privé-DNS</string>
+    <string name="shortcut_dns_long">Privé-DNS: hostnaam of automatisch</string>
+    <string name="shortcut_timeout_short">Time-out</string>
+    <string name="shortcut_timeout_long">Time-out: 30 of 1 min</string>
+    <string name="shortcut_always_on_short">Altijd aan</string>
+    <string name="shortcut_always_on_long">Always-on display aan/uit</string>
+    <string name="shortcut_tap_short">Tik om te activeren</string>
+    <string name="shortcut_tap_long">Tikken om te activeren aan/uit</string>
+    <string name="toast_dns_hostname">Privé-DNS: hostnaam</string>
+    <string name="toast_dns_automatic">Privé-DNS: automatisch</string>
+    <string name="toast_timeout_long">Time-out: 30 minuten</string>
+    <string name="toast_timeout_default">Time-out: 1 minuut</string>
+    <string name="toast_always_on_on">Always-on display aan</string>
+    <string name="toast_always_on_off">Always-on display uit</string>
+    <string name="toast_tap_on">Tikken om te activeren aan</string>
+    <string name="toast_tap_off">Tikken om te activeren uit</string>
+    <string name="main_section_shortcuts">Snelkoppelingen</string>
+    <string name="main_shortcuts_intro">Wissel privé-DNS, de time-out, always-on display of tikken om te activeren zonder snelle instellingen te openen: via het app-icoon, je startscherm of een gebaar.</string>
+    <string name="main_shortcut_title">Snelkoppelingen op het startscherm</string>
+    <string name="main_shortcut_steps">1. Houd het app-icoon van %1$s ingedrukt.\n2. Tik op een snelkoppeling om die instelling direct te wisselen.\n3. Optioneel: sleep een snelkoppeling naar je startscherm voor toegang met één tik.</string>
+    <string name="main_gesture_title">Gebaar: tik op de achterkant van je telefoon</string>
+    <string name="main_gesture_steps">Alleen beschikbaar op Pixel-telefoons.\n1. Open Instellingen › Systeem › Gebaren › Quick Tap om acties te starten.\n2. Zet Quick Tap aan en kies App openen.\n3. Tik op het instellingenicoon naast %1$s en kies een snelkoppeling.\n4. Tik twee keer op de achterkant van je telefoon om die instelling te wisselen.</string>
+    <string name="main_gesture_other">Zoek op andere telefoons naar een functie voor tikken op de achterkant of gebaren die een app-snelkoppeling kan openen, zoals RegiStar in Good Lock van Samsung.</string>
 </resources>

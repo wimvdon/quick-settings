@@ -90,4 +90,29 @@ class ScreenControllerTest {
         ScreenState.Change.entries.forEach(controller::reset)
         assertEquals(emptyList<ScreenState.Change>(), settings.state.changes)
     }
+
+    @Test
+    fun `the timeout shortcut switches between 30 minutes and 1 minute`() {
+        assertEquals(true, controller.toggleTimeout())
+        assertEquals(30 * 60_000, settings.state.timeoutMs)
+        assertEquals(false, controller.toggleTimeout())
+        assertEquals(60_000, settings.state.timeoutMs)
+    }
+
+    @Test
+    fun `any other timeout counts as extended, so the shortcut goes back to 1 minute`() {
+        settings.state = settings.state.copy(timeoutMs = 120_000)
+        assertEquals(false, controller.toggleTimeout())
+        assertEquals(60_000, settings.state.timeoutMs)
+    }
+
+    @Test
+    fun `always-on and tap to wake shortcuts flip the setting`() {
+        assertEquals(true, controller.toggleAlwaysOn())
+        assertEquals(true, settings.state.alwaysOn)
+        assertEquals(false, controller.toggleAlwaysOn())
+        assertEquals(false, controller.toggleTapToWake())
+        assertEquals(false, settings.state.tapToWake)
+        assertEquals(true, controller.toggleTapToWake())
+    }
 }

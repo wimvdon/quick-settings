@@ -16,6 +16,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import to.wim.quicksettings.R
+import to.wim.quicksettings.dns.DnsMode
 import to.wim.quicksettings.dns.DnsState
 import to.wim.quicksettings.quickSettingsApp
 import to.wim.quicksettings.screen.BrightnessCurve
@@ -26,8 +27,8 @@ import to.wim.quicksettings.ui.timeoutText
 
 /**
  * The persistent notifications, each with a button that puts the setting back:
- * manual brightness and the long screen timeout (channel "Display"), and Private DNS on
- * Automatic (channel "Private DNS"). Plain ongoing notifications, no service.
+ * manual brightness and the long screen timeout (channel "Display"), and Private DNS not on the
+ * own hostname (channel "Private DNS"). Plain ongoing notifications, no service.
  */
 object Notifications {
     private const val CHANNEL_DISPLAY = "display"
@@ -103,7 +104,11 @@ object Notifications {
         )
     }
 
-    /** Shows the Private DNS reminder while it is on Automatic and a hostname can be used. */
+    /**
+     * Shows the Private DNS reminder whenever the own hostname is not in use (Off or Automatic).
+     * Its button switches to the hostname; without one set, there is no button and a tap opens
+     * the main screen, which explains how to set it.
+     */
     fun updateDns(
         context: Context,
         state: DnsState,
@@ -111,16 +116,24 @@ object Notifications {
         show(
             context,
             ID_DNS,
-            if (!state.showNotification || !state.hasHostname) {
+            if (!state.showNotification) {
                 null
             } else {
                 build(
                     context,
                     channel = CHANNEL_DNS,
                     icon = R.drawable.ic_dns,
-                    title = context.getString(R.string.notification_dns_title),
-                    text = context.getString(R.string.notification_dns_text, state.hostname),
-                    action = context.getString(R.string.notification_dns_action),
+                    title =
+                        context.getString(
+                            if (state.mode == DnsMode.Off) R.string.notification_dns_title_off else R.string.notification_dns_title,
+                        ),
+                    text =
+                        if (state.hasHostname) {
+                            context.getString(R.string.notification_dns_text, state.hostname)
+                        } else {
+                            context.getString(R.string.main_dns_no_hostname)
+                        },
+                    action = if (state.hasHostname) context.getString(R.string.notification_dns_action) else null,
                     reset = ResetReceiver.RESET_DNS,
                     open = MainActivity.intent(context),
                 )
@@ -153,7 +166,7 @@ object Notifications {
         @DrawableRes icon: Int,
         title: String,
         text: String,
-        action: String,
+        action: String?,
         reset: String,
         open: Intent,
     ): Notification {
@@ -177,7 +190,7 @@ object Notifications {
             .setContentTitle(title)
             .setContentText(text)
             .setContentIntent(openIntent)
-            .addAction(icon, action, resetIntent)
+            .apply { if (action != null) addAction(icon, action, resetIntent) }
             .setOngoing(true)
             .setSilent(true)
             .setOnlyAlertOnce(true)

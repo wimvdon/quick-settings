@@ -57,7 +57,7 @@
     <string name="tile_dns_label">DNS privé</string>
     <string name="dns_automatic">Automatique</string>
     <string name="dns_off">Désactivé</string>
-    <string name="dns_hostname">Votre nom d’hôte</string>
+    <string name="dns_hostname">Nom d’hôte</string>
     <string name="notification_channel_display">Affichage</string>
     <string name="notification_channel_dns">DNS privé</string>
     <string name="notification_dns_title">DNS privé en automatique</string>
@@ -83,4 +83,28 @@
     <string name="main_dns_no_hostname">Aucun nom d’hôte défini</string>
     <string name="main_dns_no_hostname_text">Définissez-en un une fois dans Paramètres › Réseau et Internet › DNS privé. Le bloc basculera ensuite vers lui.</string>
     <string name="main_open_settings">Ouvrir les paramètres</string>
+    <string name="notification_dns_title_off">DNS privé désactivé</string>
+    <string name="shortcut_dns_short">DNS privé</string>
+    <string name="shortcut_dns_long">DNS privé : nom d’hôte ou automatique</string>
+    <string name="shortcut_timeout_short">Mise en veille</string>
+    <string name="shortcut_timeout_long">Mise en veille : 30 ou 1 min</string>
+    <string name="shortcut_always_on_short">Toujours activé</string>
+    <string name="shortcut_always_on_long">Écran toujours activé on/off</string>
+    <string name="shortcut_tap_short">Toucher</string>
+    <string name="shortcut_tap_long">Toucher pour activer on/off</string>
+    <string name="toast_dns_hostname">DNS privé : nom d’hôte</string>
+    <string name="toast_dns_automatic">DNS privé : automatique</string>
+    <string name="toast_timeout_long">Mise en veille : 30 minutes</string>
+    <string name="toast_timeout_default">Mise en veille : 1 minute</string>
+    <string name="toast_always_on_on">Écran toujours activé : oui</string>
+    <string name="toast_always_on_off">Écran toujours activé : non</string>
+    <string name="toast_tap_on">Toucher pour activer : oui</string>
+    <string name="toast_tap_off">Toucher pour activer : non</string>
+    <string name="main_section_shortcuts">Raccourcis</string>
+    <string name="main_shortcuts_intro">Changez le DNS privé, la mise en veille, l’écran toujours activé ou toucher pour activer sans ouvrir les Réglages rapides : depuis l’icône de l’appli, l’écran d’accueil ou un geste.</string>
+    <string name="main_shortcut_title">Raccourcis sur l’écran d’accueil</string>
+    <string name="main_shortcut_steps">1. Appuyez de manière prolongée sur l’icône de %1$s.\n2. Appuyez sur un raccourci pour changer ce paramètre immédiatement.\n3. Facultatif : faites glisser un raccourci sur l’écran d’accueil pour y accéder d’un geste.</string>
+    <string name="main_gesture_title">Geste : appuyez au dos du téléphone</string>
+    <string name="main_gesture_steps">Disponible uniquement sur les téléphones Pixel.\n1. Ouvrez Paramètres › Système › Gestes › Quick Tap pour lancer des actions.\n2. Activez Quick Tap et choisissez Ouvrir une appli.\n3. Appuyez sur l’icône des paramètres à côté de %1$s et choisissez un raccourci.\n4. Appuyez deux fois au dos du téléphone pour changer ce paramètre.</string>
+    <string name="main_gesture_other">Sur d’autres téléphones, cherchez une fonction d’appui au dos ou de gestes capable d’ouvrir un raccourci d’appli, comme RegiStar dans Good Lock de Samsung.</string>
 </resources>

@@ -21,12 +21,15 @@ Needs `WRITE_SECURE_SETTINGS` (adb).
   hostname is in use; a tap switches to the other mode, or opens the main screen when the adb
   permission or a hostname is missing. Long-pressing either tile reaches
   `TilePreferencesActivity`, an invisible trampoline that opens Display or Network & internet.
+- **Shortcuts** (`shortcut/ShortcutActivity.kt`, `res/xml/shortcuts.xml` plus a debug copy that
+  names the `.debug` package): four static launcher shortcuts that toggle Private DNS, the
+  timeout, always-on display and tap to wake, with a toast. Quick Tap can start them too.
 - **Main screen** (`ui/main/`): the launcher entry. Add the tiles (Android 13+ asks with one
   tap), grant the permissions (with the adb steps and a Copy button) and see the DNS hostname.
 - **Popup** (`ui/panel/`): a floating activity styled like Android's Internet dialog, for the
   Screen tile. Missing permissions show as setup cards in it.
 - **Notifications** (`notify/Notifications.kt`), in two channels: *Display* (manual brightness,
-  button Auto; long timeout, button 1 min) and *Private DNS* (on Automatic, button Hostname).
+  button Auto; long timeout, button 1 min) and *Private DNS* (whenever it isn't on the hostname: Off or Automatic; button Hostname).
 - **Rules** (plain Kotlin, unit tested): `screen/ScreenController.kt` switches auto brightness
   off *before* writing a level, because Android ignores a level written in auto mode;
   `BrightnessCurve` maps the slider like Android's own (HLG gamma). `dns/PrivateDns.kt` decides
@@ -45,6 +48,7 @@ app/src/main/kotlin/<package>/
   screen/                  ScreenState, ScreenController, BrightnessCurve (plain Kotlin, tested)
                            and SystemScreenSettings (reads/writes Android's settings).
   notify/                  Persistent notifications (two channels) and their buttons.
+  shortcut/                The invisible target of the launcher shortcuts.
   tile/                    The two tiles, and the long-press trampoline to Android's settings.
   ui/main/                 The main screen: MainActivity (state, permissions) and MainScreen (Compose).
   ui/panel/                The popup: PanelActivity (state, permissions) and PanelScreen (Compose).

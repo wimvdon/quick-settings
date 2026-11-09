@@ -25,8 +25,8 @@ data class DnsState(val mode: DnsMode, val hostname: String?) {
     /** The tile is lit while the own hostname is in use. */
     val tileActive: Boolean get() = mode == DnsMode.Hostname
 
-    /** The reminder shows while Private DNS is on Automatic. */
-    val showNotification: Boolean get() = mode == DnsMode.Opportunistic
+    /** The reminder shows whenever the own hostname is not in use (Off or Automatic). */
+    val showNotification: Boolean get() = mode != DnsMode.Hostname
 
     /**
      * The mode a tap on the tile switches to: Hostname ↔ Automatic. From Off it goes to Hostname.

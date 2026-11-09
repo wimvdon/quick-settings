@@ -42,7 +42,7 @@ class DnsTileService : TileService() {
         tile.state = if (state.tileActive) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
         val status =
             when (state.mode) {
-                DnsMode.Hostname -> state.hostname.orEmpty()
+                DnsMode.Hostname -> state.hostname?.takeIf { it.isNotBlank() } ?: getString(R.string.dns_hostname)
                 DnsMode.Opportunistic -> getString(R.string.dns_automatic)
                 DnsMode.Off -> getString(R.string.dns_off)
             }

@@ -15,7 +15,7 @@ _Last updated: 2026-11-09_
   - **Write secure settings** (granted only with an adb command you run yourself): to change
     always-on display, tap to wake and Private DNS.
   - **Notifications**: to show that brightness is manual, the timeout is extended or Private DNS
-    is on Automatic, with a button to put it back.
+    isn't on your hostname, with a button to put it back.
 
 If this changes, this file will be updated **before** the change is released, describing what is
 collected, why, where it is stored, and how to delete it.

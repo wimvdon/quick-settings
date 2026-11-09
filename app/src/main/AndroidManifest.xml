@@ -33,7 +33,20 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
+
+        <!-- Invisible target of the launcher shortcuts. Not exported: shortcuts are started with
+             this app's identity, so no other app can invoke it. -->
+        <activity
+            android:name=".shortcut.ShortcutActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.NoDisplay" />
 
         <!-- The Screen popup, opened from its tile and notifications. -->
         <activity

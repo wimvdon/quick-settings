@@ -152,7 +152,26 @@ fun MainScreen(
                     Text(stringResource(R.string.main_open_settings))
                 }
             }
+
+            val appName = stringResource(R.string.app_name)
+            Section(stringResource(R.string.main_section_shortcuts))
+            Body(stringResource(R.string.main_shortcuts_intro))
+            Steps(stringResource(R.string.main_shortcut_title), stringResource(R.string.main_shortcut_steps, appName))
+            Steps(stringResource(R.string.main_gesture_title), stringResource(R.string.main_gesture_steps, appName))
+            Body(stringResource(R.string.main_gesture_other))
         }
+    }
+}
+
+@Composable
+private fun Steps(
+    title: String,
+    steps: String,
+) {
+    Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+        Text(title, style = MaterialTheme.typography.titleMedium)
+        Spacer(Modifier.height(4.dp))
+        Text(steps, style = MaterialTheme.typography.bodyMedium)
     }
 }
 

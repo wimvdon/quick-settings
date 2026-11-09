@@ -52,7 +52,7 @@
     <string name="tile_dns_label">Privates DNS</string>
     <string name="dns_automatic">Automatisch</string>
     <string name="dns_off">Aus</string>
-    <string name="dns_hostname">Dein Hostname</string>
+    <string name="dns_hostname">Hostname</string>
     <string name="notification_channel_display">Display</string>
     <string name="notification_channel_dns">Privates DNS</string>
     <string name="notification_dns_title">Privates DNS auf Automatisch</string>
@@ -78,4 +78,28 @@
     <string name="main_dns_no_hostname">Kein Hostname festgelegt</string>
     <string name="main_dns_no_hostname_text">Lege ihn einmal fest unter Einstellungen › Netzwerk &amp; Internet › Privates DNS. Die Kachel wechselt dann dorthin.</string>
     <string name="main_open_settings">Zu den Einstellungen</string>
+    <string name="notification_dns_title_off">Privates DNS aus</string>
+    <string name="shortcut_dns_short">Privates DNS</string>
+    <string name="shortcut_dns_long">Privates DNS: Hostname oder Automatisch</string>
+    <string name="shortcut_timeout_short">Timeout</string>
+    <string name="shortcut_timeout_long">Timeout: 30 oder 1 Min.</string>
+    <string name="shortcut_always_on_short">Always-on</string>
+    <string name="shortcut_always_on_long">Always-on-Display an/aus</string>
+    <string name="shortcut_tap_short">Tippen</string>
+    <string name="shortcut_tap_long">Zum Aktivieren tippen an/aus</string>
+    <string name="toast_dns_hostname">Privates DNS: Hostname</string>
+    <string name="toast_dns_automatic">Privates DNS: Automatisch</string>
+    <string name="toast_timeout_long">Timeout: 30 Minuten</string>
+    <string name="toast_timeout_default">Timeout: 1 Minute</string>
+    <string name="toast_always_on_on">Always-on-Display an</string>
+    <string name="toast_always_on_off">Always-on-Display aus</string>
+    <string name="toast_tap_on">Zum Aktivieren tippen an</string>
+    <string name="toast_tap_off">Zum Aktivieren tippen aus</string>
+    <string name="main_section_shortcuts">Verknüpfungen</string>
+    <string name="main_shortcuts_intro">Schalte privates DNS, das Timeout, Always-on-Display oder Zum Aktivieren tippen um, ohne die Schnelleinstellungen zu öffnen: über das App-Symbol, den Startbildschirm oder eine Geste.</string>
+    <string name="main_shortcut_title">Verknüpfungen auf dem Startbildschirm</string>
+    <string name="main_shortcut_steps">1. Halte das App-Symbol von %1$s gedrückt.\n2. Tippe auf eine Verknüpfung, um die Einstellung sofort umzuschalten.\n3. Optional: Ziehe eine Verknüpfung auf den Startbildschirm, um sie mit einem Tippen zu erreichen.</string>
+    <string name="main_gesture_title">Geste: auf die Rückseite tippen</string>
+    <string name="main_gesture_steps">Nur auf Pixel-Smartphones verfügbar.\n1. Öffne Einstellungen › System › Bewegungen › Quick Tap zum Starten von Aktionen.\n2. Aktiviere Quick Tap und wähle App öffnen.\n3. Tippe auf das Einstellungssymbol neben %1$s und wähle eine Verknüpfung.\n4. Tippe zweimal auf die Rückseite deines Smartphones, um die Einstellung umzuschalten.</string>
+    <string name="main_gesture_other">Suche auf anderen Geräten nach einer Rückseiten-Tipp- oder Gestenfunktion, die eine App-Verknüpfung öffnen kann, z. B. RegiStar in Samsungs Good Lock.</string>
 </resources>

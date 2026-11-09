@@ -35,10 +35,11 @@ class PrivateDnsTest {
     }
 
     @Test
-    fun `the notification shows only on Automatic`() {
+    fun `the notification shows whenever the hostname is not in use`() {
         assertTrue(DnsState(DnsMode.Opportunistic, "dns.example").showNotification)
+        assertTrue(DnsState(DnsMode.Off, "dns.example").showNotification)
+        assertTrue(DnsState(DnsMode.Off, null).showNotification)
         assertFalse(DnsState(DnsMode.Hostname, "dns.example").showNotification)
-        assertFalse(DnsState(DnsMode.Off, null).showNotification)
     }
 
     @Test

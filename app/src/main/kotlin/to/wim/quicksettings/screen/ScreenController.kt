@@ -41,6 +41,27 @@ class ScreenController(private val settings: ScreenSettings) {
 
     fun setTapToWake(on: Boolean) = settings.setTapToWake(on)
 
+    /** Switches the timeout between 30 minutes and 1 minute. Returns true when it is now extended. */
+    fun toggleTimeout(): Boolean {
+        val extend = !settings.read().timeoutExtended
+        setTimeoutExtended(extend)
+        return extend
+    }
+
+    /** Returns the new state: true when always-on display is now on. */
+    fun toggleAlwaysOn(): Boolean {
+        val on = !settings.read().alwaysOn
+        setAlwaysOn(on)
+        return on
+    }
+
+    /** Returns the new state: true when tap to wake is now on. */
+    fun toggleTapToWake(): Boolean {
+        val on = !settings.read().tapToWake
+        setTapToWake(on)
+        return on
+    }
+
     /** Puts one setting back to its default. */
     fun reset(change: ScreenState.Change) =
         when (change) {

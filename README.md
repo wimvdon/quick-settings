@@ -16,10 +16,16 @@ The tile lights up and names what is changed whenever a setting isn't at its def
 Long-press it to open Android's Display settings.
 
 ## Private DNS tile
-Tap it to switch Private DNS between your own hostname (tile on) and Automatic (tile off).
-While it is on Automatic, a notification with a **Hostname** button switches it back. The
+Tap it to switch Private DNS between your own hostname (tile on) and Automatic (tile off). The
+tile shows Off, Automatic or your hostname. Whenever Private DNS isn't on your hostname, a
+notification with a **Hostname** button switches it back. The
 hostname itself is set once in Android's Settings › Network & internet › Private DNS.
 Long-press the tile to open Network & internet.
+
+## Shortcuts
+Touch and hold the app icon for four shortcuts: **Private DNS** (hostname ↔ Automatic),
+**Timeout** (30 ↔ 1 minute), **Always on** and **Tap to wake**. Drag one to the home screen, or
+use it with Quick Tap (double-tap the back of a Pixel) or a gesture app such as RegiStar.
 
 ## Setting it up
 Open the app: its main screen walks through every step.
