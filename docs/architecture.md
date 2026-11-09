@@ -21,7 +21,7 @@ Needs `WRITE_SECURE_SETTINGS` (adb).
   hostname is in use; a tap switches to the other mode, or opens the main screen when the adb
   permission or a hostname is missing. Long-pressing either tile reaches
   `TilePreferencesActivity`, an invisible trampoline that opens Display or Network & internet.
-- **Shortcuts** (`shortcut/ShortcutActivity.kt`, `res/xml/shortcuts.xml` plus a debug copy that
+- **Shortcuts** (`shortcut/ShortcutActivity.kt`, a relay to `ShortcutActionActivity` so Quick Tap returns to the open app; `res/xml/shortcuts.xml` plus a debug copy that
   names the `.debug` package): four static launcher shortcuts that toggle Private DNS, the
   timeout, always-on display and tap to wake, with a toast. Quick Tap can start them too.
 - **Main screen** (`ui/main/`): the launcher entry. Permissions first (with the numbered adb

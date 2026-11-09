@@ -48,6 +48,16 @@
             android:taskAffinity=""
             android:theme="@android:style/Theme.NoDisplay" />
 
+        <!-- Second step of a shortcut: does the work in a task of its own, started without
+             FLAG_ACTIVITY_TASK_ON_HOME, so closing it returns to the app the user was in. -->
+        <activity
+            android:name=".shortcut.ShortcutActionActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity="to.wim.quicksettings.shortcut"
+            android:theme="@android:style/Theme.NoDisplay" />
+
         <!-- The Screen popup, opened from its tile and notifications. -->
         <activity
             android:name=".ui.panel.PanelActivity"

@@ -2,6 +2,18 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-09: Shortcuts go through a relay, so Quick Tap returns to the open app
+
+With a shortcut set as Pixel Quick Tap, the app the owner was in disappeared and the launcher
+showed. Android adds `FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_TASK_ON_HOME`
+to every manifest shortcut (AOSP `ShortcutParser`). That flag is only stored on the task at launch
+(`ActivityStarter`) and read when the task finishes (`Task.returnsToHomeRootTask`). So the manifest
+shortcut now targets an invisible relay, `ShortcutActivity`, which starts `ShortcutActionActivity`
+in a task of its own (its own `taskAffinity`) with only `FLAG_ACTIVITY_NEW_TASK`, and closes; the
+action does the work and closes, and Android returns to the app the user was in. A first attempt
+with dynamic shortcuts (published from code) was reverted: Pixel Quick Tap only offers manifest
+shortcuts. The shortcut ids are the original ones again, so existing Quick Tap choices keep working.
+
 ## 2026-11-09: No tile refresh requests; app name translated
 
 `TileService.requestListeningState` only reaches tiles declared as active tiles; ours are not, so
