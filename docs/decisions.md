@@ -2,6 +2,18 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-09: The Screen tile shows its popup over the open shade
+
+Like Android's own Internet dialog, the popup now opens on top of Quick Settings instead of
+closing the shade and starting an activity: `TileService.showDialog` with a `ComponentDialog`,
+which gives Compose its lifecycle inside the service. The tiles stay visible and redraw live as
+settings change. State and actions live in `PanelModel`, shared with `PanelActivity`, which is
+still used when the popup is opened from a notification (the shade is closed then). The
+expand-from-tile animation stays out of reach: `showDialog` gets the standard dialog animation,
+because the tile's position and System UI's animator aren't available to apps. A service can't
+ask for the notification permission, so the dialog sends the user to the main screen when a
+change needs notifications and they are off.
+
 ## 2026-11-09: The popup uses Android's standard dialog animation
 
 Update, same day: the custom grow-in animation looked wonky on the owner's phone, so it was
