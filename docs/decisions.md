@@ -2,6 +2,19 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-09: Shortcuts published from code again; the relay is gone
+
+The relay below did not help: Quick Tap still showed the home screen. AOSP `Task.moveToFront`
+moves the home screen behind any task whose first intent has `FLAG_ACTIVITY_NEW_TASK |
+FLAG_ACTIVITY_TASK_ON_HOME` the moment that task starts, so the relay's own task already put home
+in between. Only shortcuts that never get `TASK_ON_HOME` avoid this: dynamic shortcuts published
+with `ShortcutManager` (`Shortcuts.publish`, at app start when they differ and every time the main
+screen shows). Their ids differ from the old manifest ids (a pinned manifest shortcut stays locked
+under its id). `ShortcutActionActivity` and both copies of `res/xml/shortcuts.xml` are removed.
+Open question: the first try with dynamic shortcuts could not be chosen in Quick Tap; the app now
+has to be opened once after installing so the shortcuts exist before picking one.
+Rejected: a usage-access permission to bring the previous app back (the owner doesn't want it).
+
 ## 2026-11-09: Shortcuts go through a relay, so Quick Tap returns to the open app
 
 With a shortcut set as Pixel Quick Tap, the app the owner was in disappeared and the launcher
