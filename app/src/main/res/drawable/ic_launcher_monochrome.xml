@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Themed icon: the phone with the sun cut out. -->
+<!-- Themed icon: the screen with the light cut out. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
@@ -8,5 +8,5 @@
     <path
         android:fillColor="#FF000000"
         android:fillType="evenOdd"
-        android:pathData="M45,25H63A10,10 0,0 1,73,35V73A10,10 0,0 1,63,83H45A10,10 0,0 1,35,73V35A10,10 0,0 1,45,25zM46.50,54.00a7.5,7.5 0,1 0,15.0,0a7.5,7.5 0,1 0,-15.0,0zM64.50,54.00a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0zM60.69,63.19a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0zM51.50,67.00a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0zM42.31,63.19a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0zM38.50,54.00a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0zM42.31,44.81a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0zM51.50,41.00a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0zM60.69,44.81a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0z" />
+        android:pathData="M45,25H63A10,10 0,0 1,73,35V73A10,10 0,0 1,63,83H45A10,10 0,0 1,35,73V35A10,10 0,0 1,45,25zM46.5,45a7.5,7.5 0,1 0,15.0,0a7.5,7.5 0,1 0,-15.0,0z" />
 </vector>

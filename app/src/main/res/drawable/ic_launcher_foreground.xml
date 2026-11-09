@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- A phone with a white sun (brightness) on the white background, with Snoozer's teal → blue →
-     indigo gradient: Screener is Snoozer's sister app. Inside the 66dp safe zone (21..87). -->
+<!-- A blank phone screen with a small light near the top (a screen waking up), on the white
+     background. Fits the 66dp safe zone: its furthest point is 31.0dp from the centre (max 33). -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
@@ -15,14 +15,14 @@
                 android:startY="25"
                 android:endX="73"
                 android:endY="83">
-                <item android:offset="0" android:color="#FF22C3B4" />
-                <item android:offset="0.55" android:color="#FF3E7BDA" />
-                <item android:offset="1" android:color="#FF4E5BB0" />
+                <item android:offset="0" android:color="#FF4FC3F7" />
+                <item android:offset="0.55" android:color="#FF3D7BFF" />
+                <item android:offset="1" android:color="#FF5B4FD9" />
             </gradient>
         </aapt:attr>
     </path>
-    <!-- Sun -->
+    <!-- Light -->
     <path
         android:fillColor="#FFFFFFFF"
-        android:pathData="M46.50,54.00a7.5,7.5 0,1 0,15.0,0a7.5,7.5 0,1 0,-15.0,0zM64.50,54.00a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0zM60.69,63.19a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0zM51.50,67.00a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0zM42.31,63.19a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0zM38.50,54.00a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0zM42.31,44.81a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0zM51.50,41.00a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0zM60.69,44.81a2.5,2.5 0,1 0,5.0,0a2.5,2.5 0,1 0,-5.0,0z" />
+        android:pathData="M46.5,45a7.5,7.5 0,1 0,15.0,0a7.5,7.5 0,1 0,-15.0,0z" />
 </vector>

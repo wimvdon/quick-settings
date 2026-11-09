@@ -230,8 +230,10 @@ Screener is Snoozer's sister app.
 
 - Colours: Android's own Material 3 dynamic colours (from the wallpaper), like Quick Settings
   itself. The app has no fixed palette of its own (owner's choice, 2026-11-09).
-- Icon: a phone with a white sun (brightness), with Snoozer's gradient `#22C3B4` → `#3E7BDA` →
-  `#4E5BB0` on white; the themed layer cuts the sun out of the phone.
+- Icon: a blank phone screen with a small white light near the top (a screen waking up), with
+  a light blue → blue → violet gradient (`#4FC3F7` → `#3D7BFF` → `#5B4FD9`) on white. Its furthest
+  point is 31dp from the centre, inside the 33dp safe-zone radius. The themed layer cuts the light
+  out; the tile and notification icon are the same screen as an outline with the light.
 - Signature element: the popup, laid out like Android's Quick Settings Internet dialog: a
   centred title and status line, one group of rows (24dp outer corners, 4dp where rows meet,
   2dp apart), a changed setting highlighted in `primaryContainer` like the connected network,
