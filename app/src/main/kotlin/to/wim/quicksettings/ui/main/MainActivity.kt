@@ -23,7 +23,6 @@ import to.wim.quicksettings.R
 import to.wim.quicksettings.notify.Notifications
 import to.wim.quicksettings.quickSettingsApp
 import to.wim.quicksettings.screen.SystemScreenSettings
-import to.wim.quicksettings.shortcut.Shortcuts
 import to.wim.quicksettings.tile.DnsTileService
 import to.wim.quicksettings.tile.ScreenTileService
 import to.wim.quicksettings.ui.theme.AppTheme
@@ -78,8 +77,6 @@ class MainActivity : ComponentActivity() {
         // Permissions may have been granted in Settings or with adb meanwhile.
         refresh()
         quickSettingsApp.sync()
-        // In the foreground Android doesn't limit this; it also picks up a changed language.
-        Shortcuts.publish(this, force = true)
     }
 
     private fun refresh() {

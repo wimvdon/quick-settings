@@ -2,6 +2,7 @@ package to.wim.quicksettings
 
 import android.app.Application
 import android.content.Context
+import android.content.pm.ShortcutManager
 import android.database.ContentObserver
 import android.os.Handler
 import android.os.Looper
@@ -10,7 +11,6 @@ import to.wim.quicksettings.dns.SystemDnsSettings
 import to.wim.quicksettings.notify.Notifications
 import to.wim.quicksettings.screen.ScreenController
 import to.wim.quicksettings.screen.SystemScreenSettings
-import to.wim.quicksettings.shortcut.Shortcuts
 
 class QuickSettingsApp : Application() {
     val controller: ScreenController by lazy { ScreenController(SystemScreenSettings(this)) }
@@ -31,7 +31,8 @@ class QuickSettingsApp : Application() {
     override fun onCreate() {
         super.onCreate()
         Notifications.createChannels(this)
-        Shortcuts.publish(this)
+        // v0.0.15 published its shortcuts from code; without this they would show twice.
+        getSystemService(ShortcutManager::class.java)?.removeAllDynamicShortcuts()
         // Follows changes made anywhere (Settings, the system slider) while the process lives.
         (SystemScreenSettings.watchedUris + SystemDnsSettings.watchedUris).forEach {
             contentResolver.registerContentObserver(it, false, observer)

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Debug builds have the application ID to.wim.quicksettings.debug (see app/build.gradle.kts),
+     and a static shortcut must name the exact package. Keep in sync with src/main/res/xml/shortcuts.xml. -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_dns"
+        android:shortcutId="toggle_private_dns"
+        android:shortcutLongLabel="@string/shortcut_dns_long"
+        android:shortcutShortLabel="@string/shortcut_dns_short">
+        <intent
+            android:action="to.wim.quicksettings.action.TOGGLE_PRIVATE_DNS"
+            android:targetClass="to.wim.quicksettings.shortcut.ShortcutActivity"
+            android:targetPackage="to.wim.quicksettings.debug" />
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_timer"
+        android:shortcutId="toggle_timeout"
+        android:shortcutLongLabel="@string/shortcut_timeout_long"
+        android:shortcutShortLabel="@string/shortcut_timeout_short">
+        <intent
+            android:action="to.wim.quicksettings.action.TOGGLE_TIMEOUT"
+            android:targetClass="to.wim.quicksettings.shortcut.ShortcutActivity"
+            android:targetPackage="to.wim.quicksettings.debug" />
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_always_on"
+        android:shortcutId="toggle_always_on"
+        android:shortcutLongLabel="@string/shortcut_always_on_long"
+        android:shortcutShortLabel="@string/shortcut_always_on_short">
+        <intent
+            android:action="to.wim.quicksettings.action.TOGGLE_ALWAYS_ON"
+            android:targetClass="to.wim.quicksettings.shortcut.ShortcutActivity"
+            android:targetPackage="to.wim.quicksettings.debug" />
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_tap"
+        android:shortcutId="toggle_tap_to_wake"
+        android:shortcutLongLabel="@string/shortcut_tap_long"
+        android:shortcutShortLabel="@string/shortcut_tap_short">
+        <intent
+            android:action="to.wim.quicksettings.action.TOGGLE_TAP_TO_WAKE"
+            android:targetClass="to.wim.quicksettings.shortcut.ShortcutActivity"
+            android:targetPackage="to.wim.quicksettings.debug" />
+    </shortcut>
+</shortcuts>
