@@ -11,41 +11,49 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.annotation.DrawableRes
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import to.wim.quicksettings.R
-import to.wim.quicksettings.dns.DnsMode
-import to.wim.quicksettings.dns.DnsState
 import to.wim.quicksettings.quickSettingsApp
-import to.wim.quicksettings.screen.BrightnessCurve
-import to.wim.quicksettings.screen.ScreenState
-import to.wim.quicksettings.ui.main.MainActivity
+import to.wim.quicksettings.settings.Group
+import to.wim.quicksettings.ui.changeText
+import to.wim.quicksettings.ui.iconOf
 import to.wim.quicksettings.ui.panel.PanelActivity
-import to.wim.quicksettings.ui.timeoutText
+import to.wim.quicksettings.ui.titleOf
 
 /**
- * The persistent notifications, each with a button that puts the setting back:
- * manual brightness and the long screen timeout (channel "Display"), and Private DNS not on the
- * own hostname (channel "Private DNS"). Plain ongoing notifications, no service.
+ * One notification per popup while something in it differs from its default (for the popups
+ * that notify; the user can switch each on or off in the popup's defaults). Its Reset button puts
+ * everything back. Plain ongoing notifications, no service.
  */
 object Notifications {
-    private const val CHANNEL_DISPLAY = "display"
-    private const val CHANNEL_DNS = "private_dns"
-    private const val ID_BRIGHTNESS = 1
-    private const val ID_TIMEOUT = 2
-    private const val ID_DNS = 3
+    /** Channel ids: the first two are the ones earlier versions created, kept so users' choices stay. */
+    private fun channel(group: Group): String =
+        when (group) {
+            Group.Screen -> "display"
+            Group.Network -> "private_dns"
+            else -> group.name.lowercase()
+        }
+
+    private fun id(group: Group): Int =
+        when (group) {
+            Group.Screen -> 1
+            Group.Network -> 3
+            Group.Colour -> 4
+            Group.Sound -> 5
+            Group.Developer -> 6
+        }
+
+    /** The separate timeout notification of earlier versions. */
+    private const val OLD_TIMEOUT_ID = 2
 
     fun createChannels(context: Context) {
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
-        listOf(
-            CHANNEL_DISPLAY to R.string.notification_channel_display,
-            CHANNEL_DNS to R.string.notification_channel_dns,
-        ).forEach { (id, name) ->
+        Group.entries.forEach { group ->
             // LOW: silent, but still shows the status bar icon.
             manager.createNotificationChannel(
-                NotificationChannel(id, context.getString(name), NotificationManager.IMPORTANCE_LOW)
+                NotificationChannel(channel(group), context.getString(titleOf(group)), NotificationManager.IMPORTANCE_LOW)
                     .apply { setShowBadge(false) },
             )
         }
@@ -60,85 +68,27 @@ object Notifications {
         return permitted && NotificationManagerCompat.from(context).areNotificationsEnabled()
     }
 
-    /** Shows exactly the display notifications that match [state]. */
-    fun updateDisplay(
-        context: Context,
-        state: ScreenState,
-    ) {
-        val open = PanelActivity.intent(context)
-        show(
-            context,
-            ID_BRIGHTNESS,
-            if (state.autoBrightness) {
-                null
-            } else {
-                build(
-                    context,
-                    channel = CHANNEL_DISPLAY,
-                    icon = R.drawable.ic_brightness,
-                    title = context.getString(R.string.notification_brightness_title),
-                    text = context.getString(R.string.percent, BrightnessCurve.toPercent(state.brightness)),
-                    action = context.getString(R.string.notification_brightness_action),
-                    reset = ResetReceiver.RESET_BRIGHTNESS,
-                    open = open,
-                )
-            },
-        )
-        show(
-            context,
-            ID_TIMEOUT,
-            if (!state.timeoutExtended) {
-                null
-            } else {
-                build(
-                    context,
-                    channel = CHANNEL_DISPLAY,
-                    icon = R.drawable.ic_timer,
-                    title = context.getString(R.string.notification_timeout_title),
-                    text = timeoutText(context.resources, state.timeoutMs),
-                    action = context.getString(R.string.notification_timeout_action),
-                    reset = ResetReceiver.RESET_TIMEOUT,
-                    open = open,
-                )
-            },
-        )
-    }
-
-    /**
-     * Shows the Private DNS reminder whenever the own hostname is not in use (Off or Automatic).
-     * Its button switches to the hostname; without one set, there is no button and a tap opens
-     * the main screen, which explains how to set it.
-     */
-    fun updateDns(
-        context: Context,
-        state: DnsState,
-    ) {
-        show(
-            context,
-            ID_DNS,
-            if (!state.showNotification) {
-                null
-            } else {
-                build(
-                    context,
-                    channel = CHANNEL_DNS,
-                    icon = R.drawable.ic_dns,
-                    title =
-                        context.getString(
-                            if (state.mode == DnsMode.Off) R.string.notification_dns_title_off else R.string.notification_dns_title,
-                        ),
-                    text =
-                        if (state.hasHostname) {
-                            context.getString(R.string.notification_dns_text, state.hostname)
-                        } else {
-                            context.getString(R.string.main_dns_no_hostname)
-                        },
-                    action = if (state.hasHostname) context.getString(R.string.notification_dns_action) else null,
-                    reset = ResetReceiver.RESET_DNS,
-                    open = MainActivity.intent(context),
-                )
-            },
-        )
+    /** Shows exactly the notifications that match the current settings and defaults. */
+    fun update(context: Context) {
+        val app = context.quickSettingsApp
+        val defaults = app.repository.defaults.value
+        NotificationManagerCompat.from(context).cancel(OLD_TIMEOUT_ID)
+        Group.entries.forEach { group ->
+            val changes = if (defaults.notifies(group)) app.controller.changes(group) else emptyList()
+            show(
+                context,
+                id(group),
+                if (changes.isEmpty()) {
+                    null
+                } else {
+                    build(
+                        context,
+                        group,
+                        text = changes.joinToString(", ") { changeText(context.resources, it, app.controller.encoded(it)) },
+                    )
+                },
+            )
+        }
     }
 
     @SuppressLint("MissingPermission") // Checked in canPost(); SecurityException is caught too.
@@ -162,35 +112,32 @@ object Notifications {
 
     private fun build(
         context: Context,
-        channel: String,
-        @DrawableRes icon: Int,
-        title: String,
+        group: Group,
         text: String,
-        action: String?,
-        reset: String,
-        open: Intent,
     ): Notification {
         val openIntent =
             PendingIntent.getActivity(
                 context,
-                reset.hashCode(),
-                open,
+                group.ordinal,
+                PanelActivity.intent(context, group),
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
             )
         val resetIntent =
             PendingIntent.getBroadcast(
                 context,
-                reset.hashCode(),
-                Intent(context, ResetReceiver::class.java).setAction(reset),
+                group.ordinal,
+                ResetReceiver.intent(context, group),
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
             )
+        val icon = iconOf(group)
         return NotificationCompat
-            .Builder(context, channel)
+            .Builder(context, channel(group))
             .setSmallIcon(icon)
-            .setContentTitle(title)
+            .setContentTitle(context.getString(R.string.notification_changed_title, context.getString(titleOf(group))))
             .setContentText(text)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(text))
             .setContentIntent(openIntent)
-            .apply { if (action != null) addAction(icon, action, resetIntent) }
+            .addAction(R.drawable.ic_restart, context.getString(R.string.panel_reset), resetIntent)
             .setOngoing(true)
             .setSilent(true)
             .setOnlyAlertOnce(true)
@@ -203,25 +150,26 @@ object Notifications {
     }
 }
 
-/** Handles the notifications' buttons. Not exported: only our PendingIntents reach it. */
+/** Handles the notifications' Reset buttons. Not exported: only our PendingIntents reach it. */
 class ResetReceiver : BroadcastReceiver() {
     override fun onReceive(
         context: Context,
         intent: Intent,
     ) {
+        if (intent.action != ACTION_RESET) return
+        val group = Group.entries.firstOrNull { it.name == intent.getStringExtra(EXTRA_GROUP) } ?: return
         val app = context.quickSettingsApp
-        when (intent.action) {
-            RESET_BRIGHTNESS -> app.controller.reset(ScreenState.Change.Brightness)
-            RESET_TIMEOUT -> app.controller.reset(ScreenState.Change.Timeout)
-            RESET_DNS -> app.dns.useHostname()
-            else -> return
-        }
+        app.controller.reset(group)
         app.sync()
     }
 
     companion object {
-        const val RESET_BRIGHTNESS = "to.wim.quicksettings.RESET_BRIGHTNESS"
-        const val RESET_TIMEOUT = "to.wim.quicksettings.RESET_TIMEOUT"
-        const val RESET_DNS = "to.wim.quicksettings.RESET_DNS"
+        private const val ACTION_RESET = "to.wim.quicksettings.RESET"
+        private const val EXTRA_GROUP = "group"
+
+        fun intent(
+            context: Context,
+            group: Group,
+        ): Intent = Intent(context, ResetReceiver::class.java).setAction(ACTION_RESET).putExtra(EXTRA_GROUP, group.name)
     }
 }

@@ -1,44 +1,57 @@
 # Quick Settings
 
-Extra Quick Settings tiles, in Android's own colours. The app itself is a main screen with setup
-instructions.
+Extra Quick Settings tiles, in Android's own colors. The app's main screen shows every tile and
+popup the way Quick Settings draws it: tap one to add it.
 
-## Screen tile
-Tap it for a popup (laid out like Android's Internet dialog) with:
+## Popups
+A popup tile opens a window (laid out like Android's Internet dialog) with related settings:
 
-- **Brightness**: a slider that switches auto brightness off and sets the level; the X goes back
-  to auto. A notification with an **Auto** button shows while brightness is manual.
-- **Screen timeout**: 30 minutes instead of 1. A notification with a **1 min** button shows
-  while it is extended.
-- **Always-on display** (default off) and **Tap to wake** (default on).
+| Popup | Settings |
+| --- | --- |
+| **Screen** | Brightness (slider; the X goes back to auto), screen timeout (1, 5 or 30 min), always-on display, tap to wake, rotation |
+| **Color** | Night Light with warmth, extra dim with intensity, grayscale, color inversion |
+| **Sound** | Sound or vibrate, media, ring, notification and alarm volume, touch vibration, pop-up notifications |
+| **Developer** | USB debugging, wireless debugging, animation speed (off, 0.5×, 1×), stay awake while charging |
+| **Network** | Private DNS: off, automatic or one of your saved hostnames (add and remove them here) |
 
-The tile lights up and names what is changed whenever a setting isn't at its default.
-Long-press it to open Android's Display settings.
+Every setting has a **default**: what is normal for you. The tile lights up and names whatever
+differs; **Reset** in the popup puts it all back. Tap the sliders button at the top of a popup to
+choose the defaults, or **Use current** to take the values as they are now, and whether a
+notification (with a Reset button) shows while something differs. On by default for Screen,
+Developer and Network. The first start takes the phone's current values as the defaults of
+everything new, so nothing lights up after updating.
 
-## Private DNS tile
-Tap it to switch Private DNS between your own hostname (tile on) and Automatic (tile off). The
-tile shows Off, Automatic or your hostname. Whenever Private DNS isn't on your hostname, a
-notification with a **Hostname** button switches it back. The
-hostname itself is set once in Android's Settings › Network & internet › Private DNS.
-Long-press the tile to open Network & internet.
+Long-press a popup tile to open Android's matching settings page.
+
+## Single tiles
+One tap, no popup: **Screen timeout** (default ↔ long), **Always-on display**, **Tap to wake**,
+**Rotation** (auto → portrait → landscape), **Grayscale**, **Ringer** (sound ↔ vibrate),
+**Volume** (Android's volume panel), **Touch vibration**, **Pop-up notifications**, **Private DNS**
+(hostname ↔ Automatic), **USB debugging**, **Wireless debugging**, **Animations**
+(1× → off → 0.5×), **Stay awake** and **Keyboard** (Android's keyboard picker). Long-press one to
+open the popup it belongs to.
+
+Not possible for an app, even with adb: mobile data, airplane mode, mono audio, show taps and
+smooth display (Android keeps them for itself), and silent mode (needs Do Not Disturb access).
 
 ## Shortcuts
 Touch and hold the app icon for four shortcuts: **Private DNS** (hostname ↔ Automatic),
-**Timeout** (30 ↔ 1 minute), **Always on** and **Tap to wake**. Drag one to the home screen, or
+**Timeout** (default ↔ long), **Always on** and **Tap to wake**. Drag one to the home screen, or
 use it with Quick Tap (double-tap the back of a Pixel) or a gesture app such as RegiStar.
 
 ## Setting it up
-Open the app: its main screen walks through every step.
-1. Allow **Modify system settings** (brightness and timeout) and **Notifications**.
-2. Always-on display, tap to wake and Private DNS need a one-time command from a computer with
-   [adb](https://developer.android.com/tools/adb) (USB debugging on). The main screen has the
-   steps and a **Copy** button, or type:
+Open the app. A banner shows while a permission is missing; the menu (⋮) has **Permissions** and
+**Instructions**.
+1. Allow **Modify system settings** and **Notifications**.
+2. Most settings need a one-time command from a computer with
+   [adb](https://developer.android.com/tools/releases/platform-tools) (USB debugging on).
+   Permissions explains adb step by step and has a **Copy** button, or type:
    ```
    adb shell pm grant to.wim.quicksettings android.permission.WRITE_SECURE_SETTINGS
    ```
    For a debug build from a pull request, use `to.wim.quicksettings.debug`.
-3. Under Instructions, tap **Add** next to each tile (Android 13+), or open Quick Settings, tap
-   the pencil and drag **Screen** and **Private DNS** into your tiles.
+3. Tap a tile on the main screen to add it (Android 13+), or open Quick Settings, tap the
+   pencil and drag the tiles in.
 
 Built from the Android app template; the sections below are the template's.
 

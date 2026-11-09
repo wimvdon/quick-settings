@@ -19,15 +19,20 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.net.toUri
-import to.wim.quicksettings.R
-import to.wim.quicksettings.notify.Notifications
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 import to.wim.quicksettings.quickSettingsApp
-import to.wim.quicksettings.screen.SystemScreenSettings
-import to.wim.quicksettings.tile.DnsTileService
-import to.wim.quicksettings.tile.ScreenTileService
+import to.wim.quicksettings.settings.TileId
+import to.wim.quicksettings.system.AndroidRawSettings
+import to.wim.quicksettings.tile.TileLook
+import to.wim.quicksettings.tile.serviceOf
+import to.wim.quicksettings.ui.iconOf
+import to.wim.quicksettings.ui.labelOf
+import to.wim.quicksettings.ui.panel.PanelActivity
 import to.wim.quicksettings.ui.theme.AppTheme
 
-/** The launcher screen: how to add the tiles and grant what they need. */
+/** The launcher screen: every tile and popup, ready to add, plus permissions and instructions. */
 class MainActivity : ComponentActivity() {
     private val uiState = mutableStateOf<MainUiState?>(null)
 
@@ -47,6 +52,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        refresh()
+        val repository = quickSettingsApp.repository
+        lifecycleScope.launch { repository.defaults.combine(repository.addedTiles) { _, _ -> }.collect { refresh() } }
         setContent {
             AppTheme {
                 uiState.value?.let { state ->
@@ -54,17 +62,14 @@ class MainActivity : ComponentActivity() {
                         state = state,
                         actions =
                             MainActions(
-                                onAddScreenTile = {
-                                    addTile(ScreenTileService::class.java, R.string.tile_screen_label, R.drawable.ic_tile_display)
-                                },
-                                onAddDnsTile = {
-                                    addTile(DnsTileService::class.java, R.string.tile_dns_label, R.drawable.ic_dns)
-                                },
+                                onAddTile = ::addTile,
+                                onOpenPopup = { open(PanelActivity.intent(this, it)) },
                                 onAllowSystemSettings = {
                                     open(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, "package:$packageName".toUri()))
                                 },
                                 onCopyCommand = ::copyAdbCommand,
                                 onAllowNotifications = ::allowNotifications,
+                                onOpenPlatformTools = { open(Intent(Intent.ACTION_VIEW, PLATFORM_TOOLS.toUri())) },
                             ),
                     )
                 }
@@ -74,42 +79,44 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Permissions may have been granted in Settings or with adb meanwhile.
+        // Permissions and settings may have changed in Settings or with adb meanwhile.
         refresh()
         quickSettingsApp.sync()
     }
 
     private fun refresh() {
+        val added = quickSettingsApp.repository.addedTiles.value
         uiState.value =
             MainUiState(
                 canAddTilesHere = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU,
-                canWriteSystem = SystemScreenSettings.canWriteSystem(this),
-                canWriteSecure = SystemScreenSettings.canWriteSecure(this),
-                canPostNotifications = Notifications.canPost(this),
-                adbCommand = adbCommand(),
+                permissions = AndroidRawSettings.permissions(this),
+                tiles =
+                    TileId.entries.map { tile ->
+                        val look = TileLook.of(this, tile)
+                        TileCard(tile, look.active, look.subtitle, added = tile in added)
+                    },
+                adbCommand = PanelActivity.adbCommand(packageName),
             )
     }
 
-    private fun addTile(
-        tile: Class<*>,
-        label: Int,
-        icon: Int,
-    ) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) requestTile(tile, label, icon)
+    private fun addTile(tile: TileId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) requestTile(tile)
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    private fun requestTile(
-        tile: Class<*>,
-        label: Int,
-        icon: Int,
-    ) {
+    private fun requestTile(tile: TileId) {
         getSystemService(StatusBarManager::class.java)?.requestAddTileService(
-            ComponentName(this, tile),
-            getString(label),
-            Icon.createWithResource(this, icon),
+            ComponentName(this, serviceOf(tile)),
+            getString(labelOf(tile)),
+            Icon.createWithResource(this, iconOf(tile)),
             mainExecutor,
-        ) { }
+        ) { result ->
+            if (result == StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ADDED ||
+                result == StatusBarManager.TILE_ADD_REQUEST_RESULT_TILE_ALREADY_ADDED
+            ) {
+                quickSettingsApp.repository.setAdded(tile, true)
+            }
+        }
     }
 
     private fun allowNotifications() {
@@ -130,14 +137,15 @@ class MainActivity : ComponentActivity() {
         runCatching { startActivity(intent) }
     }
 
-    private fun adbCommand() = "adb shell pm grant $packageName android.permission.WRITE_SECURE_SETTINGS"
-
     private fun copyAdbCommand() {
         getSystemService(ClipboardManager::class.java)
-            ?.setPrimaryClip(ClipData.newPlainText("adb", adbCommand()))
+            ?.setPrimaryClip(ClipData.newPlainText("adb", PanelActivity.adbCommand(packageName)))
     }
 
     companion object {
+        /** Google's download page for adb (Android SDK Platform-Tools). Opens in the browser. */
+        private const val PLATFORM_TOOLS = "https://developer.android.com/tools/releases/platform-tools"
+
         fun intent(context: Context): Intent =
             Intent(context, MainActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)

@@ -21,7 +21,7 @@ python3 -m unittest discover -s scripts/tests
 
 ### Writing unit tests
 - Every logic change gets a test. Put logic in plain Kotlin classes (no Android types) and test
-  them with JUnit in `app/src/test/kotlin/`, mirroring the package. See `TapCounterTest`.
+  them with JUnit in `app/src/test/kotlin/`, mirroring the package. See `SettingsControllerTest`.
 - Test names describe behaviour in words: `` fun `tap stops at the maximum`() ``.
 - No device tests (instrumented/UI tests) are set up: they need an emulator, which makes CI slow and
   flaky. Add them only if a decision in `decisions.md` says so.
@@ -41,16 +41,22 @@ description. In addition, check every now and then (always before a release):
 - [ ] **Back** gesture/button behaves as expected.
 - [ ] After a release: install the release APK over the previous release. It updates without
       losing data.
-- [ ] **Tile**: with everything at default the tile is off and says "Default"; change one setting
-      and it lights up and names it.
-      Long-pressing the tile opens Android's Display settings.
+- [ ] **Main screen**: every tile and popup shows its live state; a tap offers to add it, a
+      check shows once it is in Quick Settings; long-press opens its popup. The banner shows
+      while a permission is missing; ⋮ opens Permissions and Instructions.
+- [ ] **Popup tiles**: with everything at its default the tile is off and says "Default";
+      change one setting and it lights up and names it. Reset puts it back. Long-press opens
+      Android's matching settings page.
+- [ ] **Defaults**: in a popup, the tune button shows the defaults; changing one makes the
+      current value count as normal (or not). "Use current" takes every value as it is now.
 - [ ] **Brightness**: drag the slider while auto brightness is on: auto switches off and the
-      level follows the slider. The X and the notification's Auto button both bring auto back.
-- [ ] **Timeout**: the switch sets 30 minutes (notification appears); the notification's 1 min
-      button sets it back.
-- [ ] **Private DNS**: with a hostname set, the tile is lit; a tap switches to Automatic (tile
-      off, notification appears; also when Private DNS is Off) and the notification's Hostname
-      button switches back.
+      level follows the slider. The X brings auto back.
+- [ ] **Single tiles**: each switches its setting; Rotation, Ringer and Animations step through
+      their choices. Keyboard opens the keyboard picker, Volume the volume panel.
+- [ ] **Private DNS**: the tile switches hostname ↔ Automatic. In the Network popup, add a
+      hostname, pick it, and remove a hostname that isn't in use.
+- [ ] **Notifications**: a popup that notifies shows one while something differs; its Reset
+      button puts everything back.
 - [ ] **Shortcuts**: touch and hold the app icon; each of the four shortcuts switches its
       setting and shows a toast.
 - [ ] **Changes made elsewhere** (Android's Settings) show up in the tile, popup and notifications.
