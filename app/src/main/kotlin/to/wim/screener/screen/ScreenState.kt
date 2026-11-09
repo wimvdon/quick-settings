@@ -1,4 +1,4 @@
-package io.github.impca201.screener.screen
+package to.wim.screener.screen
 
 /**
  * The four screen settings Screener manages, as read from the system.

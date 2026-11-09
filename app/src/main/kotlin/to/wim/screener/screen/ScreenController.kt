@@ -1,4 +1,4 @@
-package io.github.impca201.screener.screen
+package to.wim.screener.screen
 
 /** Reads and writes the system settings. The Android version is [SystemScreenSettings]. */
 interface ScreenSettings {

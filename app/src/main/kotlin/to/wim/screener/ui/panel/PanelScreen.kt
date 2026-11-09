@@ -1,4 +1,4 @@
-package io.github.impca201.screener.ui.panel
+package to.wim.screener.ui.panel
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
@@ -39,12 +39,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.impca201.screener.R
-import io.github.impca201.screener.screen.BrightnessCurve
-import io.github.impca201.screener.screen.ScreenState
-import io.github.impca201.screener.ui.theme.AppShapes
-import io.github.impca201.screener.ui.theme.ScreenerTheme
-import io.github.impca201.screener.ui.timeoutText
+import to.wim.screener.R
+import to.wim.screener.screen.BrightnessCurve
+import to.wim.screener.screen.ScreenState
+import to.wim.screener.ui.theme.AppShapes
+import to.wim.screener.ui.theme.ScreenerTheme
+import to.wim.screener.ui.timeoutText
 
 data class PanelUiState(
     val screen: ScreenState,
@@ -341,6 +341,6 @@ private fun PanelChangedPreview() =
             ScreenState.DEFAULTS.copy(autoBrightness = false, timeoutMs = ScreenState.EXTENDED_TIMEOUT_MS),
             canWriteSystem = true,
             canWriteSecure = false,
-            adbCommand = "adb shell pm grant io.github.impca201.screener android.permission.WRITE_SECURE_SETTINGS",
+            adbCommand = "adb shell pm grant to.wim.screener android.permission.WRITE_SECURE_SETTINGS",
         ),
     )

@@ -1,4 +1,4 @@
-package io.github.impca201.screener.screen
+package to.wim.screener.screen
 
 import kotlin.math.exp
 import kotlin.math.ln

@@ -1,4 +1,4 @@
-package io.github.impca201.screener
+package to.wim.screener
 
 import android.app.Application
 import android.content.ComponentName
@@ -7,10 +7,10 @@ import android.database.ContentObserver
 import android.os.Handler
 import android.os.Looper
 import android.service.quicksettings.TileService
-import io.github.impca201.screener.notify.ScreenNotifications
-import io.github.impca201.screener.screen.ScreenController
-import io.github.impca201.screener.screen.SystemScreenSettings
-import io.github.impca201.screener.tile.ScreenTileService
+import to.wim.screener.notify.ScreenNotifications
+import to.wim.screener.screen.ScreenController
+import to.wim.screener.screen.SystemScreenSettings
+import to.wim.screener.tile.ScreenTileService
 
 class ScreenerApp : Application() {
     val controller: ScreenController by lazy { ScreenController(SystemScreenSettings(this)) }

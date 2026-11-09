@@ -4,7 +4,7 @@ Newest first. Add an entry for every notable choice: what was decided, why, and 
 
 ## 2026-11-09: Screener: a tile and a popup, three permissions, no stored data
 
-The template becomes Screener (`io.github.impca201.screener`), Snoozer's sister app with the same
+The template becomes Screener (`to.wim.screener`), Snoozer's sister app with the same
 colours. What it changes decides its permissions: brightness and screen timeout need "Modify
 system settings" (`WRITE_SETTINGS`, the user grants it in Settings); always-on display and tap to
 wake are secure settings, which only `WRITE_SECURE_SETTINGS` may write, and only adb can grant
@@ -20,6 +20,9 @@ that (one command, shown in the popup with a Copy button); the persistent notifi
 - Tap to wake writes both `doze_tap_gesture` (Pixel's "Tap to check phone") and
   `double_tap_to_wake` (AOSP's "Tap to wake"), because phones use different keys; the state is
   read from the Pixel key.
+- Application ID `to.wim.screener`: the owner's apps use `to.wim.<name>`. Set before the first
+  release (the first release attempt stopped at the missing signing secrets), so no phone has
+  the earlier `io.github.impca201.screener`.
 - No DataStore: the defaults are fixed, and everything else is Android's own settings.
 - No settings screen, so no Theme / Dynamic color choice (`DESIGN.md`, "This app").
 
