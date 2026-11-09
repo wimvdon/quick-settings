@@ -2,6 +2,45 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-09: Every possible tile, popups with defaults, DataStore, a new main screen
+
+The owner asked for every tile an app can offer, popups that group related settings, and
+defaults they can set. One tested catalogue (`settings/Catalog.kt`) now describes every setting
+(where Android keeps it, what it needs, its default); popups, tiles, notifications and the main
+screen are all built from it, so a new setting is one entry plus its strings.
+
+- **Popups**: Screen (as before, plus rotation; the timeout offers 1, 5 and 30 min), Color,
+  Sound, Developer and Network (Private DNS). Single tiles for what is one tap. Each popup shows
+  what differs from its default, has Reset, and a defaults mode (tune button) with "Use current"
+  and a per-popup notification switch.
+- **Notifications** are now one per popup with a Reset button, replacing the separate brightness,
+  timeout and Private DNS ones. On by default for Screen, Developer and Network; off for Color
+  (Night Light usually runs on a schedule) and Sound.
+- **Defaults on update**: the first start stores the phone's current values as the defaults of
+  every new setting, so an update lights nothing up. The four screen settings and Private DNS
+  keep the defaults earlier versions had.
+- **Stored data**: DataStore (already in the version catalog; the template's rules name it for
+  storage) is added as a dependency. Defaults, notification choices and saved hostnames go in the
+  backed-up `backed_up_settings`; which tiles are added in `device_state` (only true on this
+  phone). `PRIVACY.md` says so.
+- **Private DNS hostnames**: the app now saves hostnames and can switch between them, which the
+  owner wanted for the Network popup. This reverses "no in-app hostname field" (2026-11-09):
+  switching between several providers can't be done in Android's dialog without retyping.
+- **Main screen**: Tiles grouped by category and Popups, drawn like large Quick Settings tiles
+  with their live state; tap adds (Android 13+), long-press opens the popup. Permissions and
+  Instructions moved to the overflow menu as pages (a saved page state and a back handler, not
+  Navigation Compose, which would be a new dependency for two pages); a banner shows while a
+  permission is missing. The adb guide uses Snoozer's wording, plus what adb is and a link to
+  Google's download page (opened in the browser; the app still has no internet access).
+- **Left out**: show taps, pointer location, mono audio and smooth display are private System
+  settings that Android refuses to apps even with `WRITE_SECURE_SETTINGS` (only shell or system
+  apps); mobile data and airplane mode need system permissions; silent mode needs Do Not Disturb
+  access and a lock screen or screenshot tile an accessibility service, both new permissions the
+  owner didn't ask for. Night Light, extra dim and color inversion have no single tiles because
+  Android has its own.
+- **Not verified on a phone yet**: wireless debugging and touch vibration (some Android versions
+  may ignore the key the app writes); the test steps in the pull request cover them.
+
 ## 2026-11-09: Timeout as a segmented button, popup without opening animation, no Quick Tap guide
 
 The screen timeout is a choice between two values, not on/off, so the popup shows it as a

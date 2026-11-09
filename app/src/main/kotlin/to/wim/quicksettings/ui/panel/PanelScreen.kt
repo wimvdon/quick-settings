@@ -3,6 +3,7 @@ package to.wim.quicksettings.ui.panel
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,12 +16,17 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
@@ -30,6 +36,11 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,30 +50,67 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import to.wim.quicksettings.R
-import to.wim.quicksettings.screen.BrightnessCurve
-import to.wim.quicksettings.screen.ScreenState
+import to.wim.quicksettings.settings.Access
+import to.wim.quicksettings.settings.Catalog
+import to.wim.quicksettings.settings.Choice
+import to.wim.quicksettings.settings.Group
+import to.wim.quicksettings.settings.Level
+import to.wim.quicksettings.settings.Permissions
+import to.wim.quicksettings.settings.PrivateDnsSetting
+import to.wim.quicksettings.settings.Row as SettingRow
+import to.wim.quicksettings.settings.Toggle
+import to.wim.quicksettings.settings.Tracked
+import to.wim.quicksettings.ui.iconOf
 import to.wim.quicksettings.ui.theme.AppShapes
 import to.wim.quicksettings.ui.theme.AppTheme
-import to.wim.quicksettings.ui.timeoutText
+import to.wim.quicksettings.ui.titleOf
+import to.wim.quicksettings.ui.valueText
+
+/** One row as shown: its setting's current value and default, and slider positions. */
+data class RowState(
+    val row: SettingRow,
+    val value: String? = null,
+    val default: String? = null,
+    val changed: Boolean = false,
+    val position: Float? = null,
+    val levelPosition: Float? = null,
+)
 
 data class PanelUiState(
-    val screen: ScreenState,
-    val canWriteSystem: Boolean,
-    val canWriteSecure: Boolean,
+    val group: Group,
+    val rows: List<RowState>,
+    val hasChanges: Boolean,
+    val notifies: Boolean,
+    /** Private DNS: every hostname to offer (saved ones and the one Android has). */
+    val hostnames: List<String>,
+    /** Private DNS: the saved hostnames, which can be removed. */
+    val savedHostnames: Set<String>,
+    /** Private DNS: the hostname Android has, which the "any hostname" default means. */
+    val dnsHostname: String?,
+    val permissions: Permissions,
     val adbCommand: String,
 )
 
 class PanelActions(
-    val onBrightness: (Float) -> Unit = {},
-    val onBrightnessFinished: () -> Unit = {},
-    val onAutoBrightness: () -> Unit = {},
-    val onTimeoutExtended: (Boolean) -> Unit = {},
-    val onAlwaysOn: (Boolean) -> Unit = {},
-    val onTapToWake: (Boolean) -> Unit = {},
+    val onToggle: (Toggle, Boolean) -> Unit = { _, _ -> },
+    val onSelect: (Choice, String) -> Unit = { _, _ -> },
+    val onLevel: (Level, Float) -> Unit = { _, _ -> },
+    val onLevelFinished: () -> Unit = {},
+    val onWrite: (Tracked, String) -> Unit = { _, _ -> },
+    val onSetDefault: (Tracked, String) -> Unit = { _, _ -> },
+    val onNotify: (Boolean) -> Unit = {},
+    val onUseCurrent: () -> Unit = {},
+    /** Returns false when the hostname isn't valid, so the dialog stays open. */
+    val onAddHostname: (String) -> Boolean = { true },
+    val onRemoveHostname: (String) -> Unit = {},
+    val onEditDefaults: (Boolean) -> Unit = {},
+    val onReset: () -> Unit = {},
     val onAllowSystemSettings: () -> Unit = {},
     val onCopyCommand: () -> Unit = {},
     val onOpenSettings: () -> Unit = {},
@@ -84,17 +132,22 @@ private fun rowShape(
     bottomEnd = if (index == count - 1) Outer else Inner,
 )
 
+/** A row's content, drawn in a shape the list decides. */
+private typealias RowContent = @Composable (Shape) -> Unit
+
 /**
- * The popup: a title, one group of rows (manual brightness is highlighted, like
- * the connected network in the Internet dialog), and Settings / Done at the bottom.
+ * The popup: a title, one group of rows (a setting that differs from its default is highlighted,
+ * like the connected network in the Internet dialog), and Settings / Reset / Done at the bottom.
+ * The tune button switches to its defaults: the same rows, setting what "normal" is.
  */
 @Composable
 fun PanelScreen(
     state: PanelUiState,
+    editingDefaults: Boolean,
     actions: PanelActions,
     modifier: Modifier = Modifier,
 ) {
-    val screen = state.screen
+    var addingHostname by rememberSaveable { mutableStateOf(false) }
     Surface(
         modifier =
             modifier
@@ -108,85 +161,260 @@ fun PanelScreen(
         Column(
             Modifier
                 .verticalScroll(rememberScrollState())
-                .padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 16.dp),
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp),
         ) {
-            Text(
-                text = stringResource(R.string.panel_title),
-                style = MaterialTheme.typography.headlineSmall,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
-            )
-            Spacer(Modifier.height(20.dp))
+            Header(state.group, editingDefaults, actions)
+            Spacer(Modifier.height(16.dp))
 
-            if (!state.canWriteSystem) {
-                SetupCard(
-                    title = stringResource(R.string.setup_system_title),
-                    text = stringResource(R.string.setup_system_text),
-                    button = stringResource(R.string.setup_system_button),
-                    onClick = actions.onAllowSystemSettings,
-                )
-            }
-            if (!state.canWriteSecure) {
-                SetupCard(
-                    title = stringResource(R.string.setup_secure_title),
-                    text = stringResource(R.string.setup_secure_text),
-                    command = state.adbCommand,
-                    button = stringResource(R.string.setup_secure_button),
-                    onClick = actions.onCopyCommand,
-                )
-            }
+            if (!editingDefaults) SetupCards(state, actions)
 
-            val rows = 4
+            val rows: List<RowContent> =
+                if (editingDefaults) defaultRows(state, actions) else liveRows(state, actions) { addingHostname = true }
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                BrightnessRow(screen, state.canWriteSystem, rowShape(0, rows), actions)
-                TimeoutRow(screen, state.canWriteSystem, rowShape(1, rows), actions.onTimeoutExtended)
-                SwitchRow(
-                    icon = R.drawable.ic_always_on,
-                    title = stringResource(R.string.always_on_title),
-                    checked = screen.alwaysOn,
-                    enabled = state.canWriteSecure,
-                    shape = rowShape(2, rows),
-                    onCheckedChange = actions.onAlwaysOn,
-                )
-                SwitchRow(
-                    icon = R.drawable.ic_tap,
-                    title = stringResource(R.string.tap_to_wake_title),
-                    checked = screen.tapToWake,
-                    enabled = state.canWriteSecure,
-                    shape = rowShape(3, rows),
-                    onCheckedChange = actions.onTapToWake,
-                )
+                rows.forEachIndexed { index, row -> row(rowShape(index, rows.size)) }
             }
 
             Row(
                 Modifier.fillMaxWidth().padding(top = 20.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                OutlinedButton(onClick = actions.onOpenSettings) { Text(stringResource(R.string.panel_settings)) }
-                Button(onClick = actions.onDone) { Text(stringResource(R.string.panel_done)) }
+                if (editingDefaults) {
+                    OutlinedButton(onClick = actions.onUseCurrent) { Text(stringResource(R.string.panel_use_current)) }
+                    Spacer(Modifier.weight(1f))
+                    Button(onClick = { actions.onEditDefaults(false) }) { Text(stringResource(R.string.panel_done)) }
+                } else {
+                    OutlinedButton(onClick = actions.onOpenSettings) { Text(stringResource(R.string.panel_settings)) }
+                    Spacer(Modifier.weight(1f))
+                    TextButton(onClick = actions.onReset, enabled = state.hasChanges) { Text(stringResource(R.string.panel_reset)) }
+                    Button(onClick = actions.onDone) { Text(stringResource(R.string.panel_done)) }
+                }
+            }
+        }
+    }
+    if (addingHostname) {
+        HostnameDialog(onAdd = actions.onAddHostname, onDismiss = { addingHostname = false })
+    }
+}
+
+@Composable
+private fun Header(
+    group: Group,
+    editingDefaults: Boolean,
+    actions: PanelActions,
+) {
+    Box(Modifier.fillMaxWidth().heightIn(min = 48.dp), contentAlignment = Alignment.Center) {
+        Column(Modifier.padding(horizontal = 48.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = stringResource(titleOf(group)),
+                style = MaterialTheme.typography.headlineSmall,
+                textAlign = TextAlign.Center,
+            )
+            if (editingDefaults) {
+                Text(
+                    text = stringResource(R.string.panel_defaults),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+        }
+        if (!editingDefaults) {
+            IconButton(onClick = { actions.onEditDefaults(true) }, modifier = Modifier.align(Alignment.CenterEnd)) {
+                Icon(painterResource(R.drawable.ic_tune), contentDescription = stringResource(R.string.panel_defaults))
             }
         }
     }
 }
 
 @Composable
-private fun rowColors(changed: Boolean): Pair<Color, Color> =
-    if (changed) {
+private fun SetupCards(
+    state: PanelUiState,
+    actions: PanelActions,
+) {
+    val needs = state.group.accesses
+    if (Access.System in needs && !state.permissions.system) {
+        SetupCard(
+            title = stringResource(R.string.setup_system_title),
+            text = stringResource(R.string.setup_system_text),
+            button = stringResource(R.string.setup_system_button),
+            onClick = actions.onAllowSystemSettings,
+        )
+    }
+    if (Access.Secure in needs && !state.permissions.secure) {
+        SetupCard(
+            title = stringResource(R.string.setup_secure_title),
+            text = stringResource(R.string.setup_secure_text),
+            command = state.adbCommand,
+            button = stringResource(R.string.setup_secure_button),
+            onClick = actions.onCopyCommand,
+        )
+    }
+}
+
+// ---- Live rows: what the settings are now --------------------------------------------------
+
+private fun liveRows(
+    state: PanelUiState,
+    actions: PanelActions,
+    onAddHostname: () -> Unit,
+): List<RowContent> =
+    state.rows.flatMap { rs ->
+        val enabled = state.permissions.allows(rs.row.setting.access)
+        val setting = rs.row.setting
+        when {
+            setting == Catalog.BrightnessMode -> listOf<RowContent> { shape -> BrightnessRow(rs, enabled, shape, actions) }
+            setting == PrivateDnsSetting -> dnsRows(state, rs, enabled, actions, onAddHostname)
+            setting is Toggle ->
+                listOf<RowContent> { shape ->
+                    ToggleRow(
+                        setting = setting,
+                        checked = rs.value == Toggle.ON,
+                        highlighted = rs.changed,
+                        enabled = enabled,
+                        shape = shape,
+                        onCheckedChange = { actions.onToggle(setting, it) },
+                        level = rs.row.level?.takeIf { rs.value == Toggle.ON },
+                        levelPosition = rs.levelPosition,
+                        levelEnabled = rs.row.level?.let { state.permissions.allows(it.access) } ?: false,
+                        actions = actions,
+                    )
+                }
+            setting is Choice ->
+                listOf<RowContent> { shape ->
+                    ChoiceRow(setting, rs.value, rs.changed, enabled, shape) { actions.onSelect(setting, it) }
+                }
+            setting is Level ->
+                listOf<RowContent> { shape -> LevelRow(setting, rs.position ?: 0f, enabled, shape, actions) }
+            else -> emptyList()
+        }
+    }
+
+private fun dnsRows(
+    state: PanelUiState,
+    rs: RowState,
+    enabled: Boolean,
+    actions: PanelActions,
+    onAddHostname: () -> Unit,
+): List<RowContent> {
+    val options = listOf(PrivateDnsSetting.OFF, PrivateDnsSetting.AUTOMATIC) + state.hostnames.map(PrivateDnsSetting::hostnameValue)
+    return options.map { option ->
+        val name = PrivateDnsSetting.hostnameOf(option)
+        val content: RowContent = { shape ->
+            RadioRow(
+                icon = if (name != null) R.drawable.ic_dns else null,
+                title = valueText(LocalResources.current, PrivateDnsSetting, option),
+                selected = rs.value == option,
+                highlighted = rs.value == option && rs.changed,
+                enabled = enabled,
+                shape = shape,
+                onClick = { actions.onWrite(PrivateDnsSetting, option) },
+                onRemove =
+                    if (name != null && name in state.savedHostnames && rs.value != option) {
+                        { actions.onRemoveHostname(name) }
+                    } else {
+                        null
+                    },
+            )
+        }
+        content
+    } +
+        listOf<RowContent> { shape ->
+            ActionRow(R.drawable.ic_add, stringResource(R.string.dns_add_hostname), enabled, shape, onAddHostname)
+        }
+}
+
+// ---- Defaults rows: what "normal" is -------------------------------------------------------
+
+private fun defaultRows(
+    state: PanelUiState,
+    actions: PanelActions,
+): List<RowContent> =
+    state.rows.flatMap { rs ->
+        val setting = rs.row.setting
+        val default = rs.default
+        when {
+            setting !is Tracked || default == null -> emptyList()
+            setting == PrivateDnsSetting -> {
+                val options = listOf(PrivateDnsSetting.OFF, PrivateDnsSetting.AUTOMATIC) + state.hostnames.map(PrivateDnsSetting::hostnameValue)
+                options.map { option ->
+                    val selected =
+                        default == option ||
+                            (default == PrivateDnsSetting.ANY_HOSTNAME && PrivateDnsSetting.hostnameOf(option) == state.dnsHostname)
+                    val content: RowContent = { shape ->
+                        RadioRow(
+                            icon = if (PrivateDnsSetting.hostnameOf(option) != null) R.drawable.ic_dns else null,
+                            title = valueText(LocalResources.current, PrivateDnsSetting, option),
+                            selected = selected,
+                            highlighted = false,
+                            enabled = true,
+                            shape = shape,
+                            onClick = { actions.onSetDefault(PrivateDnsSetting, option) },
+                        )
+                    }
+                    content
+                }
+            }
+            setting is Toggle ->
+                listOf<RowContent> { shape ->
+                    ToggleRow(
+                        setting = setting,
+                        checked = default == Toggle.ON,
+                        highlighted = false,
+                        enabled = true,
+                        shape = shape,
+                        onCheckedChange = { actions.onSetDefault(setting, Toggle.encode(it)) },
+                        actions = actions,
+                    )
+                }
+            setting is Choice ->
+                listOf<RowContent> { shape ->
+                    ChoiceRow(setting, default, highlighted = false, enabled = true, shape = shape) { actions.onSetDefault(setting, it) }
+                }
+            else -> emptyList()
+        }
+    } +
+        listOf<RowContent> { shape ->
+            SwitchLine(
+                icon = R.drawable.ic_notifications,
+                title = stringResource(R.string.panel_notify),
+                checked = state.notifies,
+                highlighted = false,
+                enabled = true,
+                shape = shape,
+                onCheckedChange = actions.onNotify,
+            )
+        }
+
+// ---- Row building blocks -------------------------------------------------------------------
+
+@Composable
+private fun rowColors(highlighted: Boolean): Pair<Color, Color> =
+    if (highlighted) {
         MaterialTheme.colorScheme.primaryContainer to MaterialTheme.colorScheme.onPrimaryContainer
     } else {
         MaterialTheme.colorScheme.surfaceContainerHighest to MaterialTheme.colorScheme.onSurface
     }
 
 @Composable
+private fun RowSurface(
+    highlighted: Boolean,
+    shape: Shape,
+    content: @Composable () -> Unit,
+) {
+    val (container, onContainer) = rowColors(highlighted)
+    Surface(shape = shape, color = container, contentColor = onContainer, modifier = Modifier.fillMaxWidth()) { content() }
+}
+
+@Composable
 private fun BrightnessRow(
-    screen: ScreenState,
+    rs: RowState,
     enabled: Boolean,
     shape: Shape,
     actions: PanelActions,
 ) {
-    val manual = !screen.autoBrightness
-    val (container, content) = rowColors(manual)
-    Surface(shape = shape, color = container, contentColor = content, modifier = Modifier.fillMaxWidth()) {
+    val manual = rs.value == Catalog.BRIGHTNESS_MANUAL
+    val position = rs.levelPosition ?: 0f
+    RowSurface(rs.changed, shape) {
         Column(Modifier.padding(start = 16.dp, end = 12.dp, top = 12.dp, bottom = 8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.heightIn(min = 48.dp)) {
                 Icon(
@@ -198,16 +426,15 @@ private fun BrightnessRow(
                     Text(
                         text =
                             if (manual) {
-                                stringResource(R.string.brightness_manual, BrightnessCurve.toPercent(screen.brightness))
+                                stringResource(R.string.brightness_manual, (position * 100).toInt())
                             } else {
                                 stringResource(R.string.brightness_auto)
                             },
                         style = MaterialTheme.typography.bodyMedium,
-                        color = if (manual) content else MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 if (manual) {
-                    FilledTonalIconButton(onClick = actions.onAutoBrightness, enabled = enabled) {
+                    FilledTonalIconButton(onClick = { actions.onSelect(Catalog.BrightnessMode, Catalog.BRIGHTNESS_AUTO) }, enabled = enabled) {
                         Icon(
                             painterResource(R.drawable.ic_close),
                             contentDescription = stringResource(R.string.brightness_reset),
@@ -216,9 +443,9 @@ private fun BrightnessRow(
                 }
             }
             Slider(
-                value = BrightnessCurve.toPosition(screen.brightness),
-                onValueChange = actions.onBrightness,
-                onValueChangeFinished = actions.onBrightnessFinished,
+                value = position,
+                onValueChange = { actions.onLevel(Catalog.Brightness, it) },
+                onValueChangeFinished = actions.onLevelFinished,
                 enabled = enabled,
                 modifier = Modifier.fillMaxWidth().padding(end = 4.dp),
             )
@@ -226,51 +453,108 @@ private fun BrightnessRow(
     }
 }
 
-/**
- * The screen timeout as a choice between its two values. A timeout set elsewhere (say 5 minutes)
- * is shown as text, with neither choice selected.
- */
 @Composable
-private fun TimeoutRow(
-    screen: ScreenState,
+private fun ToggleRow(
+    setting: Toggle,
+    checked: Boolean,
+    highlighted: Boolean,
     enabled: Boolean,
     shape: Shape,
-    onExtended: (Boolean) -> Unit,
+    onCheckedChange: (Boolean) -> Unit,
+    actions: PanelActions,
+    level: Level? = null,
+    levelPosition: Float? = null,
+    levelEnabled: Boolean = false,
 ) {
-    val (container, content) = rowColors(changed = false)
-    val choice = screen.timeoutChoice
-    Surface(shape = shape, color = container, contentColor = content, modifier = Modifier.fillMaxWidth()) {
+    RowSurface(highlighted, shape) {
+        Column {
+            SwitchContent(iconOf(setting), stringResource(titleOf(setting)), checked, enabled, onCheckedChange)
+            if (level != null) {
+                Column(Modifier.padding(start = 56.dp, end = 16.dp, bottom = 8.dp)) {
+                    Text(stringResource(titleOf(level)), style = MaterialTheme.typography.bodyMedium)
+                    Slider(
+                        value = levelPosition ?: 0f,
+                        onValueChange = { actions.onLevel(level, it) },
+                        onValueChangeFinished = actions.onLevelFinished,
+                        enabled = levelEnabled,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SwitchLine(
+    @DrawableRes icon: Int,
+    title: String,
+    checked: Boolean,
+    highlighted: Boolean,
+    enabled: Boolean,
+    shape: Shape,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    RowSurface(highlighted, shape) { SwitchContent(icon, title, checked, enabled, onCheckedChange) }
+}
+
+@Composable
+private fun SwitchContent(
+    @DrawableRes icon: Int,
+    title: String,
+    checked: Boolean,
+    enabled: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clickable(enabled = enabled, role = Role.Switch) { onCheckedChange(!checked) }
+                .heightIn(min = 72.dp)
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+    ) {
+        Icon(painterResource(icon), contentDescription = null)
+        Text(title, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f).padding(horizontal = 16.dp))
+        // The row handles the click, so the switch itself only shows the state.
+        Switch(checked = checked, onCheckedChange = null, enabled = enabled)
+    }
+}
+
+/**
+ * A choice as a segmented button. A value set elsewhere (say 2 minutes) is shown as text, with
+ * no option selected.
+ */
+@Composable
+private fun ChoiceRow(
+    choice: Choice,
+    value: String?,
+    highlighted: Boolean,
+    enabled: Boolean,
+    shape: Shape,
+    onSelect: (String) -> Unit,
+) {
+    val resources = LocalResources.current
+    RowSurface(highlighted, shape) {
         Column(Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.heightIn(min = 24.dp)) {
-                Icon(painterResource(R.drawable.ic_timer), contentDescription = null)
+                Icon(painterResource(iconOf(choice)), contentDescription = null)
                 Column(Modifier.weight(1f).padding(horizontal = 16.dp)) {
-                    Text(stringResource(R.string.timeout_title), style = MaterialTheme.typography.titleMedium)
-                    if (choice == null) {
-                        Text(
-                            timeoutText(LocalResources.current, screen.timeoutMs),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
+                    Text(stringResource(titleOf(choice)), style = MaterialTheme.typography.titleMedium)
+                    if (value !in choice.options) {
+                        Text(valueText(resources, choice, value), style = MaterialTheme.typography.bodyMedium)
                     }
                 }
             }
-            val options = ScreenState.TimeoutChoice.entries
             SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(start = 40.dp, top = 8.dp)) {
-                options.forEachIndexed { index, option ->
+                choice.options.forEachIndexed { index, option ->
                     SegmentedButton(
-                        selected = option == choice,
-                        onClick = { onExtended(option.extended) },
-                        shape = SegmentedButtonDefaults.itemShape(index, options.size),
+                        selected = option == value,
+                        onClick = { onSelect(option) },
+                        shape = SegmentedButtonDefaults.itemShape(index, choice.options.size),
                         enabled = enabled,
                     ) {
-                        Text(
-                            stringResource(
-                                when (option) {
-                                    ScreenState.TimeoutChoice.OneMinute -> R.string.notification_timeout_action
-                                    ScreenState.TimeoutChoice.ThirtyMinutes -> R.string.timeout_choice_extended
-                                },
-                            ),
-                        )
+                        Text(valueText(resources, choice, option, short = true), maxLines = 1)
                     }
                 }
             }
@@ -279,32 +563,121 @@ private fun TimeoutRow(
 }
 
 @Composable
-private fun SwitchRow(
-    @DrawableRes icon: Int,
-    title: String,
-    checked: Boolean,
+private fun LevelRow(
+    level: Level,
+    position: Float,
     enabled: Boolean,
     shape: Shape,
-    onCheckedChange: (Boolean) -> Unit,
+    actions: PanelActions,
 ) {
-    val (container, content) = rowColors(changed = false)
-    Surface(shape = shape, color = container, contentColor = content, modifier = Modifier.fillMaxWidth()) {
+    RowSurface(highlighted = false, shape = shape) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(start = 16.dp, end = 12.dp, top = 4.dp, bottom = 4.dp),
+        ) {
+            Icon(painterResource(iconOf(level)), contentDescription = null)
+            Column(Modifier.weight(1f).padding(start = 16.dp)) {
+                Text(stringResource(titleOf(level)), style = MaterialTheme.typography.titleSmall, modifier = Modifier.padding(top = 8.dp))
+                Slider(
+                    value = position,
+                    onValueChange = { actions.onLevel(level, it) },
+                    onValueChangeFinished = actions.onLevelFinished,
+                    enabled = enabled,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun RadioRow(
+    @DrawableRes icon: Int?,
+    title: String,
+    selected: Boolean,
+    highlighted: Boolean,
+    enabled: Boolean,
+    shape: Shape,
+    onClick: () -> Unit,
+    onRemove: (() -> Unit)? = null,
+) {
+    RowSurface(highlighted, shape) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier =
                 Modifier
-                    .clickable(enabled = enabled, role = Role.Switch) { onCheckedChange(!checked) }
-                    .heightIn(min = 72.dp)
-                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                    .fillMaxWidth()
+                    .clickable(enabled = enabled, role = Role.RadioButton, onClick = onClick)
+                    .heightIn(min = 56.dp)
+                    .padding(start = 4.dp, end = 4.dp),
         ) {
-            Icon(painterResource(icon), contentDescription = null)
-            Column(Modifier.weight(1f).padding(horizontal = 16.dp)) {
-                Text(title, style = MaterialTheme.typography.titleMedium)
+            RadioButton(selected = selected, onClick = null, enabled = enabled, modifier = Modifier.padding(12.dp))
+            if (icon != null) Icon(painterResource(icon), contentDescription = null, modifier = Modifier.padding(end = 12.dp))
+            Text(title, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
+            if (onRemove != null) {
+                IconButton(onClick = onRemove, enabled = enabled) {
+                    Icon(painterResource(R.drawable.ic_delete), contentDescription = stringResource(R.string.dns_remove_hostname, title))
+                }
             }
-            // The row handles the click, so the switch itself only shows the state.
-            Switch(checked = checked, onCheckedChange = null, enabled = enabled)
         }
     }
+}
+
+@Composable
+private fun ActionRow(
+    @DrawableRes icon: Int,
+    title: String,
+    enabled: Boolean,
+    shape: Shape,
+    onClick: () -> Unit,
+) {
+    RowSurface(highlighted = false, shape = shape) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
+                    .heightIn(min = 56.dp)
+                    .padding(horizontal = 16.dp),
+        ) {
+            Icon(painterResource(icon), contentDescription = null, modifier = Modifier.padding(start = 2.dp, end = 18.dp))
+            Text(title, style = MaterialTheme.typography.titleMedium)
+        }
+    }
+}
+
+@Composable
+private fun HostnameDialog(
+    onAdd: (String) -> Boolean,
+    onDismiss: () -> Unit,
+) {
+    var text by rememberSaveable { mutableStateOf("") }
+    var invalid by remember { mutableStateOf(false) }
+    val submit = {
+        if (onAdd(text)) onDismiss() else invalid = true
+    }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.dns_add_hostname)) },
+        text = {
+            OutlinedTextField(
+                value = text,
+                onValueChange = {
+                    text = it
+                    invalid = false
+                },
+                label = { Text(stringResource(R.string.dns_hostname_field)) },
+                placeholder = { Text("dns.example.com") },
+                singleLine = true,
+                isError = invalid,
+                supportingText = if (invalid) ({ Text(stringResource(R.string.dns_hostname_invalid)) }) else null,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri, imeAction = ImeAction.Done),
+                keyboardActions = androidx.compose.foundation.text.KeyboardActions(onDone = { submit() }),
+            )
+        },
+        confirmButton = { TextButton(onClick = submit, enabled = text.isNotBlank()) { Text(stringResource(R.string.dialog_save)) } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.dialog_cancel)) } },
+    )
 }
 
 @Composable
@@ -339,29 +712,43 @@ private fun SetupCard(
     }
 }
 
-@Composable
-private fun PreviewPanel(state: PanelUiState) {
-    AppTheme {
-        Column {
-            Spacer(Modifier.size(1.dp))
-            PanelScreen(state, PanelActions())
-        }
-    }
-}
+private fun previewState(
+    group: Group,
+    changed: Boolean,
+) = PanelUiState(
+    group = group,
+    rows =
+        group.rows.map {
+            val tracked = it.setting as? Tracked
+            RowState(
+                row = it,
+                value = tracked?.appDefault,
+                default = tracked?.appDefault,
+                changed = changed && it.setting == Catalog.AlwaysOn,
+                position = 0.5f,
+                levelPosition = 0.4f,
+            )
+        },
+    hasChanges = changed,
+    notifies = true,
+    hostnames = listOf("dns.example.com"),
+    savedHostnames = setOf("dns.example.com"),
+    dnsHostname = "dns.example.com",
+    permissions = Permissions(system = true, secure = !changed, notifications = true),
+    adbCommand = "adb shell pm grant to.wim.quicksettings android.permission.WRITE_SECURE_SETTINGS",
+)
 
 @Preview
 @Composable
-private fun PanelDefaultPreview() =
-    PreviewPanel(PanelUiState(ScreenState.DEFAULTS, canWriteSystem = true, canWriteSecure = true, adbCommand = ""))
+private fun PanelScreenPreview() =
+    AppTheme {
+        Column {
+            Spacer(Modifier.size(1.dp))
+            PanelScreen(previewState(Group.Screen, changed = true), editingDefaults = false, actions = PanelActions())
+        }
+    }
 
 @Preview(uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun PanelChangedPreview() =
-    PreviewPanel(
-        PanelUiState(
-            ScreenState.DEFAULTS.copy(autoBrightness = false, timeoutMs = ScreenState.EXTENDED_TIMEOUT_MS),
-            canWriteSystem = true,
-            canWriteSecure = false,
-            adbCommand = "adb shell pm grant to.wim.quicksettings android.permission.WRITE_SECURE_SETTINGS",
-        ),
-    )
+private fun PanelDefaultsPreview() =
+    AppTheme { PanelScreen(previewState(Group.Network, changed = false), editingDefaults = true, actions = PanelActions()) }

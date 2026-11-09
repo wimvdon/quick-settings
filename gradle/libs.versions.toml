@@ -7,7 +7,7 @@ kotlin = "2.4.21"
 coreKtx = "1.19.1"
 activityCompose = "1.13.0"
 composeBom = "2026.09.00"
-# Not used by the template app. Use DataStore when the app needs to store settings or small data.
+# The user's defaults and saved hostnames (backed up), and which tiles are added (this phone only).
 datastore = "1.2.1"
 junit = "4.13.2"
 

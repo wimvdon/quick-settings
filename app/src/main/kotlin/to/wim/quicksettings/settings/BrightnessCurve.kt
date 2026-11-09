@@ -1,4 +1,4 @@
-package to.wim.quicksettings.screen
+package to.wim.quicksettings.settings
 
 import kotlin.math.exp
 import kotlin.math.ln

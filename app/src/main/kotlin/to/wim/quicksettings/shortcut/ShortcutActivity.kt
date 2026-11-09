@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.widget.Toast
 import to.wim.quicksettings.R
 import to.wim.quicksettings.quickSettingsApp
-import to.wim.quicksettings.screen.SystemScreenSettings
+import to.wim.quicksettings.settings.Catalog
+import to.wim.quicksettings.system.AndroidRawSettings
+import to.wim.quicksettings.ui.valueText
 import to.wim.quicksettings.ui.main.MainActivity
 
 /**
@@ -19,7 +21,8 @@ class ShortcutActivity : Activity() {
         val app = quickSettingsApp
         val needsSecure = intent?.action in setOf(ACTION_DNS, ACTION_ALWAYS_ON, ACTION_TAP_TO_WAKE)
         val allowed =
-            if (needsSecure) SystemScreenSettings.canWriteSecure(this) else SystemScreenSettings.canWriteSystem(this)
+            if (needsSecure) AndroidRawSettings.canWriteSecure(this) else AndroidRawSettings.canWriteSystem(this)
+        var timeoutMessage: String? = null
         val message: Int? =
             when {
                 intent?.action !in ALL -> null
@@ -28,23 +31,27 @@ class ShortcutActivity : Activity() {
                     null
                 }
                 intent?.action == ACTION_DNS ->
-                    if (!app.dns.toggle()) {
+                    if (!app.controller.toggleDns()) {
                         R.string.main_dns_no_hostname
-                    } else if (app.dns.read().tileActive) {
+                    } else if (app.controller.dnsOnHostname()) {
                         R.string.toast_dns_hostname
                     } else {
                         R.string.toast_dns_automatic
                     }
-                intent?.action == ACTION_TIMEOUT ->
-                    if (app.controller.toggleTimeout()) R.string.toast_timeout_long else R.string.toast_timeout_default
+                intent?.action == ACTION_TIMEOUT -> {
+                    app.controller.toggleTimeout()
+                    timeoutMessage = getString(R.string.toast_timeout, valueText(resources, Catalog.Timeout, app.controller.read(Catalog.Timeout)))
+                    null
+                }
                 intent?.action == ACTION_ALWAYS_ON ->
-                    if (app.controller.toggleAlwaysOn()) R.string.toast_always_on_on else R.string.toast_always_on_off
+                    if (app.controller.toggle(Catalog.AlwaysOn)) R.string.toast_always_on_on else R.string.toast_always_on_off
                 else ->
-                    if (app.controller.toggleTapToWake()) R.string.toast_tap_on else R.string.toast_tap_off
+                    if (app.controller.toggle(Catalog.TapToWake)) R.string.toast_tap_on else R.string.toast_tap_off
             }
-        if (message != null) {
+        val text = timeoutMessage ?: message?.let(::getString)
+        if (text != null) {
             app.sync()
-            Toast.makeText(app, message, Toast.LENGTH_SHORT).show()
+            Toast.makeText(app, text, Toast.LENGTH_SHORT).show()
         }
         finish()
     }

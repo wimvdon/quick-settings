@@ -1,4 +1,4 @@
-package to.wim.quicksettings.screen
+package to.wim.quicksettings.settings
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

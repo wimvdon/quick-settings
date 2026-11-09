@@ -2,16 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- "Modify system settings" (special access, granted in Settings): brightness and screen timeout. -->
+    <!-- "Modify system settings" (special access, granted in Settings): brightness, timeout, rotation, touch vibration. -->
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
-    <!-- Always-on display and tap to wake (secure settings) and Private DNS (global settings). Only adb can grant this:
+    <!-- Secure and global settings (always-on display, colours, developer options, Private DNS, …). Only adb can grant this:
          adb shell pm grant to.wim.quicksettings android.permission.WRITE_SECURE_SETTINGS -->
     <uses-permission
         android:name="android.permission.WRITE_SECURE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
-    <!-- Android 13+: the persistent notifications (manual brightness, long timeout, Private DNS on Automatic). -->
+    <!-- Android 13+: the notifications that show while a popup's settings differ from their defaults. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuickSettings">
 
-        <!-- Main screen: how to add the tiles and grant permissions. -->
+        <!-- Main screen: every tile and popup to add, permissions and instructions. -->
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
@@ -48,7 +48,7 @@
             android:taskAffinity=""
             android:theme="@android:style/Theme.NoDisplay" />
 
-        <!-- The Screen popup, opened from its tile and notifications. -->
+        <!-- The popups (one activity for all), opened from their tiles, notifications and the main screen. -->
         <activity
             android:name=".ui.panel.PanelActivity"
             android:excludeFromRecents="true"
@@ -70,11 +70,22 @@
             </intent-filter>
         </activity>
 
+        <!-- Invisible: shows Android's keyboard picker or volume panel for their tiles. -->
+        <activity
+            android:name=".action.ActionActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
         <!-- Buttons on the notifications. Private: only our PendingIntents. -->
         <receiver
             android:name=".notify.ResetReceiver"
             android:exported="false" />
 
+        <!-- The tiles (tile/TileServices.kt). The class names are how Android remembers a tile
+             in Quick Settings: never rename them. Popups first, then single tiles. -->
         <service
             android:name=".tile.ScreenTileService"
             android:exported="true"
@@ -84,6 +95,164 @@
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
+        </service>
+
+        <service
+            android:name=".tile.ColourTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_palette"
+            android:label="@string/group_colour"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tile.SoundTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_sound"
+            android:label="@string/group_sound"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tile.DeveloperTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_code"
+            android:label="@string/group_developer"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tile.NetworkTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_network"
+            android:label="@string/group_network"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tile.TimeoutTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_timer"
+            android:label="@string/timeout_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tile.AlwaysOnTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_always_on"
+            android:label="@string/always_on_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".tile.TapToWakeTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_tap"
+            android:label="@string/tap_to_wake_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".tile.RotationTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_rotation"
+            android:label="@string/rotation_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tile.GrayscaleTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_grayscale"
+            android:label="@string/grayscale_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".tile.RingerTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_ring"
+            android:label="@string/ringer_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tile.VolumeTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_volume"
+            android:label="@string/tile_volume"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tile.TouchVibrationTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_vibration"
+            android:label="@string/touch_vibration_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".tile.HeadsUpTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_heads_up"
+            android:label="@string/heads_up_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
         </service>
 
         <service
@@ -98,6 +267,70 @@
             <meta-data
                 android:name="android.service.quicksettings.TOGGLEABLE_TILE"
                 android:value="true" />
+        </service>
+
+        <service
+            android:name=".tile.UsbDebuggingTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_usb"
+            android:label="@string/usb_debugging_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".tile.WirelessDebuggingTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_wifi"
+            android:label="@string/wireless_debugging_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".tile.AnimationsTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_animation"
+            android:label="@string/animations_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".tile.StayAwakeTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_stay_awake"
+            android:label="@string/stay_awake_title"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
+        </service>
+
+        <service
+            android:name=".tile.KeyboardTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_keyboard"
+            android:label="@string/tile_keyboard"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
         </service>
     </application>
 

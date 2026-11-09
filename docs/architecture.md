@@ -1,58 +1,89 @@
 # Architecture
 
 ## This app
-Quick Settings adds two Quick Settings tiles and a main screen with setup instructions.
+Quick Settings adds five popup tiles and fifteen single tiles, and a main screen that shows them
+all the way Quick Settings draws them (tap to add).
 
-**Screen tile**: four screen settings.
+**The catalogue** (`settings/Catalog.kt`, plain Kotlin, tested): every setting the app can
+change, where Android keeps it and what it needs.
 
-| Setting | Default | Changed to | Where Android keeps it | Permission |
+| Popup | Setting | Where Android keeps it | Permission | Default |
 | --- | --- | --- | --- | --- |
-| Brightness | Auto | Manual, any level (slider; the X goes back to auto) | `Settings.System` `screen_brightness_mode`, `screen_brightness` | Modify system settings |
-| Screen timeout | 1 minute | 30 minutes | `Settings.System` `screen_off_timeout` | Modify system settings |
-| Always-on display | Off | On | `Settings.Secure` `doze_always_on` | `WRITE_SECURE_SETTINGS` (adb) |
-| Tap to wake | On | Off | `Settings.Secure` `doze_tap_gesture` (Pixel) and `double_tap_to_wake` (AOSP) | `WRITE_SECURE_SETTINGS` (adb) |
+| Screen | Brightness (auto / manual + slider) | `System` `screen_brightness_mode`, `screen_brightness` | Modify system settings | Auto |
+| Screen | Screen timeout (1, 5, 30 min) | `System` `screen_off_timeout` | Modify system settings | 1 min |
+| Screen | Always-on display | `Secure` `doze_always_on` | adb | Off |
+| Screen | Tap to wake | `Secure` `doze_tap_gesture` (Pixel) + `double_tap_to_wake` (AOSP) | adb | On |
+| Screen | Rotation (auto / portrait / landscape) | `System` `accelerometer_rotation`, `user_rotation` | Modify system settings | phone's* |
+| Color | Night Light + warmth | `Secure` `night_display_activated`, `night_display_color_temperature` (2596–4082 K) | adb | phone's* |
+| Color | Extra dim + intensity | `Secure` `reduce_bright_colors_activated`, `reduce_bright_colors_level` | adb | phone's* |
+| Color | Grayscale | `Secure` `accessibility_display_daltonizer_enabled` + `accessibility_display_daltonizer` = 0 | adb | phone's* |
+| Color | Color inversion | `Secure` `accessibility_display_inversion_enabled` | adb | phone's* |
+| Sound | Ringer (sound / vibrate) | `AudioManager.ringerMode` (mirrored in `Global` `mode_ringer`) | none | phone's* |
+| Sound | Media, ring, notification, alarm volume (sliders) | `AudioManager` stream volumes | none | (none) |
+| Sound | Touch vibration | `System` `haptic_feedback_enabled` | Modify system settings | phone's* |
+| Sound | Pop-up notifications | `Global` `heads_up_notifications_enabled` | adb | phone's* |
+| Developer | USB debugging | `Global` `adb_enabled` | adb | phone's* |
+| Developer | Wireless debugging | `Global` `adb_wifi_enabled` | adb | phone's* |
+| Developer | Animations (off / 0.5× / 1×) | `Global` `window_animation_scale`, `transition_animation_scale`, `animator_duration_scale` | adb | phone's* |
+| Developer | Stay awake while charging | `Global` `stay_on_while_plugged_in` (7 = every charger) | adb | phone's* |
+| Network | Private DNS (off / automatic / a hostname) | `Global` `private_dns_mode`, `private_dns_specifier` | adb | any hostname |
 
-**Private DNS tile**: `Settings.Global` `private_dns_mode` between `hostname` and
-`opportunistic` (Automatic); the hostname is `private_dns_specifier`, set in Android's Settings.
-Needs `WRITE_SECURE_SETTINGS` (adb).
+\* The first start takes the phone's value (`Catalog.seeded`, `SettingsController.seedDefaults`),
+so updating doesn't light anything up. "adb" is `WRITE_SECURE_SETTINGS`, granted once with adb.
 
-- **Tiles** (`tile/`): `ScreenTileService` is lit while any screen setting differs from its
-  default, names the change and opens the popup. `DnsTileService` (a toggle) is lit while the
-  hostname is in use; a tap switches to the other mode, or opens the main screen when the adb
-  permission or a hostname is missing. Long-pressing either tile reaches
-  `TilePreferencesActivity`, an invisible trampoline that opens Display or Network & internet.
-- **Shortcuts** (`shortcut/ShortcutActivity.kt`, `res/xml/shortcuts.xml` plus a debug copy that
-  names the `.debug` package): four static launcher shortcuts that toggle Private DNS, the
-  timeout, always-on display and tap to wake, with a toast. Quick Tap can start them too.
-- **Main screen** (`ui/main/`): the launcher entry. Permissions first (with the numbered adb
-  steps and a Copy button), then instructions: add the tiles (Android 13+ asks with one tap), the
-  launcher shortcuts. `GuideSteps` turns a translated block into numbered steps.
-- **Popup** (`ui/panel/`): a floating, centred activity styled like Android's Internet dialog
-  (`PanelActivity`), opened from the Screen tile and the notifications. Android closes the shade when an app's tile opens anything. Missing permissions show as setup cards in it.
-- **Notifications** (`notify/Notifications.kt`), in two channels: *Display* (manual brightness,
-  button Auto; long timeout, button 1 min) and *Private DNS* (whenever it isn't on the hostname: Off or Automatic; button Hostname).
-- **Rules** (plain Kotlin, unit tested): `screen/ScreenController.kt` switches auto brightness
-  off *before* writing a level, because Android ignores a level written in auto mode;
-  `BrightnessCurve` maps the slider like Android's own (HLG gamma). `dns/PrivateDns.kt` decides
-  what a tap switches to and when the tile is lit or the notification shows.
-- **Keeping in step**: `QuickSettingsApp` watches the settings with a `ContentObserver` while the
-  process runs, and the tiles, popup and main screen re-read them whenever they are shown, so
-  changes made in Android's Settings show up too.
-- **Stored data:** none. The defaults are fixed in `ScreenState.DEFAULTS`; everything else is
-  read from Android's settings.
+- **Settings model** (`settings/`): `Setting` is a `Toggle`, a `Choice` (options as text) or a
+  `Level` (slider 0..1); toggles and choices are `Tracked` (they have a default). They read and
+  write through `Device`: `RawSettings` (Android's tables as text) and `Audio`, both faked in
+  the tests. `PrivateDnsSetting` is a tracked setting of its own ("off", "opportunistic",
+  "hostname:<name>"; the default "hostname" means any). `Group` lists each popup's rows;
+  `TileId` every tile and what a tap does (`TileKind`). `SettingsController` holds the rules:
+  what differs from its default, reset, toggle, cycle, timeout default ↔ long, Private DNS
+  hostname ↔ Automatic.
+- **Defaults** (`settings/Defaults.kt`, `data/SettingsRepository.kt`): the user's defaults (only
+  those that differ from the app's), whether each popup notifies, the saved hostnames and the
+  seeded flag, in the backed-up DataStore `backed_up_settings`. Which tiles are added lives in
+  `device_state` (not backed up). Both are `StateFlow`s, read once at start.
+- **Tiles** (`tile/TileServices.kt`): one `AppTileService` subclass per tile; the class names are
+  how Android remembers a tile (`ScreenTileService` and `DnsTileService` are the old names). A
+  popup tile is lit while something in it differs from its default and names it; a switch tile
+  while on; a cycle tile (rotation, ringer, animations) and the timeout tile while not at their
+  default. A tile without the permission it needs opens the main screen. Long-press
+  (`TilePreferencesActivity`): a popup tile opens Android's settings page, a single tile its popup.
+  Keyboard and Volume go through the invisible `action/ActionActivity`.
+- **Popups** (`ui/panel/`): one floating activity for every `Group`, styled like Android's Internet
+  dialog. Rows that differ from their default are highlighted. The tune button switches to the
+  defaults (same rows, plus "Notification while changed" and "Use current"); Reset puts
+  everything back. Network has radio rows for Off, Automatic and each hostname, with add and
+  remove.
+- **Shortcuts** (`shortcut/ShortcutActivity.kt`, `res/xml/shortcuts.xml` plus a debug copy): four
+  static launcher shortcuts that toggle Private DNS, the timeout, always-on display and tap to
+  wake, with a toast. Quick Tap can start them too.
+- **Main screen** (`ui/main/`): Tiles (grouped by `Category`) and Popups, each drawn like a large
+  Quick Settings tile with its live state and a + (or a check once added). Tap adds it (Android
+  13+); long-press opens its popup. A banner shows while a permission is missing. The overflow
+  menu opens Permissions (with the adb guide, from Snoozer) and Instructions.
+- **Notifications** (`notify/Notifications.kt`): one per popup while something differs (for the
+  popups that notify), with a Reset button, in a channel per popup (`display` and `private_dns`
+  keep their old ids).
+- **Keeping in step**: `QuickSettingsApp` watches every catalogue key with a `ContentObserver`
+  while the process runs, and the tiles, popups and main screen re-read them whenever they are
+  shown, so changes made in Android's Settings show up too.
 
 ## Structure
 ```
 app/src/main/kotlin/<package>/
-  QuickSettingsApp.kt      Application: notification channels, settings observer, sync().
-  dns/                     PrivateDns (plain Kotlin, tested) and SystemDnsSettings.
-  screen/                  ScreenState, ScreenController, BrightnessCurve (plain Kotlin, tested)
-                           and SystemScreenSettings (reads/writes Android's settings).
-  notify/                  Persistent notifications (two channels) and their buttons.
+  QuickSettingsApp.kt      Application: repository, controller, settings observer, sync().
+  settings/                The model (plain Kotlin, tested): Catalog, Setting, Group, Tiles,
+                           Defaults, PrivateDns, SettingsController, BrightnessCurve.
+  system/                  AndroidRawSettings and AndroidAudio: the Android side of the model.
+  data/                    SettingsRepository: DataStore for defaults and added tiles.
+  notify/                  One notification per popup, and its Reset button.
   shortcut/                The invisible target of the launcher shortcuts.
-  tile/                    The two tiles, and the long-press trampoline to Android's settings.
+  action/                  The invisible activity for the Keyboard and Volume tiles.
+  tile/                    The tiles, and the long-press trampoline.
+  ui/Labels.kt             Names, icons and value texts of settings, popups and tiles.
   ui/main/                 The main screen: MainActivity (state, permissions) and MainScreen (Compose).
-  ui/panel/                The popup: PanelActivity (state, permissions) and PanelScreen (Compose).
+  ui/panel/                The popups: PanelActivity (state) and PanelScreen (Compose).
   ui/theme/                Theme.kt (Android's dynamic colours), Shapes.kt (shared kit).
 app/src/main/res/
   values/strings.xml       All user-visible text (English, the default).
@@ -65,11 +96,13 @@ scripts/                   Release helpers (Python/Java) with their own tests.
 ## Conventions
 - **Single `app` module.** Split into modules only if the app grows large; record it in `decisions.md`.
 - **Logic in plain Kotlin classes** with no `Context`, `View` or Compose types, so it can be
-  tested on the JVM. Example: `screen/ScreenController.kt`, tested with a fake `ScreenSettings`.
+  tested on the JVM. Example: `settings/SettingsController.kt`, tested with a fake `RawSettings`.
 - **UI state**: small screens use `rememberSaveable`. When a screen gets real logic or data,
   add a `ViewModel` (`androidx.lifecycle:lifecycle-viewmodel-compose`) that exposes a
   `StateFlow<UiState>` and calls into the plain-Kotlin logic. Record it in `decisions.md`.
-- **Navigation**: one screen today. With several screens, use Navigation Compose.
+- **Navigation**: the main screen's two extra pages (Permissions, Instructions) are a saved
+  page state with a back handler, not Navigation Compose (see `decisions.md`). With more
+  screens, use Navigation Compose.
 - **Persistence**: Jetpack DataStore (version already in the catalog). Wrap it behind a small
   repository interface so logic tests can use a fake. Decide per value whether it is backed up
   (see "Backup" below).
