@@ -2,6 +2,12 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-09: The popup uses Android's standard dialog animation
+
+Update, same day: the custom grow-in animation looked wonky on the owner's phone, so it was
+removed. The popup now opens with the dialog theme's own window animation, which every Android
+version draws reliably. The reasoning below about the expand-from-tile animation still holds.
+
 ## 2026-11-09: The popup grows in itself; the real expand-from-tile animation isn't available
 
 Android's Internet dialog expands out of its tile with System UI's own dialog animator, which

@@ -23,7 +23,6 @@ import to.wim.quicksettings.screen.ScreenController
 import to.wim.quicksettings.screen.SystemScreenSettings
 import to.wim.quicksettings.quickSettingsApp
 import to.wim.quicksettings.ui.theme.AppTheme
-import androidx.compose.ui.Modifier
 
 /**
  * The popup, shaped like Android's Quick Settings Internet dialog. Opened from the tile, the
@@ -50,7 +49,6 @@ class PanelActivity : ComponentActivity() {
             AppTheme {
                 uiState.value?.let { state ->
                     PanelScreen(
-                        modifier = Modifier.expandIn(),
                         state = state,
                         actions =
                             PanelActions(
