@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Screener</string>
-    <string name="tile_label">Pantalla</string>
+    <string name="app_name">Quick Settings</string>
+    <string name="tile_screen_label">Pantalla</string>
     <string name="tile_subtitle_default">Predeterminado</string>
     <string name="change_brightness">Brillo manual</string>
     <string name="change_timeout">Tiempo de espera largo</string>
@@ -25,7 +25,6 @@
     <string name="setup_secure_title">Pantalla siempre activa y tocar para activar</string>
     <string name="setup_secure_text">Android solo lo permite tras un comando único desde un ordenador con adb:</string>
     <string name="setup_secure_button">Copiar</string>
-    <string name="notification_channel_name">Ajustes de pantalla cambiados</string>
     <string name="notification_brightness_title">Brillo manual</string>
     <string name="notification_brightness_action">Automático</string>
     <string name="notification_timeout_title">Tiempo de espera ampliado</string>
@@ -55,4 +54,33 @@
         <item quantity="many">%d horas</item>
         <item quantity="other">%d horas</item>
     </plurals>
+    <string name="tile_dns_label">DNS privado</string>
+    <string name="dns_automatic">Automático</string>
+    <string name="dns_off">Desactivado</string>
+    <string name="dns_hostname">Tu nombre de host</string>
+    <string name="notification_channel_display">Pantalla</string>
+    <string name="notification_channel_dns">DNS privado</string>
+    <string name="notification_dns_title">DNS privado en automático</string>
+    <string name="notification_dns_text">%1$s no se usa</string>
+    <string name="notification_dns_action">Nombre de host</string>
+    <string name="main_section_tiles">Iconos</string>
+    <string name="main_tile_screen_text">Brillo, tiempo de espera, pantalla siempre activa y tocar para activar</string>
+    <string name="main_tile_dns_text">Cambia entre tu nombre de host y automático</string>
+    <string name="main_add_tile">Añadir</string>
+    <string name="main_tiles_manual">O desliza dos veces hacia abajo, toca el lápiz y arrastra los iconos a tus ajustes rápidos.</string>
+    <string name="main_open_screen">Abrir Pantalla</string>
+    <string name="main_section_permissions">Permisos</string>
+    <string name="main_permission_system">Modificar ajustes del sistema</string>
+    <string name="main_permission_system_text">Para el brillo y el tiempo de espera</string>
+    <string name="main_permission_notifications">Notificaciones</string>
+    <string name="main_permission_notifications_text">Muestra un ajuste cambiado, con un botón para deshacerlo</string>
+    <string name="main_permission_secure">Escribir ajustes seguros</string>
+    <string name="main_permission_secure_text">Para pantalla siempre activa, tocar para activar y DNS privado. Solo un ordenador puede concederlo.</string>
+    <string name="main_granted">Permitido</string>
+    <string name="main_adb_title">Concederlo con adb</string>
+    <string name="main_adb_steps">1. Ajustes › Información del teléfono: toca 7 veces Número de compilación.\n2. Ajustes › Sistema › Opciones para desarrolladores: activa la depuración por USB.\n3. Conecta el teléfono a un ordenador con las Android platform tools y permítelo.\n4. Ejecuta este comando en el ordenador:</string>
+    <string name="main_dns_current">En uso: %1$s</string>
+    <string name="main_dns_no_hostname">Ningún nombre de host</string>
+    <string name="main_dns_no_hostname_text">Configura uno una vez en Ajustes › Redes e internet › DNS privado. El icono cambiará a él.</string>
+    <string name="main_open_settings">Abrir ajustes</string>
 </resources>

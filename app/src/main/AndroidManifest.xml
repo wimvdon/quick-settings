@@ -6,41 +6,47 @@
     <uses-permission
         android:name="android.permission.WRITE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
-    <!-- Always-on display and tap to wake live in the secure settings. Only adb can grant this:
-         adb shell pm grant to.wim.screener android.permission.WRITE_SECURE_SETTINGS -->
+    <!-- Always-on display and tap to wake (secure settings) and Private DNS (global settings). Only adb can grant this:
+         adb shell pm grant to.wim.quicksettings android.permission.WRITE_SECURE_SETTINGS -->
     <uses-permission
         android:name="android.permission.WRITE_SECURE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
-    <!-- Android 13+: the persistent notifications for manual brightness and the long timeout. -->
+    <!-- Android 13+: the persistent notifications (manual brightness, long timeout, Private DNS on Automatic). -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
-        android:name=".ScreenerApp"
+        android:name=".QuickSettingsApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Screener">
+        android:theme="@style/Theme.QuickSettings">
 
-        <!-- The popup. Also the launcher entry. -->
+        <!-- Main screen: how to add the tiles and grant permissions. -->
         <activity
-            android:name=".ui.panel.PanelActivity"
-            android:excludeFromRecents="true"
+            android:name=".ui.main.MainActivity"
             android:exported="true"
-            android:launchMode="singleTask"
-            android:taskAffinity=""
-            android:theme="@style/Theme.Screener.Panel">
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- Long-pressing the tile: opens Android's Display settings, shows nothing itself. -->
+        <!-- The Screen popup, opened from its tile and notifications. -->
         <activity
-            android:name=".tile.DisplaySettingsActivity"
+            android:name=".ui.panel.PanelActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:theme="@style/Theme.QuickSettings.Panel" />
+
+        <!-- Long-pressing a tile: opens the matching Android settings page, shows nothing itself. -->
+        <activity
+            android:name=".tile.TilePreferencesActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:noHistory="true"
@@ -51,7 +57,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Reset buttons on the notifications. Private: only our PendingIntents. -->
+        <!-- Buttons on the notifications. Private: only our PendingIntents. -->
         <receiver
             android:name=".notify.ResetReceiver"
             android:exported="false" />
@@ -59,12 +65,26 @@
         <service
             android:name=".tile.ScreenTileService"
             android:exported="true"
-            android:icon="@drawable/ic_tile"
-            android:label="@string/tile_label"
+            android:icon="@drawable/ic_tile_display"
+            android:label="@string/tile_screen_label"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
+        </service>
+
+        <service
+            android:name=".tile.DnsTileService"
+            android:exported="true"
+            android:icon="@drawable/ic_dns"
+            android:label="@string/tile_dns_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.quicksettings.TOGGLEABLE_TILE"
+                android:value="true" />
         </service>
     </application>
 

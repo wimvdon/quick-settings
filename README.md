@@ -1,7 +1,10 @@
-# Screener
+# Quick Settings
 
-A Quick Settings tile for the screen, Snoozer's sister app (in Android's own colours). Tap the tile for a popup (laid out
-like Android's Internet dialog) with:
+Extra Quick Settings tiles, in Android's own colours. The app itself is a main screen with setup
+instructions.
+
+## Screen tile
+Tap it for a popup (laid out like Android's Internet dialog) with:
 
 - **Brightness**: a slider that switches auto brightness off and sets the level; the X goes back
   to auto. A notification with an **Auto** button shows while brightness is manual.
@@ -12,18 +15,24 @@ like Android's Internet dialog) with:
 The tile lights up and names what is changed whenever a setting isn't at its default.
 Long-press it to open Android's Display settings.
 
+## Private DNS tile
+Tap it to switch Private DNS between your own hostname (tile on) and Automatic (tile off).
+While it is on Automatic, a notification with a **Hostname** button switches it back. The
+hostname itself is set once in Android's Settings › Network & internet › Private DNS.
+Long-press the tile to open Network & internet.
+
 ## Setting it up
-1. Install the app, open Quick Settings, tap the pencil (edit) and drag **Screen** into your tiles.
-2. Tap the tile. Under "Allow changing system settings" tap **Allow** and switch on
-   *Allow modifying system settings*. Go back.
-3. For always-on display and tap to wake, Android needs a one-time command from a computer with
-   [adb](https://developer.android.com/tools/adb) (USB debugging on). In the popup tap **Copy**,
-   or type:
+Open the app: its main screen walks through every step.
+1. Tap **Add** next to each tile (Android 13+), or open Quick Settings, tap the pencil and drag
+   **Screen** and **Private DNS** into your tiles.
+2. Allow **Modify system settings** (brightness and timeout) and **Notifications**.
+3. Always-on display, tap to wake and Private DNS need a one-time command from a computer with
+   [adb](https://developer.android.com/tools/adb) (USB debugging on). The main screen has the
+   steps and a **Copy** button, or type:
    ```
-   adb shell pm grant to.wim.screener android.permission.WRITE_SECURE_SETTINGS
+   adb shell pm grant to.wim.quicksettings android.permission.WRITE_SECURE_SETTINGS
    ```
-   For a debug build from a pull request, use `to.wim.screener.debug`.
-4. The first time you change brightness or the timeout, allow notifications.
+   For a debug build from a pull request, use `to.wim.quicksettings.debug`.
 
 Built from the Android app template; the sections below are the template's.
 

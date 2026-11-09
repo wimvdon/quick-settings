@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Screener</string>
-    <string name="tile_label">Schermo</string>
+    <string name="app_name">Quick Settings</string>
+    <string name="tile_screen_label">Schermo</string>
     <string name="tile_subtitle_default">Predefinito</string>
     <string name="change_brightness">Luminosità manuale</string>
     <string name="change_timeout">Timeout lungo</string>
@@ -25,7 +25,6 @@
     <string name="setup_secure_title">Display sempre attivo e tocca per riattivare</string>
     <string name="setup_secure_text">Android li consente solo dopo un comando una tantum da un computer con adb:</string>
     <string name="setup_secure_button">Copia</string>
-    <string name="notification_channel_name">Impostazioni schermo modificate</string>
     <string name="notification_brightness_title">Luminosità manuale</string>
     <string name="notification_brightness_action">Automatica</string>
     <string name="notification_timeout_title">Spegnimento schermo prolungato</string>
@@ -55,4 +54,33 @@
         <item quantity="many">%d ore</item>
         <item quantity="other">%d ore</item>
     </plurals>
+    <string name="tile_dns_label">DNS privato</string>
+    <string name="dns_automatic">Automatico</string>
+    <string name="dns_off">Disattivato</string>
+    <string name="dns_hostname">Il tuo nome host</string>
+    <string name="notification_channel_display">Display</string>
+    <string name="notification_channel_dns">DNS privato</string>
+    <string name="notification_dns_title">DNS privato su automatico</string>
+    <string name="notification_dns_text">%1$s non viene usato</string>
+    <string name="notification_dns_action">Nome host</string>
+    <string name="main_section_tiles">Riquadri</string>
+    <string name="main_tile_screen_text">Luminosità, spegnimento, display sempre attivo e tocca per riattivare</string>
+    <string name="main_tile_dns_text">Passa dal tuo nome host ad automatico</string>
+    <string name="main_add_tile">Aggiungi</string>
+    <string name="main_tiles_manual">Oppure scorri due volte verso il basso, tocca la matita e trascina i riquadri nelle Impostazioni rapide.</string>
+    <string name="main_open_screen">Apri Schermo</string>
+    <string name="main_section_permissions">Autorizzazioni</string>
+    <string name="main_permission_system">Modificare le impostazioni di sistema</string>
+    <string name="main_permission_system_text">Per luminosità e spegnimento schermo</string>
+    <string name="main_permission_notifications">Notifiche</string>
+    <string name="main_permission_notifications_text">Mostra un’impostazione modificata, con un pulsante per annullarla</string>
+    <string name="main_permission_secure">Scrivere impostazioni protette</string>
+    <string name="main_permission_secure_text">Per display sempre attivo, tocca per riattivare e DNS privato. Solo un computer può concederlo.</string>
+    <string name="main_granted">Consentito</string>
+    <string name="main_adb_title">Concederlo con adb</string>
+    <string name="main_adb_steps">1. Impostazioni › Informazioni sul telefono: tocca 7 volte Numero build.\n2. Impostazioni › Sistema › Opzioni sviluppatore: attiva il debug USB.\n3. Collega il telefono a un computer con gli Android platform tools e consentilo.\n4. Esegui questo comando sul computer:</string>
+    <string name="main_dns_current">In uso: %1$s</string>
+    <string name="main_dns_no_hostname">Nessun nome host impostato</string>
+    <string name="main_dns_no_hostname_text">Impostane uno una volta in Impostazioni › Rete e Internet › DNS privato. Il riquadro passerà poi a quello.</string>
+    <string name="main_open_settings">Apri impostazioni</string>
 </resources>

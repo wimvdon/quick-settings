@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Screener</string>
-    <string name="tile_label">Screen</string>
+    <string name="app_name">Quick Settings</string>
+    <string name="tile_screen_label">Screen</string>
     <string name="tile_subtitle_default">Default</string>
     <string name="change_brightness">Manual brightness</string>
     <string name="change_timeout">Long timeout</string>
@@ -25,7 +25,6 @@
     <string name="setup_secure_title">Always-on display and tap to wake</string>
     <string name="setup_secure_text">Android only allows these after a one-time command from a computer with adb:</string>
     <string name="setup_secure_button">Copy</string>
-    <string name="notification_channel_name">Changed screen settings</string>
     <string name="notification_brightness_title">Manual brightness</string>
     <string name="notification_brightness_action">Auto</string>
     <string name="notification_timeout_title">Screen timeout extended</string>
@@ -50,4 +49,33 @@
         <item quantity="one">%d hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
+    <string name="tile_dns_label">Private DNS</string>
+    <string name="dns_automatic">Automatic</string>
+    <string name="dns_off">Off</string>
+    <string name="dns_hostname">Your hostname</string>
+    <string name="notification_channel_display">Display</string>
+    <string name="notification_channel_dns">Private DNS</string>
+    <string name="notification_dns_title">Private DNS on Automatic</string>
+    <string name="notification_dns_text">%1$s isn\'t used</string>
+    <string name="notification_dns_action">Hostname</string>
+    <string name="main_section_tiles">Tiles</string>
+    <string name="main_tile_screen_text">Brightness, screen timeout, always-on display and tap to wake</string>
+    <string name="main_tile_dns_text">Switches between your hostname and Automatic</string>
+    <string name="main_add_tile">Add</string>
+    <string name="main_tiles_manual">Or swipe down twice, tap the pencil and drag the tiles into your Quick Settings.</string>
+    <string name="main_open_screen">Open Screen</string>
+    <string name="main_section_permissions">Permissions</string>
+    <string name="main_permission_system">Modify system settings</string>
+    <string name="main_permission_system_text">For brightness and screen timeout</string>
+    <string name="main_permission_notifications">Notifications</string>
+    <string name="main_permission_notifications_text">Shows a changed setting, with a button to undo it</string>
+    <string name="main_permission_secure">Write secure settings</string>
+    <string name="main_permission_secure_text">For always-on display, tap to wake and Private DNS. Only a computer can grant this.</string>
+    <string name="main_granted">Allowed</string>
+    <string name="main_adb_title">Grant it with adb</string>
+    <string name="main_adb_steps">1. Settings › About phone: tap Build number 7 times.\n2. Settings › System › Developer options: turn on USB debugging.\n3. Connect the phone to a computer with Android platform tools and allow it.\n4. Run this command on the computer:</string>
+    <string name="main_dns_current">In use: %1$s</string>
+    <string name="main_dns_no_hostname">No hostname set</string>
+    <string name="main_dns_no_hostname_text">Set one once in Settings › Network &amp; internet › Private DNS. The tile then switches to it.</string>
+    <string name="main_open_settings">Open settings</string>
 </resources>

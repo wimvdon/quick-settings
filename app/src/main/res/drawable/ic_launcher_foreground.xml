@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- A blank phone screen with a small light near the top (a screen waking up), on the white
-     background. Fits the 66dp safe zone: its furthest point is 31.0dp from the centre (max 33). -->
+<!-- A cogwheel with a white lightning bolt on the white background. The teeth reach 31dp from
+     the centre, inside the 33dp safe-zone radius. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <path android:pathData="M45,25H63A10,10 0,0 1,73,35V73A10,10 0,0 1,63,83H45A10,10 0,0 1,35,73V35A10,10 0,0 1,45,25z">
+    <path android:pathData="M48.07,30.23L49.15,23.38A31,31 0,0 1,58.85,23.38L59.93,30.23A24.5,24.5 0,0 1,66.62,33.00L72.22,28.92A31,31 0,0 1,79.08,35.78L75.00,41.38A24.5,24.5 0,0 1,77.77,48.07L84.62,49.15A31,31 0,0 1,84.62,58.85L77.77,59.93A24.5,24.5 0,0 1,75.00,66.62L79.08,72.22A31,31 0,0 1,72.22,79.08L66.62,75.00A24.5,24.5 0,0 1,59.93,77.77L58.85,84.62A31,31 0,0 1,49.15,84.62L48.07,77.77A24.5,24.5 0,0 1,41.38,75.00L35.78,79.08A31,31 0,0 1,28.92,72.22L33.00,66.62A24.5,24.5 0,0 1,30.23,59.93L23.38,58.85A31,31 0,0 1,23.38,49.15L30.23,48.07A24.5,24.5 0,0 1,33.00,41.38L28.92,35.78A31,31 0,0 1,35.78,28.92L41.38,33.00A24.5,24.5 0,0 1,48.07,30.23Z">
         <aapt:attr name="android:fillColor">
             <gradient
                 android:type="linear"
-                android:startX="35"
-                android:startY="25"
-                android:endX="73"
-                android:endY="83">
+                android:startX="23"
+                android:startY="23"
+                android:endX="85"
+                android:endY="85">
                 <item android:offset="0" android:color="#FF4FC3F7" />
                 <item android:offset="0.55" android:color="#FF3D7BFF" />
                 <item android:offset="1" android:color="#FF5B4FD9" />
             </gradient>
         </aapt:attr>
     </path>
-    <!-- Light -->
+    <!-- Lightning bolt -->
     <path
         android:fillColor="#FFFFFFFF"
-        android:pathData="M46.5,45a7.5,7.5 0,1 0,15.0,0a7.5,7.5 0,1 0,-15.0,0z" />
+        android:pathData="M57.5,37L44,57.5H53L50.5,71L64,50.5H55L57.5,37Z" />
 </vector>

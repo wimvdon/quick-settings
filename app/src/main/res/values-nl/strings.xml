@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Screener</string>
-    <string name="tile_label">Scherm</string>
+    <string name="app_name">Quick Settings</string>
+    <string name="tile_screen_label">Scherm</string>
     <string name="tile_subtitle_default">Standaard</string>
     <string name="change_brightness">Handmatige helderheid</string>
     <string name="change_timeout">Lange time-out</string>
@@ -25,7 +25,6 @@
     <string name="setup_secure_title">Always-on display en tikken om te activeren</string>
     <string name="setup_secure_text">Android staat dit pas toe na een eenmalig commando vanaf een computer met adb:</string>
     <string name="setup_secure_button">Kopiëren</string>
-    <string name="notification_channel_name">Gewijzigde scherminstellingen</string>
     <string name="notification_brightness_title">Handmatige helderheid</string>
     <string name="notification_brightness_action">Automatisch</string>
     <string name="notification_timeout_title">Time-out voor scherm verlengd</string>
@@ -50,4 +49,33 @@
         <item quantity="one">%d uur</item>
         <item quantity="other">%d uur</item>
     </plurals>
+    <string name="tile_dns_label">Privé-DNS</string>
+    <string name="dns_automatic">Automatisch</string>
+    <string name="dns_off">Uit</string>
+    <string name="dns_hostname">Je hostnaam</string>
+    <string name="notification_channel_display">Scherm</string>
+    <string name="notification_channel_dns">Privé-DNS</string>
+    <string name="notification_dns_title">Privé-DNS op automatisch</string>
+    <string name="notification_dns_text">%1$s wordt niet gebruikt</string>
+    <string name="notification_dns_action">Hostnaam</string>
+    <string name="main_section_tiles">Tegels</string>
+    <string name="main_tile_screen_text">Helderheid, time-out, always-on display en tikken om te activeren</string>
+    <string name="main_tile_dns_text">Wisselt tussen je hostnaam en automatisch</string>
+    <string name="main_add_tile">Toevoegen</string>
+    <string name="main_tiles_manual">Of swipe twee keer omlaag, tik op het potlood en sleep de tegels naar je snelle instellingen.</string>
+    <string name="main_open_screen">Scherm openen</string>
+    <string name="main_section_permissions">Rechten</string>
+    <string name="main_permission_system">Systeeminstellingen wijzigen</string>
+    <string name="main_permission_system_text">Voor helderheid en time-out</string>
+    <string name="main_permission_notifications">Meldingen</string>
+    <string name="main_permission_notifications_text">Toont een gewijzigde instelling, met een knop om ze terug te zetten</string>
+    <string name="main_permission_secure">Beveiligde instellingen schrijven</string>
+    <string name="main_permission_secure_text">Voor always-on display, tikken om te activeren en privé-DNS. Alleen een computer kan dit toestaan.</string>
+    <string name="main_granted">Toegestaan</string>
+    <string name="main_adb_title">Toestaan met adb</string>
+    <string name="main_adb_steps">1. Instellingen › Over de telefoon: tik 7 keer op Buildnummer.\n2. Instellingen › Systeem › Ontwikkelaarsopties: zet USB-foutopsporing aan.\n3. Verbind de telefoon met een computer met de Android platform tools en sta hem toe.\n4. Voer dit commando uit op de computer:</string>
+    <string name="main_dns_current">In gebruik: %1$s</string>
+    <string name="main_dns_no_hostname">Geen hostnaam ingesteld</string>
+    <string name="main_dns_no_hostname_text">Stel er eenmalig een in via Instellingen › Netwerk en internet › Privé-DNS. De tegel schakelt er daarna naartoe.</string>
+    <string name="main_open_settings">Naar instellingen</string>
 </resources>

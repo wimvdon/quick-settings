@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Screener</string>
-    <string name="tile_label">Bildschirm</string>
+    <string name="app_name">Quick Settings</string>
+    <string name="tile_screen_label">Bildschirm</string>
     <string name="tile_subtitle_default">Standard</string>
     <string name="change_brightness">Manuelle Helligkeit</string>
     <string name="change_timeout">Langes Timeout</string>
@@ -25,7 +25,6 @@
     <string name="setup_secure_title">Always-on-Display und Zum Aktivieren tippen</string>
     <string name="setup_secure_text">Android erlaubt das erst nach einem einmaligen Befehl von einem Computer mit adb:</string>
     <string name="setup_secure_button">Kopieren</string>
-    <string name="notification_channel_name">Geänderte Bildschirmeinstellungen</string>
     <string name="notification_brightness_title">Manuelle Helligkeit</string>
     <string name="notification_brightness_action">Automatisch</string>
     <string name="notification_timeout_title">Bildschirm-Timeout verlängert</string>
@@ -50,4 +49,33 @@
         <item quantity="one">%d Stunde</item>
         <item quantity="other">%d Stunden</item>
     </plurals>
+    <string name="tile_dns_label">Privates DNS</string>
+    <string name="dns_automatic">Automatisch</string>
+    <string name="dns_off">Aus</string>
+    <string name="dns_hostname">Dein Hostname</string>
+    <string name="notification_channel_display">Display</string>
+    <string name="notification_channel_dns">Privates DNS</string>
+    <string name="notification_dns_title">Privates DNS auf Automatisch</string>
+    <string name="notification_dns_text">%1$s wird nicht verwendet</string>
+    <string name="notification_dns_action">Hostname</string>
+    <string name="main_section_tiles">Kacheln</string>
+    <string name="main_tile_screen_text">Helligkeit, Timeout, Always-on-Display und Zum Aktivieren tippen</string>
+    <string name="main_tile_dns_text">Wechselt zwischen deinem Hostname und Automatisch</string>
+    <string name="main_add_tile">Hinzufügen</string>
+    <string name="main_tiles_manual">Oder wische zweimal nach unten, tippe auf den Stift und ziehe die Kacheln in deine Schnelleinstellungen.</string>
+    <string name="main_open_screen">Bildschirm öffnen</string>
+    <string name="main_section_permissions">Berechtigungen</string>
+    <string name="main_permission_system">Systemeinstellungen ändern</string>
+    <string name="main_permission_system_text">Für Helligkeit und Timeout</string>
+    <string name="main_permission_notifications">Benachrichtigungen</string>
+    <string name="main_permission_notifications_text">Zeigt eine geänderte Einstellung, mit einer Taste zum Zurücksetzen</string>
+    <string name="main_permission_secure">Sichere Einstellungen schreiben</string>
+    <string name="main_permission_secure_text">Für Always-on-Display, Zum Aktivieren tippen und privates DNS. Nur ein Computer kann das erlauben.</string>
+    <string name="main_granted">Erlaubt</string>
+    <string name="main_adb_title">Mit adb erlauben</string>
+    <string name="main_adb_steps">1. Einstellungen › Über das Telefon: tippe 7-mal auf Build-Nummer.\n2. Einstellungen › System › Entwickleroptionen: schalte USB-Debugging ein.\n3. Verbinde das Telefon mit einem Computer mit den Android Platform Tools und erlaube ihn.\n4. Führe diesen Befehl auf dem Computer aus:</string>
+    <string name="main_dns_current">Aktiv: %1$s</string>
+    <string name="main_dns_no_hostname">Kein Hostname festgelegt</string>
+    <string name="main_dns_no_hostname_text">Lege ihn einmal fest unter Einstellungen › Netzwerk &amp; Internet › Privates DNS. Die Kachel wechselt dann dorthin.</string>
+    <string name="main_open_settings">Zu den Einstellungen</string>
 </resources>
