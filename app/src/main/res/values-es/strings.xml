@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- The name shown under the launcher icon. Rename per app (also in every values-xx folder). -->
-    <string name="app_name">Template</string>
-    <string name="home_title">¡Hola!</string>
-    <string name="home_body">Esta es la pantalla de ejemplo de la plantilla de app.</string>
-    <plurals name="home_tap_count">
-        <item quantity="one">Tocado %d vez</item>
-        <item quantity="many">Tocado %d veces</item>
-        <item quantity="other">Tocado %d veces</item>
+    <string name="app_name">Screener</string>
+    <string name="tile_label">Pantalla</string>
+    <string name="tile_subtitle_default">Predeterminado</string>
+    <string name="change_brightness">Brillo manual</string>
+    <string name="change_timeout">Tiempo de espera largo</string>
+    <string name="change_always_on">Siempre activa</string>
+    <string name="change_tap_to_wake">Tocar para activar desactivado</string>
+    <string name="panel_title">Pantalla</string>
+    <string name="panel_subtitle_default">Todo está predeterminado</string>
+    <string name="brightness_title">Brillo</string>
+    <string name="brightness_auto">Automático</string>
+    <string name="brightness_manual">Manual · %1$d%%</string>
+    <string name="brightness_reset">Brillo automático</string>
+    <string name="percent">%1$d %%</string>
+    <string name="timeout_title">Tiempo de espera de pantalla</string>
+    <string name="always_on_title">Pantalla siempre activa</string>
+    <string name="tap_to_wake_title">Tocar para activar</string>
+    <string name="panel_settings">Ajustes</string>
+    <string name="panel_done">Listo</string>
+    <string name="setup_system_title">Permitir cambiar los ajustes del sistema</string>
+    <string name="setup_system_text">Necesario para el brillo y el tiempo de espera.</string>
+    <string name="setup_system_button">Permitir</string>
+    <string name="setup_secure_title">Pantalla siempre activa y tocar para activar</string>
+    <string name="setup_secure_text">Android solo lo permite tras un comando único desde un ordenador con adb:</string>
+    <string name="setup_secure_button">Copiar</string>
+    <string name="notification_channel_name">Ajustes de pantalla cambiados</string>
+    <string name="notification_brightness_title">Brillo manual</string>
+    <string name="notification_brightness_action">Automático</string>
+    <string name="notification_timeout_title">Tiempo de espera ampliado</string>
+    <string name="notification_timeout_action">1 min</string>
+    <plurals name="tile_subtitle_changes">
+        <item quantity="one">%d cambiado</item>
+        <item quantity="many">%d cambiados</item>
+        <item quantity="other">%d cambiados</item>
     </plurals>
-    <string name="home_tap_button">Toca aquí</string>
-    <string name="home_reset_button">Restablecer</string>
+    <plurals name="panel_subtitle_changes">
+        <item quantity="one">%d ajuste cambiado</item>
+        <item quantity="many">%d ajustes cambiados</item>
+        <item quantity="other">%d ajustes cambiados</item>
+    </plurals>
+    <plurals name="duration_seconds">
+        <item quantity="one">%d segundo</item>
+        <item quantity="many">%d segundos</item>
+        <item quantity="other">%d segundos</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%d minuto</item>
+        <item quantity="many">%d minutos</item>
+        <item quantity="other">%d minutos</item>
+    </plurals>
+    <plurals name="duration_hours">
+        <item quantity="one">%d hora</item>
+        <item quantity="many">%d horas</item>
+        <item quantity="other">%d horas</item>
+    </plurals>
 </resources>

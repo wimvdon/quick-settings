@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- The name shown under the launcher icon. Rename per app (also in every values-xx folder). -->
-    <string name="app_name">Template</string>
-    <string name="home_title">Bonjour !</string>
-    <string name="home_body">Voici l’écran d’exemple du modèle d’app.</string>
-    <plurals name="home_tap_count">
-        <item quantity="one">Touché %d fois</item>
-        <item quantity="many">Touché %d fois</item>
-        <item quantity="other">Touché %d fois</item>
+    <string name="app_name">Screener</string>
+    <string name="tile_label">Écran</string>
+    <string name="tile_subtitle_default">Par défaut</string>
+    <string name="change_brightness">Luminosité manuelle</string>
+    <string name="change_timeout">Délai long</string>
+    <string name="change_always_on">Toujours activé</string>
+    <string name="change_tap_to_wake">Toucher pour activer désactivé</string>
+    <string name="panel_title">Écran</string>
+    <string name="panel_subtitle_default">Tout est par défaut</string>
+    <string name="brightness_title">Luminosité</string>
+    <string name="brightness_auto">Auto</string>
+    <string name="brightness_manual">Manuelle · %1$d %%</string>
+    <string name="brightness_reset">Luminosité automatique</string>
+    <string name="percent">%1$d %%</string>
+    <string name="timeout_title">Mise en veille de l’écran</string>
+    <string name="always_on_title">Écran toujours activé</string>
+    <string name="tap_to_wake_title">Toucher pour activer</string>
+    <string name="panel_settings">Paramètres</string>
+    <string name="panel_done">OK</string>
+    <string name="setup_system_title">Autoriser la modification des paramètres système</string>
+    <string name="setup_system_text">Nécessaire pour la luminosité et la mise en veille.</string>
+    <string name="setup_system_button">Autoriser</string>
+    <string name="setup_secure_title">Écran toujours activé et toucher pour activer</string>
+    <string name="setup_secure_text">Android ne les autorise qu’après une commande unique depuis un ordinateur avec adb :</string>
+    <string name="setup_secure_button">Copier</string>
+    <string name="notification_channel_name">Paramètres d’écran modifiés</string>
+    <string name="notification_brightness_title">Luminosité manuelle</string>
+    <string name="notification_brightness_action">Auto</string>
+    <string name="notification_timeout_title">Mise en veille prolongée</string>
+    <string name="notification_timeout_action">1 min</string>
+    <plurals name="tile_subtitle_changes">
+        <item quantity="one">%d modifié</item>
+        <item quantity="many">%d modifiés</item>
+        <item quantity="other">%d modifiés</item>
     </plurals>
-    <string name="home_tap_button">Touchez ici</string>
-    <string name="home_reset_button">Réinitialiser</string>
+    <plurals name="panel_subtitle_changes">
+        <item quantity="one">%d paramètre modifié</item>
+        <item quantity="many">%d paramètres modifiés</item>
+        <item quantity="other">%d paramètres modifiés</item>
+    </plurals>
+    <plurals name="duration_seconds">
+        <item quantity="one">%d seconde</item>
+        <item quantity="many">%d secondes</item>
+        <item quantity="other">%d secondes</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="many">%d minutes</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="duration_hours">
+        <item quantity="one">%d heure</item>
+        <item quantity="many">%d heures</item>
+        <item quantity="other">%d heures</item>
+    </plurals>
 </resources>

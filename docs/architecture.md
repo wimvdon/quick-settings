@@ -1,18 +1,40 @@
 # Architecture
 
-> Template skeleton. Fill in the "This app" section for each app and keep it up to date.
-
 ## This app
-_What the app does, its screens, and where its data lives. (Placeholder: one home screen with a tap counter. No stored data.)_
+Screener changes four screen settings from a Quick Settings tile:
+
+| Setting | Default | Changed to | Where Android keeps it | Permission |
+| --- | --- | --- | --- | --- |
+| Brightness | Auto | Manual, any level (slider; the X goes back to auto) | `Settings.System` `screen_brightness_mode`, `screen_brightness` | Modify system settings |
+| Screen timeout | 1 minute | 30 minutes | `Settings.System` `screen_off_timeout` | Modify system settings |
+| Always-on display | Off | On | `Settings.Secure` `doze_always_on` | `WRITE_SECURE_SETTINGS` (adb) |
+| Tap to wake | On | Off | `Settings.Secure` `doze_tap_gesture` (Pixel) and `double_tap_to_wake` (AOSP) | `WRITE_SECURE_SETTINGS` (adb) |
+
+- **Tile** (`tile/ScreenTileService.kt`): lit while any setting differs from its default; the
+  subtitle names the change (or "2 changed"). Tapping it opens the popup; long-pressing opens it too.
+- **Popup** (`ui/panel/`): a floating activity styled like Android's Internet dialog. It is also
+  the launcher entry. Missing permissions show as setup cards in it.
+- **Notifications** (`notify/ScreenNotifications.kt`): one ongoing notification while brightness
+  is manual (button: Auto) and one while the timeout isn't 1 minute (button: 1 min).
+- **Rules** (`screen/ScreenController.kt`, plain Kotlin, unit tested): manual brightness always
+  switches auto brightness off *before* writing the level, because Android ignores a level
+  written in auto mode. `BrightnessCurve` maps the slider like Android's own (HLG gamma).
+- **Keeping in step**: `ScreenerApp` watches the settings with a `ContentObserver` while the
+  process runs, and the tile and popup re-read them whenever they are shown, so changes made in
+  Android's Settings show up too.
+- **Stored data:** none. The defaults are fixed in `ScreenState.DEFAULTS`; everything else is
+  read from Android's settings.
 
 ## Structure
 ```
 app/src/main/kotlin/<package>/
-  MainActivity.kt          Entry point. Only sets up the theme and the first screen.
-  ui/theme/Theme.kt        Material 3 theme (light/dark, dynamic colour).
-  ui/<feature>/            One folder per screen/feature:
-    <Feature>Screen.kt       Composables: display state, forward clicks. No logic.
-    <Feature>….kt            Plain Kotlin logic (no Android types) → unit tested.
+  ScreenerApp.kt           Application: notification channel, settings observer, sync().
+  screen/                  ScreenState, ScreenController, BrightnessCurve (plain Kotlin, tested)
+                           and SystemScreenSettings (reads/writes Android's settings).
+  notify/                  Persistent notifications and their reset buttons.
+  tile/                    The Quick Settings tile.
+  ui/panel/                The popup: PanelActivity (state, permissions) and PanelScreen (Compose).
+  ui/theme/                Theme.kt (Snoozer's colours), Shapes.kt (shared kit).
 app/src/main/res/
   values/strings.xml       All user-visible text (English, the default).
   values-xx/strings.xml    Dutch, French, German, Spanish and Italian. Every string must exist in every language.
@@ -24,7 +46,7 @@ scripts/                   Release helpers (Python/Java) with their own tests.
 ## Conventions
 - **Single `app` module.** Split into modules only if the app grows large; record it in `decisions.md`.
 - **Logic in plain Kotlin classes** with no `Context`, `View` or Compose types, so it can be
-  tested on the JVM. Example: `ui/home/TapCounter.kt` (immutable; methods return a new value).
+  tested on the JVM. Example: `screen/ScreenController.kt`, tested with a fake `ScreenSettings`.
 - **UI state**: small screens use `rememberSaveable`. When a screen gets real logic or data,
   add a `ViewModel` (`androidx.lifecycle:lifecycle-viewmodel-compose`) that exposes a
   `StateFlow<UiState>` and calls into the plain-Kotlin logic. Record it in `decisions.md`.

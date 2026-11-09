@@ -1,16 +1,30 @@
-# Android app template
+# Screener
 
-A starting point for Android apps built with Claude Code and GitHub. Out of the box it
-**builds, tests and releases**. The only app content is a placeholder screen with a tap
-counter.
+A Quick Settings tile for the screen, Snoozer's sister app. Tap the tile for a popup (laid out
+like Android's Internet dialog) with:
 
-- Kotlin, Jetpack Compose, Material 3 (light/dark, wallpaper colours), Android 12+.
-- CI on every pull request: unit tests, lint, debug and release builds, and an installable APK.
-- One-click signed releases on GitHub, with automatic version numbers.
-- Weekly dependency updates (Dependabot).
-- Rules for Claude Code sessions in [`CLAUDE.md`](CLAUDE.md).
+- **Brightness**: a slider that switches auto brightness off and sets the level; the X goes back
+  to auto. A notification with an **Auto** button shows while brightness is manual.
+- **Screen timeout**: 30 minutes instead of 1. A notification with a **1 min** button shows
+  while it is extended.
+- **Always-on display** (default off) and **Tap to wake** (default on).
 
-> **New app from this template?** Start with [Using this template](#using-this-template).
+The tile lights up and names what is changed whenever a setting isn't at its default.
+
+## Setting it up
+1. Install the app, open Quick Settings, tap the pencil (edit) and drag **Screen** into your tiles.
+2. Tap the tile. Under "Allow changing system settings" tap **Allow** and switch on
+   *Allow modifying system settings*. Go back.
+3. For always-on display and tap to wake, Android needs a one-time command from a computer with
+   [adb](https://developer.android.com/tools/adb) (USB debugging on). In the popup tap **Copy**,
+   or type:
+   ```
+   adb shell pm grant io.github.impca201.screener android.permission.WRITE_SECURE_SETTINGS
+   ```
+   For a debug build from a pull request, use `io.github.impca201.screener.debug`.
+4. The first time you change brightness or the timeout, allow notifications.
+
+Built from the Android app template; the sections below are the template's.
 
 ---
 
