@@ -1,141 +1,66 @@
 package to.wim.quicksettings.ui.panel
 
 import android.Manifest
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.ContentObserver
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.provider.Settings
 import android.view.Gravity
 import android.view.ViewGroup
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.mutableStateOf
-import androidx.core.net.toUri
-import to.wim.quicksettings.screen.ScreenController
-import to.wim.quicksettings.screen.SystemScreenSettings
 import to.wim.quicksettings.quickSettingsApp
 import to.wim.quicksettings.ui.theme.AppTheme
 
 /**
- * The popup, shaped like Android's Quick Settings Internet dialog. Opened from the tile, the
- * launcher icon and the notifications. A floating window: tapping outside it closes it.
+ * The popup as its own floating window, for when the shade is closed: opened from the
+ * notifications. The tile shows the same popup over the open shade instead ([showPanelDialog]).
+ * Tapping outside it closes it.
  */
-class PanelActivity : ComponentActivity() {
-    private val controller: ScreenController get() = quickSettingsApp.controller
-    private val uiState = mutableStateOf<PanelUiState?>(null)
+class PanelActivity :
+    ComponentActivity(),
+    PanelModel.Host {
+    private lateinit var model: PanelModel
     private var askedForNotifications = false
 
     private val notificationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { quickSettingsApp.sync() }
 
-    private val observer =
-        object : ContentObserver(Handler(Looper.getMainLooper())) {
-            override fun onChange(selfChange: Boolean) = refresh()
-        }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        model = PanelModel(this, this)
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         window.setGravity(Gravity.CENTER)
         setContent {
-            AppTheme {
-                uiState.value?.let { state ->
-                    PanelScreen(
-                        state = state,
-                        actions =
-                            PanelActions(
-                                onBrightness = { position ->
-                                    // Called for every step of a drag: the notification and tile
-                                    // follow once the drag ends.
-                                    change(sync = false) { controller.setBrightnessPosition(position) }
-                                },
-                                onBrightnessFinished = {
-                                    quickSettingsApp.sync()
-                                    askForNotifications()
-                                },
-                                onAutoBrightness = { change { controller.resetBrightness() } },
-                                onTimeoutExtended = { extended ->
-                                    change {
-                                        controller.setTimeoutExtended(extended)
-                                        if (extended) askForNotifications()
-                                    }
-                                },
-                                onAlwaysOn = { change { controller.setAlwaysOn(it) } },
-                                onTapToWake = { change { controller.setTapToWake(it) } },
-                                onAllowSystemSettings = ::openWriteSettings,
-                                onCopyCommand = ::copyAdbCommand,
-                                onOpenSettings = ::openDisplaySettings,
-                                onDone = ::finish,
-                            ),
-                    )
-                }
-            }
+            AppTheme { PanelScreen(state = model.state.value, actions = model.actions) }
         }
     }
 
     override fun onResume() {
         super.onResume()
         // Permissions may have been granted in Settings or with adb meanwhile.
-        refresh()
-        SystemScreenSettings.watchedUris.forEach { contentResolver.registerContentObserver(it, false, observer) }
-        quickSettingsApp.sync()
+        model.start()
     }
 
     override fun onPause() {
-        contentResolver.unregisterContentObserver(observer)
+        model.stop()
         super.onPause()
     }
 
-    private fun refresh() {
-        uiState.value =
-            PanelUiState(
-                screen = controller.read(),
-                canWriteSystem = SystemScreenSettings.canWriteSystem(this),
-                canWriteSecure = SystemScreenSettings.canWriteSecure(this),
-                adbCommand = adbCommand(),
-            )
+    override fun open(intent: Intent) {
+        runCatching { startActivity(intent) }
     }
 
-    private fun change(
-        sync: Boolean = true,
-        block: () -> Unit,
-    ) {
-        block()
-        refresh()
-        if (sync) quickSettingsApp.sync()
-    }
+    override fun close() = finish()
 
     /** The notifications need permission on Android 13+; ask the first time they're useful. */
-    private fun askForNotifications() {
+    override fun notificationsUseful() {
         if (askedForNotifications || Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
         if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) return
         askedForNotifications = true
         notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
-    }
-
-    private fun openWriteSettings() {
-        runCatching {
-            startActivity(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, "package:$packageName".toUri()))
-        }
-    }
-
-    private fun openDisplaySettings() {
-        runCatching { startActivity(Intent(Settings.ACTION_DISPLAY_SETTINGS)) }
-    }
-
-    private fun adbCommand() = "adb shell pm grant $packageName android.permission.WRITE_SECURE_SETTINGS"
-
-    private fun copyAdbCommand() {
-        getSystemService(ClipboardManager::class.java)
-            ?.setPrimaryClip(ClipData.newPlainText("adb", adbCommand()))
     }
 
     companion object {

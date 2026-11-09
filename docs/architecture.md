@@ -27,8 +27,9 @@ Needs `WRITE_SECURE_SETTINGS` (adb).
 - **Main screen** (`ui/main/`): the launcher entry. Permissions first (with the numbered adb
   steps and a Copy button), then instructions: add the tiles (Android 13+ asks with one tap), the
   launcher shortcuts and Quick Tap. `GuideSteps` turns a translated block into numbered steps.
-- **Popup** (`ui/panel/`): a floating, centred activity styled like Android's Internet dialog,
-  for the Screen tile. Missing permissions show as setup cards in it.
+- **Popup** (`ui/panel/`): styled like Android's Internet dialog. The tile shows it as a dialog
+  over the open shade (`PanelDialog.kt`, `TileService.showDialog`); notifications open it as a
+  floating activity (`PanelActivity`). Both use `PanelModel` for state and actions. Missing permissions show as setup cards in it.
 - **Notifications** (`notify/Notifications.kt`), in two channels: *Display* (manual brightness,
   button Auto; long timeout, button 1 min) and *Private DNS* (whenever it isn't on the hostname: Off or Automatic; button Hostname).
 - **Rules** (plain Kotlin, unit tested): `screen/ScreenController.kt` switches auto brightness
