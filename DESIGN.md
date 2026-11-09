@@ -226,5 +226,19 @@ app apart from their package (and `R` import) lines. Copy a change to the other 
 
 ## This app
 
-Each app replaces this section with its own rules: the seed colour of its theme and its
-signature element.
+Screener is Snoozer's sister app.
+
+- Colours: Snoozer's palette, seed `#3E7BDA` (blue) with the icon's teal (`#22C3B4`) as tertiary.
+- Icon: a phone with a white sun (brightness), with Snoozer's gradient `#22C3B4` → `#3E7BDA` →
+  `#4E5BB0` on white; the themed layer cuts the sun out of the phone.
+- Signature element: the popup, laid out like Android's Quick Settings Internet dialog: a
+  centred title and status line, one group of rows (24dp outer corners, 4dp where rows meet,
+  2dp apart), a changed setting highlighted in `primaryContainer` like the connected network,
+  and Settings / Done at the bottom. It sits at the bottom of the screen in a floating window
+  that dims the app behind it.
+- No settings screen: the app is the popup, so there is no Theme or Dynamic color choice. It
+  follows the phone's light/dark setting and always uses its own colours.
+- Setup needed (a permission missing) shows as a `tertiaryContainer` card above the rows, and
+  the rows it unlocks are disabled; the popup still works for the rest.
+- Kit files used: `Shapes.kt`. No lists, navigation, loading or empty screens, so the other kit
+  files are left out.

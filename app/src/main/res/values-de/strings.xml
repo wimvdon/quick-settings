@@ -1,13 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- The name shown under the launcher icon. Rename per app (also in every values-xx folder). -->
-    <string name="app_name">Template</string>
-    <string name="home_title">Hallo!</string>
-    <string name="home_body">Das ist der Beispielbildschirm der App-Vorlage.</string>
-    <plurals name="home_tap_count">
-        <item quantity="one">%d-mal getippt</item>
-        <item quantity="other">%d-mal getippt</item>
+    <string name="app_name">Screener</string>
+    <string name="tile_label">Bildschirm</string>
+    <string name="tile_subtitle_default">Standard</string>
+    <string name="change_brightness">Manuelle Helligkeit</string>
+    <string name="change_timeout">Langes Timeout</string>
+    <string name="change_always_on">Always-on</string>
+    <string name="change_tap_to_wake">Zum Aktivieren tippen aus</string>
+    <string name="panel_title">Bildschirm</string>
+    <string name="panel_subtitle_default">Alles auf Standard</string>
+    <string name="brightness_title">Helligkeit</string>
+    <string name="brightness_auto">Automatisch</string>
+    <string name="brightness_manual">Manuell · %1$d%%</string>
+    <string name="brightness_reset">Automatische Helligkeit</string>
+    <string name="percent">%1$d %%</string>
+    <string name="timeout_title">Bildschirm-Timeout</string>
+    <string name="always_on_title">Always-on-Display</string>
+    <string name="tap_to_wake_title">Zum Aktivieren tippen</string>
+    <string name="panel_settings">Einstellungen</string>
+    <string name="panel_done">Fertig</string>
+    <string name="setup_system_title">Systemeinstellungen ändern erlauben</string>
+    <string name="setup_system_text">Nötig für Helligkeit und Timeout.</string>
+    <string name="setup_system_button">Erlauben</string>
+    <string name="setup_secure_title">Always-on-Display und Zum Aktivieren tippen</string>
+    <string name="setup_secure_text">Android erlaubt das erst nach einem einmaligen Befehl von einem Computer mit adb:</string>
+    <string name="setup_secure_button">Kopieren</string>
+    <string name="notification_channel_name">Geänderte Bildschirmeinstellungen</string>
+    <string name="notification_brightness_title">Manuelle Helligkeit</string>
+    <string name="notification_brightness_action">Automatisch</string>
+    <string name="notification_timeout_title">Bildschirm-Timeout verlängert</string>
+    <string name="notification_timeout_action">1 Min.</string>
+    <plurals name="tile_subtitle_changes">
+        <item quantity="one">%d geändert</item>
+        <item quantity="other">%d geändert</item>
     </plurals>
-    <string name="home_tap_button">Hier tippen</string>
-    <string name="home_reset_button">Zurücksetzen</string>
+    <plurals name="panel_subtitle_changes">
+        <item quantity="one">%d Einstellung geändert</item>
+        <item quantity="other">%d Einstellungen geändert</item>
+    </plurals>
+    <plurals name="duration_seconds">
+        <item quantity="one">%d Sekunde</item>
+        <item quantity="other">%d Sekunden</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%d Minute</item>
+        <item quantity="other">%d Minuten</item>
+    </plurals>
+    <plurals name="duration_hours">
+        <item quantity="one">%d Stunde</item>
+        <item quantity="other">%d Stunden</item>
+    </plurals>
 </resources>

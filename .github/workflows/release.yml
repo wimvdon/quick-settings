@@ -263,7 +263,7 @@ jobs:
   #   permissions:
   #     contents: read
   #   env:
-  #     PACKAGE_NAME: com.example.template
+  #     PACKAGE_NAME: io.github.impca201.screener
   #   steps:
   #     - uses: actions/checkout@v7
   #       with:

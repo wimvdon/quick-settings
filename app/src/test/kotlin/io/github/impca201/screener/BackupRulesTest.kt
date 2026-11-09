@@ -1,4 +1,4 @@
-package com.example.template
+package io.github.impca201.screener
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

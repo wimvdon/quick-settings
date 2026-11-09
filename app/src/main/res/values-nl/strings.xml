@@ -1,12 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Template</string>
-    <string name="home_title">Hallo!</string>
-    <string name="home_body">Dit is het voorbeeldscherm van de app-template.</string>
-    <plurals name="home_tap_count">
-        <item quantity="one">%d keer getikt</item>
-        <item quantity="other">%d keer getikt</item>
+    <string name="app_name">Screener</string>
+    <string name="tile_label">Scherm</string>
+    <string name="tile_subtitle_default">Standaard</string>
+    <string name="change_brightness">Handmatige helderheid</string>
+    <string name="change_timeout">Lange time-out</string>
+    <string name="change_always_on">Altijd aan</string>
+    <string name="change_tap_to_wake">Tikken om te activeren uit</string>
+    <string name="panel_title">Scherm</string>
+    <string name="panel_subtitle_default">Alles staat op standaard</string>
+    <string name="brightness_title">Helderheid</string>
+    <string name="brightness_auto">Automatisch</string>
+    <string name="brightness_manual">Handmatig · %1$d%%</string>
+    <string name="brightness_reset">Automatische helderheid</string>
+    <string name="percent">%1$d%%</string>
+    <string name="timeout_title">Time-out voor scherm</string>
+    <string name="always_on_title">Always-on display</string>
+    <string name="tap_to_wake_title">Tikken om te activeren</string>
+    <string name="panel_settings">Instellingen</string>
+    <string name="panel_done">Klaar</string>
+    <string name="setup_system_title">Systeeminstellingen laten wijzigen</string>
+    <string name="setup_system_text">Nodig voor helderheid en time-out.</string>
+    <string name="setup_system_button">Toestaan</string>
+    <string name="setup_secure_title">Always-on display en tikken om te activeren</string>
+    <string name="setup_secure_text">Android staat dit pas toe na een eenmalig commando vanaf een computer met adb:</string>
+    <string name="setup_secure_button">Kopiëren</string>
+    <string name="notification_channel_name">Gewijzigde scherminstellingen</string>
+    <string name="notification_brightness_title">Handmatige helderheid</string>
+    <string name="notification_brightness_action">Automatisch</string>
+    <string name="notification_timeout_title">Time-out voor scherm verlengd</string>
+    <string name="notification_timeout_action">1 min</string>
+    <plurals name="tile_subtitle_changes">
+        <item quantity="one">%d gewijzigd</item>
+        <item quantity="other">%d gewijzigd</item>
     </plurals>
-    <string name="home_tap_button">Tik hier</string>
-    <string name="home_reset_button">Opnieuw</string>
+    <plurals name="panel_subtitle_changes">
+        <item quantity="one">%d instelling gewijzigd</item>
+        <item quantity="other">%d instellingen gewijzigd</item>
+    </plurals>
+    <plurals name="duration_seconds">
+        <item quantity="one">%d seconde</item>
+        <item quantity="other">%d seconden</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%d minuut</item>
+        <item quantity="other">%d minuten</item>
+    </plurals>
+    <plurals name="duration_hours">
+        <item quantity="one">%d uur</item>
+        <item quantity="other">%d uur</item>
+    </plurals>
 </resources>

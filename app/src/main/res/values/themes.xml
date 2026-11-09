@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Window theme only (shown before Compose draws). The real theme is ui/theme/Theme.kt. -->
-    <style name="Theme.App" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Window themes only; the popup is drawn with Compose Material 3 (ui/theme/Theme.kt). -->
+    <style name="Theme.Screener" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <!-- A floating window that dims what is behind it and closes when tapped outside,
+         like a system dialog. The rounded card is drawn by Compose, so the window is clear. -->
+    <style name="Theme.Screener.Panel" parent="android:Theme.Material.Light.Dialog.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+        <item name="android:backgroundDimAmount">0.4</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
 </resources>

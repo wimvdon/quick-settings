@@ -34,15 +34,20 @@ description. In addition, check every now and then (always before a release):
 
 - [ ] The app starts, and the changed screen looks right.
 - [ ] **Dark mode**: switch the phone's dark theme on/off. Text stays readable.
-- [ ] **Rotation** (if auto-rotate is on): the screen still works and keeps its state (e.g. the tap count).
+- [ ] **Rotation** (if auto-rotate is on): the screen still works and keeps its state (the popup keeps working).
 - [ ] **Language**: Settings → System → Languages → App languages → this app → Nederlands.
       All text is translated.
 - [ ] **Large text**: Settings → Display → Font size at maximum. Nothing is cut off.
 - [ ] **Back** gesture/button behaves as expected.
 - [ ] After a release: install the release APK over the previous release. It updates without
       losing data.
-- [ ] **Backup** (once the app stores settings): change a setting, Settings → search "Backup" →
-      Back up now, uninstall, install the same APK again. The setting is back.
+- [ ] **Tile**: with everything at default the tile is off and says "Default"; change one setting
+      and it lights up and names it.
+- [ ] **Brightness**: drag the slider while auto brightness is on: auto switches off and the
+      level follows the slider. The X and the notification's Auto button both bring auto back.
+- [ ] **Timeout**: the switch sets 30 minutes (notification appears); the notification's 1 min
+      button sets it back.
+- [ ] **Changes made elsewhere** (Android's Settings) show up in the tile, popup and notifications.
 
 ## Reading a crash from a release build
 Release builds are minified, so stack traces show short names like `a.b.c`. Download

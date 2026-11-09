@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- The name shown under the launcher icon. Rename per app (also in every values-xx folder). -->
-    <string name="app_name">Template</string>
-    <string name="home_title">Ciao!</string>
-    <string name="home_body">Questa è la schermata di esempio del modello di app.</string>
-    <plurals name="home_tap_count">
-        <item quantity="one">Toccato %d volta</item>
-        <item quantity="many">Toccato %d volte</item>
-        <item quantity="other">Toccato %d volte</item>
+    <string name="app_name">Screener</string>
+    <string name="tile_label">Schermo</string>
+    <string name="tile_subtitle_default">Predefinito</string>
+    <string name="change_brightness">Luminosità manuale</string>
+    <string name="change_timeout">Timeout lungo</string>
+    <string name="change_always_on">Sempre attivo</string>
+    <string name="change_tap_to_wake">Tocca per riattivare disattivato</string>
+    <string name="panel_title">Schermo</string>
+    <string name="panel_subtitle_default">Tutto predefinito</string>
+    <string name="brightness_title">Luminosità</string>
+    <string name="brightness_auto">Automatica</string>
+    <string name="brightness_manual">Manuale · %1$d%%</string>
+    <string name="brightness_reset">Luminosità automatica</string>
+    <string name="percent">%1$d%%</string>
+    <string name="timeout_title">Spegnimento schermo</string>
+    <string name="always_on_title">Display sempre attivo</string>
+    <string name="tap_to_wake_title">Tocca per riattivare</string>
+    <string name="panel_settings">Impostazioni</string>
+    <string name="panel_done">Fine</string>
+    <string name="setup_system_title">Consenti di modificare le impostazioni di sistema</string>
+    <string name="setup_system_text">Serve per luminosità e spegnimento schermo.</string>
+    <string name="setup_system_button">Consenti</string>
+    <string name="setup_secure_title">Display sempre attivo e tocca per riattivare</string>
+    <string name="setup_secure_text">Android li consente solo dopo un comando una tantum da un computer con adb:</string>
+    <string name="setup_secure_button">Copia</string>
+    <string name="notification_channel_name">Impostazioni schermo modificate</string>
+    <string name="notification_brightness_title">Luminosità manuale</string>
+    <string name="notification_brightness_action">Automatica</string>
+    <string name="notification_timeout_title">Spegnimento schermo prolungato</string>
+    <string name="notification_timeout_action">1 min</string>
+    <plurals name="tile_subtitle_changes">
+        <item quantity="one">%d modificato</item>
+        <item quantity="many">%d modificati</item>
+        <item quantity="other">%d modificati</item>
     </plurals>
-    <string name="home_tap_button">Tocca qui</string>
-    <string name="home_reset_button">Ripristina</string>
+    <plurals name="panel_subtitle_changes">
+        <item quantity="one">%d impostazione modificata</item>
+        <item quantity="many">%d impostazioni modificate</item>
+        <item quantity="other">%d impostazioni modificate</item>
+    </plurals>
+    <plurals name="duration_seconds">
+        <item quantity="one">%d secondo</item>
+        <item quantity="many">%d secondi</item>
+        <item quantity="other">%d secondi</item>
+    </plurals>
+    <plurals name="duration_minutes">
+        <item quantity="one">%d minuto</item>
+        <item quantity="many">%d minuti</item>
+        <item quantity="other">%d minuti</item>
+    </plurals>
+    <plurals name="duration_hours">
+        <item quantity="one">%d ora</item>
+        <item quantity="many">%d ore</item>
+        <item quantity="other">%d ore</item>
+    </plurals>
 </resources>
