@@ -2,6 +2,16 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-09: Back to the popup activity; the shade can't stay open
+
+Update, same day: on the owner's phone the shade still closed with `TileService.showDialog`.
+Android closes the shade itself when an app's tile shows anything, and an app can't draw above
+the shade; only System UI's own tiles (such as Internet) can show a dialog over it. The dialog
+gave no benefit, and it couldn't ask for the notification permission, so the tile opens
+`PanelActivity` again (`PanelDialog.kt` removed; `PanelModel` stays). The Private DNS tile now
+draws its new state before writing the setting and refreshes the notification afterwards, without
+asking Android to rebind the tiles, so it reacts to a tap at once.
+
 ## 2026-11-09: The Screen tile shows its popup over the open shade
 
 Like Android's own Internet dialog, the popup now opens on top of Quick Settings instead of

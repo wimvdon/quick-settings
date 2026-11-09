@@ -15,9 +15,8 @@ import to.wim.quicksettings.quickSettingsApp
 import to.wim.quicksettings.ui.theme.AppTheme
 
 /**
- * The popup as its own floating window, for when the shade is closed: opened from the
- * notifications. The tile shows the same popup over the open shade instead ([showPanelDialog]).
- * Tapping outside it closes it.
+ * The popup, shaped like Android's Quick Settings Internet dialog, in its own floating window.
+ * Opened from the Screen tile and the notifications. Tapping outside it closes it.
  */
 class PanelActivity :
     ComponentActivity(),

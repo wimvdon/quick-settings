@@ -5,19 +5,18 @@ import to.wim.quicksettings.R
 import to.wim.quicksettings.quickSettingsApp
 import to.wim.quicksettings.screen.SystemScreenSettings
 import to.wim.quicksettings.ui.changeLabel
-import to.wim.quicksettings.ui.panel.showPanelDialog
+import to.wim.quicksettings.ui.panel.PanelActivity
 
 /**
  * The Screen tile. It lights up while any setting differs from its default and names
- * what is changed; tapping it shows the popup over the open shade.
+ * what is changed; tapping it opens the popup.
  */
 class ScreenTileService : WatchingTileService() {
     override val watchedUris get() = SystemScreenSettings.watchedUris
 
     override fun onClick() {
         super.onClick()
-        // Over the open shade, like Android's own Internet dialog.
-        showPanelDialog()
+        openAndCollapse(PanelActivity.intent(this))
     }
 
     override fun render() {

@@ -14,8 +14,8 @@ import to.wim.quicksettings.quickSettingsApp
 import to.wim.quicksettings.screen.SystemScreenSettings
 
 /**
- * The popup's state and what its controls do, shared by the dialog the tile shows over the open
- * shade ([showPanelDialog]) and [PanelActivity] (opened from the notifications).
+ * The popup's state and what its controls do, kept apart from [PanelActivity] so the window
+ * around it stays thin.
  */
 class PanelModel(
     private val context: Context,
