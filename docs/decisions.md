@@ -2,6 +2,17 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-09: Shortcuts back in the manifest, no relay
+
+Pixel Quick Tap shows no settings gear for an app without manifest shortcuts: the dynamic
+shortcuts of v0.0.15 could not be chosen at all. The owner chose the gear over staying in the open
+app, so the four shortcuts are back in `res/xml/shortcuts.xml` (and the debug copy) with their
+original ids, pointing straight at `ShortcutActivity`. After a Quick Tap the home screen shows,
+because Android adds `FLAG_ACTIVITY_TASK_ON_HOME` to manifest shortcuts. The relay is not brought
+back: it made no difference. `QuickSettingsApp` removes the dynamic shortcuts v0.0.15 published.
+Rejected: a separate app-list entry per action (Quick Tap would open it without the home screen,
+but it adds icons to the app drawer).
+
 ## 2026-11-09: Shortcuts published from code again; the relay is gone
 
 The relay below did not help: Quick Tap still showed the home screen. AOSP `Task.moveToFront`
