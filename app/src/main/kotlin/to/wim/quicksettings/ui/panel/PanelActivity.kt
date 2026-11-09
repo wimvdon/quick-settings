@@ -45,6 +45,9 @@ class PanelActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         window.setGravity(Gravity.CENTER)
+        // Read the settings before the first frame: an empty first frame made the window animate
+        // in without the card, which then popped in (the "flash").
+        refresh()
         setContent {
             AppTheme {
                 uiState.value?.let { state ->

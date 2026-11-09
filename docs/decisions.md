@@ -10,6 +10,10 @@ popup flashed when it opened. Android decides when a tile's new state appears, s
 bought little. The tiles redraw when Quick Settings opens and after their own tap again, and
 `PanelActivity` is back to its v0.0.4 form (with the status line still removed).
 
+Update, same day: the popup still flashed. Its settings were only read in `onResume`, so the
+window's standard animation played on an empty window and the card appeared a moment later. They
+are now read in `onCreate`, before the first frame; the animation itself is Android's default.
+
 ## 2026-11-09: Back to the popup activity; the shade can't stay open
 
 Update, same day: on the owner's phone the shade still closed with `TileService.showDialog`.
