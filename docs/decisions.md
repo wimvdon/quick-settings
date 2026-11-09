@@ -14,6 +14,10 @@ Update, same day: the popup still flashed. Its settings were only read in `onRes
 window's standard animation played on an empty window and the card appeared a moment later. They
 are now read in `onCreate`, before the first frame; the animation itself is Android's default.
 
+Update, same day: the owner asked to go back to exactly how the app was after the popup was
+centred (v0.0.4), with no added code. All app code is now the v0.0.4 code again; only the popup's
+status line stays removed, as asked earlier.
+
 ## 2026-11-09: Back to the popup activity; the shade can't stay open
 
 Update, same day: on the owner's phone the shade still closed with `TileService.showDialog`.
