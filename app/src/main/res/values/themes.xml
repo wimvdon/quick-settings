@@ -11,12 +11,5 @@
         <item name="android:windowMinWidthMinor">100%</item>
         <item name="android:backgroundDimAmount">0.4</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
-        <!-- Only the dim fades; the card itself grows in with Compose (ExpandIn.kt). -->
-        <item name="android:windowAnimationStyle">@style/Animation.QuickSettings.Panel</item>
-    </style>
-
-    <style name="Animation.QuickSettings.Panel" parent="">
-        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
-        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 </resources>
