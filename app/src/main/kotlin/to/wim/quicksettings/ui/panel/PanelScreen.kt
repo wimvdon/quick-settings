@@ -82,7 +82,7 @@ private fun rowShape(
 )
 
 /**
- * The popup: a title, one group of rows (a changed setting is highlighted, like
+ * The popup: a title, one group of rows (manual brightness is highlighted, like
  * the connected network in the Internet dialog), and Settings / Done at the bottom.
  */
 @Composable
@@ -92,7 +92,6 @@ fun PanelScreen(
     modifier: Modifier = Modifier,
 ) {
     val screen = state.screen
-    val changes = screen.changes
     Surface(
         modifier =
             modifier
@@ -142,7 +141,6 @@ fun PanelScreen(
                     title = stringResource(R.string.timeout_title),
                     summary = timeoutText(LocalResources.current, screen.timeoutMs),
                     checked = screen.timeoutExtended,
-                    changed = ScreenState.Change.Timeout in changes,
                     enabled = state.canWriteSystem,
                     shape = rowShape(1, rows),
                     onCheckedChange = actions.onTimeoutExtended,
@@ -152,7 +150,6 @@ fun PanelScreen(
                     title = stringResource(R.string.always_on_title),
                     summary = null,
                     checked = screen.alwaysOn,
-                    changed = ScreenState.Change.AlwaysOn in changes,
                     enabled = state.canWriteSecure,
                     shape = rowShape(2, rows),
                     onCheckedChange = actions.onAlwaysOn,
@@ -162,7 +159,6 @@ fun PanelScreen(
                     title = stringResource(R.string.tap_to_wake_title),
                     summary = null,
                     checked = screen.tapToWake,
-                    changed = ScreenState.Change.TapToWake in changes,
                     enabled = state.canWriteSecure,
                     shape = rowShape(3, rows),
                     onCheckedChange = actions.onTapToWake,
@@ -243,12 +239,11 @@ private fun SwitchRow(
     title: String,
     summary: String?,
     checked: Boolean,
-    changed: Boolean,
     enabled: Boolean,
     shape: Shape,
     onCheckedChange: (Boolean) -> Unit,
 ) {
-    val (container, content) = rowColors(changed)
+    val (container, content) = rowColors(changed = false)
     Surface(shape = shape, color = container, contentColor = content, modifier = Modifier.fillMaxWidth()) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -265,7 +260,7 @@ private fun SwitchRow(
                     Text(
                         summary,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = if (changed) content else MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }

@@ -238,7 +238,8 @@ Quick Settings (formerly Screener) is Snoozer's sister app.
   DNS tile and notification), `brightness_medium` and `timer` (the display notifications).
 - Signature element: the Screen popup, laid out like Android's Quick Settings Internet dialog: a
   centred title, one group of rows (24dp outer corners, 4dp where rows meet,
-  2dp apart), a changed setting highlighted in `primaryContainer` like the connected network,
+  2dp apart), manual brightness highlighted in `primaryContainer` like the connected network (the switch
+  rows are never highlighted: their switch already shows the state),
   and Settings / Done at the bottom. It sits in the middle of the screen, like the native
   dialog, in a floating window that dims the app behind it. It opens with Android's standard
   dialog animation.
