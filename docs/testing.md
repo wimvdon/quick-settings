@@ -48,6 +48,11 @@ description. In addition, check every now and then (always before a release):
       level follows the slider. The X and the notification's Auto button both bring auto back.
 - [ ] **Timeout**: the switch sets 30 minutes (notification appears); the notification's 1 min
       button sets it back.
+- [ ] **Private DNS**: with a hostname set, the tile is lit; a tap switches to Automatic (tile
+      off, notification appears; also when Private DNS is Off) and the notification's Hostname
+      button switches back.
+- [ ] **Shortcuts**: touch and hold the app icon; each of the four shortcuts switches its
+      setting and shows a toast.
 - [ ] **Changes made elsewhere** (Android's Settings) show up in the tile, popup and notifications.
 
 ## Reading a crash from a release build

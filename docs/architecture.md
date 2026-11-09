@@ -1,7 +1,9 @@
 # Architecture
 
 ## This app
-Screener changes four screen settings from a Quick Settings tile:
+Quick Settings adds two Quick Settings tiles and a main screen with setup instructions.
+
+**Screen tile**: four screen settings.
 
 | Setting | Default | Changed to | Where Android keeps it | Permission |
 | --- | --- | --- | --- | --- |
@@ -10,30 +12,45 @@ Screener changes four screen settings from a Quick Settings tile:
 | Always-on display | Off | On | `Settings.Secure` `doze_always_on` | `WRITE_SECURE_SETTINGS` (adb) |
 | Tap to wake | On | Off | `Settings.Secure` `doze_tap_gesture` (Pixel) and `double_tap_to_wake` (AOSP) | `WRITE_SECURE_SETTINGS` (adb) |
 
-- **Tile** (`tile/ScreenTileService.kt`): lit while any setting differs from its default; the
-  subtitle names the change (or "2 changed"). Tapping it opens the popup; long-pressing opens Android's Display settings
-  (`tile/DisplaySettingsActivity.kt`, an invisible trampoline).
-- **Popup** (`ui/panel/`): a floating activity styled like Android's Internet dialog. It is also
-  the launcher entry. Missing permissions show as setup cards in it.
-- **Notifications** (`notify/ScreenNotifications.kt`): one ongoing notification while brightness
-  is manual (button: Auto) and one while the timeout isn't 1 minute (button: 1 min).
-- **Rules** (`screen/ScreenController.kt`, plain Kotlin, unit tested): manual brightness always
-  switches auto brightness off *before* writing the level, because Android ignores a level
-  written in auto mode. `BrightnessCurve` maps the slider like Android's own (HLG gamma).
-- **Keeping in step**: `ScreenerApp` watches the settings with a `ContentObserver` while the
-  process runs, and the tile and popup re-read them whenever they are shown, so changes made in
-  Android's Settings show up too.
+**Private DNS tile**: `Settings.Global` `private_dns_mode` between `hostname` and
+`opportunistic` (Automatic); the hostname is `private_dns_specifier`, set in Android's Settings.
+Needs `WRITE_SECURE_SETTINGS` (adb).
+
+- **Tiles** (`tile/`): `ScreenTileService` is lit while any screen setting differs from its
+  default, names the change and opens the popup. `DnsTileService` (a toggle) is lit while the
+  hostname is in use; a tap switches to the other mode, or opens the main screen when the adb
+  permission or a hostname is missing. Long-pressing either tile reaches
+  `TilePreferencesActivity`, an invisible trampoline that opens Display or Network & internet.
+- **Shortcuts** (`shortcut/ShortcutActivity.kt`, `res/xml/shortcuts.xml` plus a debug copy that
+  names the `.debug` package): four static launcher shortcuts that toggle Private DNS, the
+  timeout, always-on display and tap to wake, with a toast. Quick Tap can start them too.
+- **Main screen** (`ui/main/`): the launcher entry. Add the tiles (Android 13+ asks with one
+  tap), grant the permissions (with the adb steps and a Copy button) and see the DNS hostname.
+- **Popup** (`ui/panel/`): a floating activity styled like Android's Internet dialog, for the
+  Screen tile. Missing permissions show as setup cards in it.
+- **Notifications** (`notify/Notifications.kt`), in two channels: *Display* (manual brightness,
+  button Auto; long timeout, button 1 min) and *Private DNS* (whenever it isn't on the hostname: Off or Automatic; button Hostname).
+- **Rules** (plain Kotlin, unit tested): `screen/ScreenController.kt` switches auto brightness
+  off *before* writing a level, because Android ignores a level written in auto mode;
+  `BrightnessCurve` maps the slider like Android's own (HLG gamma). `dns/PrivateDns.kt` decides
+  what a tap switches to and when the tile is lit or the notification shows.
+- **Keeping in step**: `QuickSettingsApp` watches the settings with a `ContentObserver` while the
+  process runs, and the tiles, popup and main screen re-read them whenever they are shown, so
+  changes made in Android's Settings show up too.
 - **Stored data:** none. The defaults are fixed in `ScreenState.DEFAULTS`; everything else is
   read from Android's settings.
 
 ## Structure
 ```
 app/src/main/kotlin/<package>/
-  ScreenerApp.kt           Application: notification channel, settings observer, sync().
+  QuickSettingsApp.kt      Application: notification channels, settings observer, sync().
+  dns/                     PrivateDns (plain Kotlin, tested) and SystemDnsSettings.
   screen/                  ScreenState, ScreenController, BrightnessCurve (plain Kotlin, tested)
                            and SystemScreenSettings (reads/writes Android's settings).
-  notify/                  Persistent notifications and their reset buttons.
-  tile/                    The Quick Settings tile, and the long-press trampoline to Display settings.
+  notify/                  Persistent notifications (two channels) and their buttons.
+  shortcut/                The invisible target of the launcher shortcuts.
+  tile/                    The two tiles, and the long-press trampoline to Android's settings.
+  ui/main/                 The main screen: MainActivity (state, permissions) and MainScreen (Compose).
   ui/panel/                The popup: PanelActivity (state, permissions) and PanelScreen (Compose).
   ui/theme/                Theme.kt (Android's dynamic colours), Shapes.kt (shared kit).
 app/src/main/res/

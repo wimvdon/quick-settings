@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Screener</string>
-    <string name="tile_label">Scherm</string>
+    <string name="app_name">Quick Settings</string>
+    <string name="tile_screen_label">Scherm</string>
     <string name="tile_subtitle_default">Standaard</string>
     <string name="change_brightness">Handmatige helderheid</string>
     <string name="change_timeout">Lange time-out</string>
@@ -25,7 +25,6 @@
     <string name="setup_secure_title">Always-on display en tikken om te activeren</string>
     <string name="setup_secure_text">Android staat dit pas toe na een eenmalig commando vanaf een computer met adb:</string>
     <string name="setup_secure_button">Kopiëren</string>
-    <string name="notification_channel_name">Gewijzigde scherminstellingen</string>
     <string name="notification_brightness_title">Handmatige helderheid</string>
     <string name="notification_brightness_action">Automatisch</string>
     <string name="notification_timeout_title">Time-out voor scherm verlengd</string>
@@ -50,4 +49,57 @@
         <item quantity="one">%d uur</item>
         <item quantity="other">%d uur</item>
     </plurals>
+    <string name="tile_dns_label">Privé-DNS</string>
+    <string name="dns_automatic">Automatisch</string>
+    <string name="dns_off">Uit</string>
+    <string name="dns_hostname">Hostnaam</string>
+    <string name="notification_channel_display">Scherm</string>
+    <string name="notification_channel_dns">Privé-DNS</string>
+    <string name="notification_dns_title">Privé-DNS op automatisch</string>
+    <string name="notification_dns_text">%1$s wordt niet gebruikt</string>
+    <string name="notification_dns_action">Hostnaam</string>
+    <string name="main_section_tiles">Tegels</string>
+    <string name="main_tile_screen_text">Helderheid, time-out, always-on display en tikken om te activeren</string>
+    <string name="main_tile_dns_text">Wisselt tussen je hostnaam en automatisch</string>
+    <string name="main_add_tile">Toevoegen</string>
+    <string name="main_tiles_manual">Of swipe twee keer omlaag, tik op het potlood en sleep de tegels naar je snelle instellingen.</string>
+    <string name="main_open_screen">Scherm openen</string>
+    <string name="main_section_permissions">Rechten</string>
+    <string name="main_permission_system">Systeeminstellingen wijzigen</string>
+    <string name="main_permission_system_text">Voor helderheid en time-out</string>
+    <string name="main_permission_notifications">Meldingen</string>
+    <string name="main_permission_notifications_text">Toont een gewijzigde instelling, met een knop om ze terug te zetten</string>
+    <string name="main_permission_secure">Beveiligde instellingen schrijven</string>
+    <string name="main_permission_secure_text">Voor always-on display, tikken om te activeren en privé-DNS. Alleen een computer kan dit toestaan.</string>
+    <string name="main_granted">Toegestaan</string>
+    <string name="main_adb_title">Toestaan met adb</string>
+    <string name="main_adb_steps">1. Instellingen › Over de telefoon: tik 7 keer op Buildnummer.\n2. Instellingen › Systeem › Ontwikkelaarsopties: zet USB-foutopsporing aan.\n3. Verbind de telefoon met een computer met de Android platform tools en sta hem toe.\n4. Voer dit commando uit op de computer:</string>
+    <string name="main_dns_current">In gebruik: %1$s</string>
+    <string name="main_dns_no_hostname">Geen hostnaam ingesteld</string>
+    <string name="main_dns_no_hostname_text">Stel er eenmalig een in via Instellingen › Netwerk en internet › Privé-DNS. De tegel schakelt er daarna naartoe.</string>
+    <string name="main_open_settings">Naar instellingen</string>
+    <string name="notification_dns_title_off">Privé-DNS uit</string>
+    <string name="shortcut_dns_short">Privé-DNS</string>
+    <string name="shortcut_dns_long">Privé-DNS: hostnaam of automatisch</string>
+    <string name="shortcut_timeout_short">Time-out</string>
+    <string name="shortcut_timeout_long">Time-out: 30 of 1 min</string>
+    <string name="shortcut_always_on_short">Altijd aan</string>
+    <string name="shortcut_always_on_long">Always-on display aan/uit</string>
+    <string name="shortcut_tap_short">Tik om te activeren</string>
+    <string name="shortcut_tap_long">Tikken om te activeren aan/uit</string>
+    <string name="toast_dns_hostname">Privé-DNS: hostnaam</string>
+    <string name="toast_dns_automatic">Privé-DNS: automatisch</string>
+    <string name="toast_timeout_long">Time-out: 30 minuten</string>
+    <string name="toast_timeout_default">Time-out: 1 minuut</string>
+    <string name="toast_always_on_on">Always-on display aan</string>
+    <string name="toast_always_on_off">Always-on display uit</string>
+    <string name="toast_tap_on">Tikken om te activeren aan</string>
+    <string name="toast_tap_off">Tikken om te activeren uit</string>
+    <string name="main_section_shortcuts">Snelkoppelingen</string>
+    <string name="main_shortcuts_intro">Wissel privé-DNS, de time-out, always-on display of tikken om te activeren zonder snelle instellingen te openen: via het app-icoon, je startscherm of een gebaar.</string>
+    <string name="main_shortcut_title">Snelkoppelingen op het startscherm</string>
+    <string name="main_shortcut_steps">1. Houd het app-icoon van %1$s ingedrukt.\n2. Tik op een snelkoppeling om die instelling direct te wisselen.\n3. Optioneel: sleep een snelkoppeling naar je startscherm voor toegang met één tik.</string>
+    <string name="main_gesture_title">Gebaar: tik op de achterkant van je telefoon</string>
+    <string name="main_gesture_steps">Alleen beschikbaar op Pixel-telefoons.\n1. Open Instellingen › Systeem › Gebaren › Quick Tap om acties te starten.\n2. Zet Quick Tap aan en kies App openen.\n3. Tik op het instellingenicoon naast %1$s en kies een snelkoppeling.\n4. Tik twee keer op de achterkant van je telefoon om die instelling te wisselen.</string>
+    <string name="main_gesture_other">Zoek op andere telefoons naar een functie voor tikken op de achterkant of gebaren die een app-snelkoppeling kan openen, zoals RegiStar in Good Lock van Samsung.</string>
 </resources>

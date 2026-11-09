@@ -263,7 +263,7 @@ jobs:
   #   permissions:
   #     contents: read
   #   env:
-  #     PACKAGE_NAME: to.wim.screener
+  #     PACKAGE_NAME: to.wim.quicksettings
   #   steps:
   #     - uses: actions/checkout@v7
   #       with:

@@ -226,22 +226,26 @@ app apart from their package (and `R` import) lines. Copy a change to the other 
 
 ## This app
 
-Screener is Snoozer's sister app.
+Quick Settings (formerly Screener) is Snoozer's sister app.
 
 - Colours: Android's own Material 3 dynamic colours (from the wallpaper), like Quick Settings
   itself. The app has no fixed palette of its own (owner's choice, 2026-11-09).
-- Icon: a blank phone screen with a small white light near the top (a screen waking up), with
-  a light blue → blue → violet gradient (`#4FC3F7` → `#3D7BFF` → `#5B4FD9`) on white. Its furthest
-  point is 31dp from the centre, inside the 33dp safe-zone radius. The themed layer cuts the light
-  out; the tile and notification icon are the same screen as an outline with the light.
-- Signature element: the popup, laid out like Android's Quick Settings Internet dialog: a
+- Icon: Android's Settings cogwheel (Material `settings`, without its centre hole) with a white
+  lightning bolt, with a light blue → blue → violet gradient (`#4FC3F7` → `#3D7BFF` → `#5B4FD9`)
+  on white. Scaled 2.6× from 24dp, so it reaches about 25dp from the centre, leaving room inside
+  the 33dp safe-zone radius. The themed layer cuts the bolt out.
+- Tile and notification icons are Material 3 icons: `smartphone` (Screen tile), `dns` (Private
+  DNS tile and notification), `brightness_medium` and `timer` (the display notifications).
+- Signature element: the Screen popup, laid out like Android's Quick Settings Internet dialog: a
   centred title and status line, one group of rows (24dp outer corners, 4dp where rows meet,
   2dp apart), a changed setting highlighted in `primaryContainer` like the connected network,
   and Settings / Done at the bottom. It sits at the bottom of the screen in a floating window
   that dims the app behind it.
-- No settings screen: the app is the popup, so there is no Theme or Dynamic color choice. It
-  follows the phone's light/dark setting and always uses dynamic colours.
-- Setup needed (a permission missing) shows as a `tertiaryContainer` card above the rows, and
-  the rows it unlocks are disabled; the popup still works for the rest.
-- Kit files used: `Shapes.kt`. No lists, navigation, loading or empty screens, so the other kit
-  files are left out.
+- Main screen: one list with section headers (Tiles, Permissions, Private DNS) in the settings
+  style, with a `TopAppBar`. No settings, so no Theme or Dynamic color choice: it follows the
+  phone's light/dark setting and always uses dynamic colours.
+- Setup needed (a permission missing) shows as a `tertiaryContainer` card above the popup's
+  rows, and the rows it unlocks are disabled; the popup still works for the rest. The main
+  screen shows the missing permission with an Allow button or the adb steps.
+- Kit files used: `Shapes.kt`. No navigation, loading or empty screens, so the other kit files
+  are left out.

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Screener" parent="android:Theme.DeviceDefault.NoActionBar" />
+    <style name="Theme.QuickSettings" parent="android:Theme.DeviceDefault.NoActionBar" />
 
-    <style name="Theme.Screener.Panel" parent="android:Theme.Material.Dialog.NoActionBar">
+    <style name="Theme.QuickSettings.Panel" parent="android:Theme.Material.Dialog.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowMinWidthMajor">100%</item>
         <item name="android:windowMinWidthMinor">100%</item>

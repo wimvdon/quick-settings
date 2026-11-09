@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Screener</string>
-    <string name="tile_label">Écran</string>
+    <string name="app_name">Quick Settings</string>
+    <string name="tile_screen_label">Écran</string>
     <string name="tile_subtitle_default">Par défaut</string>
     <string name="change_brightness">Luminosité manuelle</string>
     <string name="change_timeout">Délai long</string>
@@ -25,7 +25,6 @@
     <string name="setup_secure_title">Écran toujours activé et toucher pour activer</string>
     <string name="setup_secure_text">Android ne les autorise qu’après une commande unique depuis un ordinateur avec adb :</string>
     <string name="setup_secure_button">Copier</string>
-    <string name="notification_channel_name">Paramètres d’écran modifiés</string>
     <string name="notification_brightness_title">Luminosité manuelle</string>
     <string name="notification_brightness_action">Auto</string>
     <string name="notification_timeout_title">Mise en veille prolongée</string>
@@ -55,4 +54,57 @@
         <item quantity="many">%d heures</item>
         <item quantity="other">%d heures</item>
     </plurals>
+    <string name="tile_dns_label">DNS privé</string>
+    <string name="dns_automatic">Automatique</string>
+    <string name="dns_off">Désactivé</string>
+    <string name="dns_hostname">Nom d’hôte</string>
+    <string name="notification_channel_display">Affichage</string>
+    <string name="notification_channel_dns">DNS privé</string>
+    <string name="notification_dns_title">DNS privé en automatique</string>
+    <string name="notification_dns_text">%1$s n’est pas utilisé</string>
+    <string name="notification_dns_action">Nom d’hôte</string>
+    <string name="main_section_tiles">Blocs</string>
+    <string name="main_tile_screen_text">Luminosité, mise en veille, écran toujours activé et toucher pour activer</string>
+    <string name="main_tile_dns_text">Bascule entre votre nom d’hôte et automatique</string>
+    <string name="main_add_tile">Ajouter</string>
+    <string name="main_tiles_manual">Ou balayez deux fois vers le bas, appuyez sur le crayon et faites glisser les blocs dans vos Réglages rapides.</string>
+    <string name="main_open_screen">Ouvrir Écran</string>
+    <string name="main_section_permissions">Autorisations</string>
+    <string name="main_permission_system">Modifier les paramètres système</string>
+    <string name="main_permission_system_text">Pour la luminosité et la mise en veille</string>
+    <string name="main_permission_notifications">Notifications</string>
+    <string name="main_permission_notifications_text">Affiche un paramètre modifié, avec un bouton pour le rétablir</string>
+    <string name="main_permission_secure">Écrire les paramètres sécurisés</string>
+    <string name="main_permission_secure_text">Pour l’écran toujours activé, toucher pour activer et le DNS privé. Seul un ordinateur peut l’accorder.</string>
+    <string name="main_granted">Autorisé</string>
+    <string name="main_adb_title">L’accorder avec adb</string>
+    <string name="main_adb_steps">1. Paramètres › À propos du téléphone : appuyez 7 fois sur Numéro de build.\n2. Paramètres › Système › Options pour les développeurs : activez le débogage USB.\n3. Connectez le téléphone à un ordinateur doté des Android platform tools et autorisez-le.\n4. Exécutez cette commande sur l’ordinateur :</string>
+    <string name="main_dns_current">Utilisé : %1$s</string>
+    <string name="main_dns_no_hostname">Aucun nom d’hôte défini</string>
+    <string name="main_dns_no_hostname_text">Définissez-en un une fois dans Paramètres › Réseau et Internet › DNS privé. Le bloc basculera ensuite vers lui.</string>
+    <string name="main_open_settings">Ouvrir les paramètres</string>
+    <string name="notification_dns_title_off">DNS privé désactivé</string>
+    <string name="shortcut_dns_short">DNS privé</string>
+    <string name="shortcut_dns_long">DNS privé : nom d’hôte ou automatique</string>
+    <string name="shortcut_timeout_short">Mise en veille</string>
+    <string name="shortcut_timeout_long">Mise en veille : 30 ou 1 min</string>
+    <string name="shortcut_always_on_short">Toujours activé</string>
+    <string name="shortcut_always_on_long">Écran toujours activé on/off</string>
+    <string name="shortcut_tap_short">Toucher</string>
+    <string name="shortcut_tap_long">Toucher pour activer on/off</string>
+    <string name="toast_dns_hostname">DNS privé : nom d’hôte</string>
+    <string name="toast_dns_automatic">DNS privé : automatique</string>
+    <string name="toast_timeout_long">Mise en veille : 30 minutes</string>
+    <string name="toast_timeout_default">Mise en veille : 1 minute</string>
+    <string name="toast_always_on_on">Écran toujours activé : oui</string>
+    <string name="toast_always_on_off">Écran toujours activé : non</string>
+    <string name="toast_tap_on">Toucher pour activer : oui</string>
+    <string name="toast_tap_off">Toucher pour activer : non</string>
+    <string name="main_section_shortcuts">Raccourcis</string>
+    <string name="main_shortcuts_intro">Changez le DNS privé, la mise en veille, l’écran toujours activé ou toucher pour activer sans ouvrir les Réglages rapides : depuis l’icône de l’appli, l’écran d’accueil ou un geste.</string>
+    <string name="main_shortcut_title">Raccourcis sur l’écran d’accueil</string>
+    <string name="main_shortcut_steps">1. Appuyez de manière prolongée sur l’icône de %1$s.\n2. Appuyez sur un raccourci pour changer ce paramètre immédiatement.\n3. Facultatif : faites glisser un raccourci sur l’écran d’accueil pour y accéder d’un geste.</string>
+    <string name="main_gesture_title">Geste : appuyez au dos du téléphone</string>
+    <string name="main_gesture_steps">Disponible uniquement sur les téléphones Pixel.\n1. Ouvrez Paramètres › Système › Gestes › Quick Tap pour lancer des actions.\n2. Activez Quick Tap et choisissez Ouvrir une appli.\n3. Appuyez sur l’icône des paramètres à côté de %1$s et choisissez un raccourci.\n4. Appuyez deux fois au dos du téléphone pour changer ce paramètre.</string>
+    <string name="main_gesture_other">Sur d’autres téléphones, cherchez une fonction d’appui au dos ou de gestes capable d’ouvrir un raccourci d’appli, comme RegiStar dans Good Lock de Samsung.</string>
 </resources>

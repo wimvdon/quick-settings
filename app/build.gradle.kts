@@ -9,7 +9,7 @@ plugins {
 // App identity: the ONE place to change the package / application ID.
 // (Also move the Kotlin sources in app/src/*/kotlin/ to the matching folder.)
 // ---------------------------------------------------------------------------
-val appId = "to.wim.screener"
+val appId = "to.wim.quicksettings"
 
 // ---------------------------------------------------------------------------
 // Versioning

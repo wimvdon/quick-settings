@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Screener</string>
-    <string name="tile_label">Bildschirm</string>
+    <string name="app_name">Quick Settings</string>
+    <string name="tile_screen_label">Bildschirm</string>
     <string name="tile_subtitle_default">Standard</string>
     <string name="change_brightness">Manuelle Helligkeit</string>
     <string name="change_timeout">Langes Timeout</string>
@@ -25,7 +25,6 @@
     <string name="setup_secure_title">Always-on-Display und Zum Aktivieren tippen</string>
     <string name="setup_secure_text">Android erlaubt das erst nach einem einmaligen Befehl von einem Computer mit adb:</string>
     <string name="setup_secure_button">Kopieren</string>
-    <string name="notification_channel_name">Geänderte Bildschirmeinstellungen</string>
     <string name="notification_brightness_title">Manuelle Helligkeit</string>
     <string name="notification_brightness_action">Automatisch</string>
     <string name="notification_timeout_title">Bildschirm-Timeout verlängert</string>
@@ -50,4 +49,57 @@
         <item quantity="one">%d Stunde</item>
         <item quantity="other">%d Stunden</item>
     </plurals>
+    <string name="tile_dns_label">Privates DNS</string>
+    <string name="dns_automatic">Automatisch</string>
+    <string name="dns_off">Aus</string>
+    <string name="dns_hostname">Hostname</string>
+    <string name="notification_channel_display">Display</string>
+    <string name="notification_channel_dns">Privates DNS</string>
+    <string name="notification_dns_title">Privates DNS auf Automatisch</string>
+    <string name="notification_dns_text">%1$s wird nicht verwendet</string>
+    <string name="notification_dns_action">Hostname</string>
+    <string name="main_section_tiles">Kacheln</string>
+    <string name="main_tile_screen_text">Helligkeit, Timeout, Always-on-Display und Zum Aktivieren tippen</string>
+    <string name="main_tile_dns_text">Wechselt zwischen deinem Hostname und Automatisch</string>
+    <string name="main_add_tile">Hinzufügen</string>
+    <string name="main_tiles_manual">Oder wische zweimal nach unten, tippe auf den Stift und ziehe die Kacheln in deine Schnelleinstellungen.</string>
+    <string name="main_open_screen">Bildschirm öffnen</string>
+    <string name="main_section_permissions">Berechtigungen</string>
+    <string name="main_permission_system">Systemeinstellungen ändern</string>
+    <string name="main_permission_system_text">Für Helligkeit und Timeout</string>
+    <string name="main_permission_notifications">Benachrichtigungen</string>
+    <string name="main_permission_notifications_text">Zeigt eine geänderte Einstellung, mit einer Taste zum Zurücksetzen</string>
+    <string name="main_permission_secure">Sichere Einstellungen schreiben</string>
+    <string name="main_permission_secure_text">Für Always-on-Display, Zum Aktivieren tippen und privates DNS. Nur ein Computer kann das erlauben.</string>
+    <string name="main_granted">Erlaubt</string>
+    <string name="main_adb_title">Mit adb erlauben</string>
+    <string name="main_adb_steps">1. Einstellungen › Über das Telefon: tippe 7-mal auf Build-Nummer.\n2. Einstellungen › System › Entwickleroptionen: schalte USB-Debugging ein.\n3. Verbinde das Telefon mit einem Computer mit den Android Platform Tools und erlaube ihn.\n4. Führe diesen Befehl auf dem Computer aus:</string>
+    <string name="main_dns_current">Aktiv: %1$s</string>
+    <string name="main_dns_no_hostname">Kein Hostname festgelegt</string>
+    <string name="main_dns_no_hostname_text">Lege ihn einmal fest unter Einstellungen › Netzwerk &amp; Internet › Privates DNS. Die Kachel wechselt dann dorthin.</string>
+    <string name="main_open_settings">Zu den Einstellungen</string>
+    <string name="notification_dns_title_off">Privates DNS aus</string>
+    <string name="shortcut_dns_short">Privates DNS</string>
+    <string name="shortcut_dns_long">Privates DNS: Hostname oder Automatisch</string>
+    <string name="shortcut_timeout_short">Timeout</string>
+    <string name="shortcut_timeout_long">Timeout: 30 oder 1 Min.</string>
+    <string name="shortcut_always_on_short">Always-on</string>
+    <string name="shortcut_always_on_long">Always-on-Display an/aus</string>
+    <string name="shortcut_tap_short">Tippen</string>
+    <string name="shortcut_tap_long">Zum Aktivieren tippen an/aus</string>
+    <string name="toast_dns_hostname">Privates DNS: Hostname</string>
+    <string name="toast_dns_automatic">Privates DNS: Automatisch</string>
+    <string name="toast_timeout_long">Timeout: 30 Minuten</string>
+    <string name="toast_timeout_default">Timeout: 1 Minute</string>
+    <string name="toast_always_on_on">Always-on-Display an</string>
+    <string name="toast_always_on_off">Always-on-Display aus</string>
+    <string name="toast_tap_on">Zum Aktivieren tippen an</string>
+    <string name="toast_tap_off">Zum Aktivieren tippen aus</string>
+    <string name="main_section_shortcuts">Verknüpfungen</string>
+    <string name="main_shortcuts_intro">Schalte privates DNS, das Timeout, Always-on-Display oder Zum Aktivieren tippen um, ohne die Schnelleinstellungen zu öffnen: über das App-Symbol, den Startbildschirm oder eine Geste.</string>
+    <string name="main_shortcut_title">Verknüpfungen auf dem Startbildschirm</string>
+    <string name="main_shortcut_steps">1. Halte das App-Symbol von %1$s gedrückt.\n2. Tippe auf eine Verknüpfung, um die Einstellung sofort umzuschalten.\n3. Optional: Ziehe eine Verknüpfung auf den Startbildschirm, um sie mit einem Tippen zu erreichen.</string>
+    <string name="main_gesture_title">Geste: auf die Rückseite tippen</string>
+    <string name="main_gesture_steps">Nur auf Pixel-Smartphones verfügbar.\n1. Öffne Einstellungen › System › Bewegungen › Quick Tap zum Starten von Aktionen.\n2. Aktiviere Quick Tap und wähle App öffnen.\n3. Tippe auf das Einstellungssymbol neben %1$s und wähle eine Verknüpfung.\n4. Tippe zweimal auf die Rückseite deines Smartphones, um die Einstellung umzuschalten.</string>
+    <string name="main_gesture_other">Suche auf anderen Geräten nach einer Rückseiten-Tipp- oder Gestenfunktion, die eine App-Verknüpfung öffnen kann, z. B. RegiStar in Samsungs Good Lock.</string>
 </resources>

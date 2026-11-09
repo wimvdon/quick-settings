@@ -2,6 +2,22 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-09: Screener becomes Quick Settings (`to.wim.quicksettings`) with a Private DNS tile
+
+The owner wants one app for their own Quick Settings tiles, so Screener is renamed Quick Settings
+and gets a second tile, Private DNS, and a main screen with setup instructions. The application ID
+changes to `to.wim.quicksettings`: v0.0.1 and v0.0.2 were released as `to.wim.screener`, but only
+the owner installed them, so the old app is simply uninstalled. Private DNS (`Settings.Global`)
+needs the same adb-granted `WRITE_SECURE_SETTINGS` as always-on display, so no new permission.
+The tile toggles hostname ↔ Automatic and never edits the hostname: Android keeps it when
+switching to Automatic, and typing a hostname belongs in Android's own dialog. Notifications are
+split into a Display and a Private DNS channel so either can be silenced on its own. Long-pressing
+a tile goes through one trampoline activity that reads which tile was pressed. The Private DNS notification shows whenever the hostname isn't in use (Off or Automatic). Four
+static launcher shortcuts (like Snoozer's) toggle Private DNS, the timeout, always-on display and
+tap to wake, so Quick Tap and gesture apps can use them. Rejected: a
+separate app per tile (two installs, two adb grants) and an in-app hostname field (Android's
+Settings already has one and validates it).
+
 ## 2026-11-09: Screener uses Android's dynamic colours, not Snoozer's palette
 
 The owner wants the popup to look like Android's own Quick Settings, so it uses Material 3
@@ -12,7 +28,7 @@ would need a settings screen for one option).
 
 ## 2026-11-09: Screener: a tile and a popup, three permissions, no stored data
 
-The template becomes Screener (`to.wim.screener`), Snoozer's sister app (at first with the same
+The template becomes Screener (`to.wim.quicksettings`), Snoozer's sister app (at first with the same
 colours; see the entry above). What it changes decides its permissions: brightness and screen timeout need "Modify
 system settings" (`WRITE_SETTINGS`, the user grants it in Settings); always-on display and tap to
 wake are secure settings, which only `WRITE_SECURE_SETTINGS` may write, and only adb can grant
@@ -28,7 +44,7 @@ that (one command, shown in the popup with a Copy button); the persistent notifi
 - Tap to wake writes both `doze_tap_gesture` (Pixel's "Tap to check phone") and
   `double_tap_to_wake` (AOSP's "Tap to wake"), because phones use different keys; the state is
   read from the Pixel key.
-- Application ID `to.wim.screener`: the owner's apps use `to.wim.<name>`. Set before the first
+- Application ID `to.wim.quicksettings`: the owner's apps use `to.wim.<name>`. Set before the first
   release (the first release attempt stopped at the missing signing secrets), so no phone has
   the earlier `io.github.impca201.screener`.
 - No DataStore: the defaults are fixed, and everything else is Android's own settings.
