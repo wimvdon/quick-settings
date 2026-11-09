@@ -8,7 +8,6 @@
     <string name="change_always_on">Always on</string>
     <string name="change_tap_to_wake">Tap to wake off</string>
     <string name="panel_title">Screen</string>
-    <string name="panel_subtitle_default">All settings at default</string>
     <string name="brightness_title">Brightness</string>
     <string name="brightness_auto">Auto</string>
     <string name="brightness_manual">Manual · %1$d%%</string>
@@ -32,10 +31,6 @@
     <plurals name="tile_subtitle_changes">
         <item quantity="one">%d changed</item>
         <item quantity="other">%d changed</item>
-    </plurals>
-    <plurals name="panel_subtitle_changes">
-        <item quantity="one">%d setting changed</item>
-        <item quantity="other">%d settings changed</item>
     </plurals>
     <plurals name="duration_seconds">
         <item quantity="one">%d second</item>

@@ -1,9 +1,9 @@
 package to.wim.quicksettings.tile
 
 import android.service.quicksettings.Tile
-import android.service.quicksettings.TileService
 import to.wim.quicksettings.R
 import to.wim.quicksettings.quickSettingsApp
+import to.wim.quicksettings.screen.SystemScreenSettings
 import to.wim.quicksettings.ui.changeLabel
 import to.wim.quicksettings.ui.panel.PanelActivity
 
@@ -11,25 +11,15 @@ import to.wim.quicksettings.ui.panel.PanelActivity
  * The Screen tile. It lights up while any setting differs from its default and names
  * what is changed; tapping it opens the popup.
  */
-class ScreenTileService : TileService() {
-    override fun onTileAdded() {
-        super.onTileAdded()
-        render()
-    }
-
-    override fun onStartListening() {
-        super.onStartListening()
-        render()
-        // Brings the notifications in step too, in case something changed while we weren't running.
-        quickSettingsApp.syncNotifications()
-    }
+class ScreenTileService : WatchingTileService() {
+    override val watchedUris get() = SystemScreenSettings.watchedUris
 
     override fun onClick() {
         super.onClick()
         openAndCollapse(PanelActivity.intent(this))
     }
 
-    private fun render() {
+    override fun render() {
         val tile = qsTile ?: return
         val changes = quickSettingsApp.controller.read().changes
         tile.label = getString(R.string.tile_screen_label)

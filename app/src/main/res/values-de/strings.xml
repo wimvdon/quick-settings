@@ -8,7 +8,6 @@
     <string name="change_always_on">Always-on</string>
     <string name="change_tap_to_wake">Zum Aktivieren tippen aus</string>
     <string name="panel_title">Bildschirm</string>
-    <string name="panel_subtitle_default">Alles auf Standard</string>
     <string name="brightness_title">Helligkeit</string>
     <string name="brightness_auto">Automatisch</string>
     <string name="brightness_manual">Manuell · %1$d%%</string>
@@ -32,10 +31,6 @@
     <plurals name="tile_subtitle_changes">
         <item quantity="one">%d geändert</item>
         <item quantity="other">%d geändert</item>
-    </plurals>
-    <plurals name="panel_subtitle_changes">
-        <item quantity="one">%d Einstellung geändert</item>
-        <item quantity="other">%d Einstellungen geändert</item>
     </plurals>
     <plurals name="duration_seconds">
         <item quantity="one">%d Sekunde</item>

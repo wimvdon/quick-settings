@@ -8,7 +8,6 @@
     <string name="change_always_on">Altijd aan</string>
     <string name="change_tap_to_wake">Tikken om te activeren uit</string>
     <string name="panel_title">Scherm</string>
-    <string name="panel_subtitle_default">Alles staat op standaard</string>
     <string name="brightness_title">Helderheid</string>
     <string name="brightness_auto">Automatisch</string>
     <string name="brightness_manual">Handmatig · %1$d%%</string>
@@ -32,10 +31,6 @@
     <plurals name="tile_subtitle_changes">
         <item quantity="one">%d gewijzigd</item>
         <item quantity="other">%d gewijzigd</item>
-    </plurals>
-    <plurals name="panel_subtitle_changes">
-        <item quantity="one">%d instelling gewijzigd</item>
-        <item quantity="other">%d instellingen gewijzigd</item>
     </plurals>
     <plurals name="duration_seconds">
         <item quantity="one">%d seconde</item>

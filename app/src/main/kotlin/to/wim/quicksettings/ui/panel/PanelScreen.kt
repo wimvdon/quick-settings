@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -32,7 +33,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontFamily
@@ -82,7 +82,7 @@ private fun rowShape(
 )
 
 /**
- * The popup: a title and status line, one group of rows (a changed setting is highlighted, like
+ * The popup: a title, one group of rows (a changed setting is highlighted, like
  * the connected network in the Internet dialog), and Settings / Done at the bottom.
  */
 @Composable
@@ -114,18 +114,7 @@ fun PanelScreen(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth(),
             )
-            Text(
-                text =
-                    if (changes.isEmpty()) {
-                        stringResource(R.string.panel_subtitle_default)
-                    } else {
-                        pluralStringResource(R.plurals.panel_subtitle_changes, changes.size, changes.size)
-                    },
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 20.dp),
-            )
+            Spacer(Modifier.height(20.dp))
 
             if (!state.canWriteSystem) {
                 SetupCard(

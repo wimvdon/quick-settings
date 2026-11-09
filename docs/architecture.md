@@ -35,6 +35,9 @@ Needs `WRITE_SECURE_SETTINGS` (adb).
   off *before* writing a level, because Android ignores a level written in auto mode;
   `BrightnessCurve` maps the slider like Android's own (HLG gamma). `dns/PrivateDns.kt` decides
   what a tap switches to and when the tile is lit or the notification shows.
+- **Tiles stay current while the shade is open**: both extend `WatchingTileService`, which
+  watches their settings with a `ContentObserver` between `onStartListening` and
+  `onStopListening` and redraws on every change.
 - **Keeping in step**: `QuickSettingsApp` watches the settings with a `ContentObserver` while the
   process runs, and the tiles, popup and main screen re-read them whenever they are shown, so
   changes made in Android's Settings show up too.
