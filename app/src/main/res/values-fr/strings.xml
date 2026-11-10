@@ -53,8 +53,6 @@
     <string name="main_adb_title">L’accorder avec adb</string>
     <string name="main_adb_steps">Sur votre téléphone, ouvrez Paramètres › À propos du téléphone et appuyez sept fois sur Numéro de build pour activer les Options pour les développeurs.\nOuvrez Paramètres › Système › Options pour les développeurs et activez Débogage USB.\nConnectez votre téléphone à un ordinateur équipé des outils de plate-forme Android (adb) et autorisez le débogage USB quand le téléphone le demande.\nAppuyez sur Copier, envoyez la commande à l\'ordinateur et exécutez-la dans une fenêtre de commande :</string>
     <string name="main_dns_no_hostname">Aucun nom d’hôte défini</string>
-    <string name="main_shortcut_title">Raccourcis sur l’écran d’accueil</string>
-    <string name="main_shortcut_steps">Choisissez un raccourci avec les curseurs d\'une tuile.\nAppuyez de manière prolongée sur l’icône de %1$s et appuyez sur le raccourci, ou faites-le glisser sur l’écran d’accueil. Quick Tap peut aussi l\'utiliser.</string>
     <string name="main_section_instructions">Instructions</string>
     <string name="animations_title">Animations</string>
     <string name="back">Retour</string>
@@ -127,11 +125,12 @@
     <string name="main_add_named">Ajouter %1$s</string>
     <string name="preset_rows">Dans la fenêtre</string>
     <string name="preset_default">Par défaut</string>
-    <string name="preset_shortcut">Raccourci</string>
     <string name="preset_shortcut_none">Aucun</string>
     <string name="shortcut_empty">Aucun paramètre choisi pour ce raccourci</string>
     <string name="shortcut_slot_1">Raccourci 1</string>
     <string name="shortcut_slot_2">Raccourci 2</string>
     <string name="shortcut_slot_3">Raccourci 3</string>
     <string name="shortcut_slot_4">Raccourci 4</string>
+    <string name="main_section_shortcuts">Raccourcis</string>
+    <string name="main_shortcuts_hint">Appuyez de manière prolongée sur l’icône de %1$s pour les utiliser, faites-en glisser un sur l’écran d’accueil ou choisissez-en un dans Quick Tap.</string>
 </resources>

@@ -110,6 +110,17 @@ class DefaultsTest {
     }
 
     @Test
+    fun `a slot gets a tile, which leaves its old slot`() {
+        val d = Defaults().withSlot(4, TileId.PrivateDns)
+        assertEquals(TileId.PrivateDns, d.shortcut(4))
+        assertNull(d.shortcut(1))
+        val empty = d.withSlot(2, null)
+        assertNull(empty.shortcut(2))
+        assertEquals(TileId.AlwaysOn, empty.shortcut(3))
+        assertEquals(TileId.PrivateDns, empty.shortcut(4))
+    }
+
+    @Test
     fun `new choices are read back`() {
         val d =
             Defaults.Keys.read(

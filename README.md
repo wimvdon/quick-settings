@@ -37,7 +37,7 @@ smooth display (Android keeps them for itself), and silent mode (needs Do Not Di
 
 ## Shortcuts
 Touch and hold the app icon for four shortcuts, **Shortcut 1** to **4**. Each one taps a tile
-you choose with the tile's sliders; at first they are Private DNS (hostname ↔ Automatic),
+you choose in ⋮ › Shortcuts; at first they are Private DNS (hostname ↔ Automatic),
 Timeout (default ↔ long), Always-on display and Tap to wake. Drag one to the home screen, or
 use it with Quick Tap (double-tap the back of a Pixel) or a gesture app such as RegiStar.
 

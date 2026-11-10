@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
                                 onOpenPopup = { open(PanelActivity.intent(this, it)) },
                                 onSetDefault = { setting, value -> repository.setDefault(setting, value) },
                                 onNotify = { setting, on -> repository.update { it.withNotify(setting, on) } },
-                                onShortcut = { tile, slot -> repository.update { it.withShortcut(tile, slot) } },
+                                onShortcut = { slot, tile -> repository.update { it.withSlot(slot, tile) } },
                                 onShowRow = { row, shown -> repository.update { it.withRow(row, shown) } },
                                 onUseCurrent = { group -> repository.update { quickSettingsApp.controller.currentAsDefaults(group, it) } },
                                 onAllowSystemSettings = {
