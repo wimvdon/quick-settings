@@ -31,17 +31,18 @@ import to.wim.quicksettings.settings.PrivateDnsSetting
 import to.wim.quicksettings.settings.Tracked
 import to.wim.quicksettings.system.AndroidRawSettings
 import to.wim.quicksettings.tile.TilePreferencesActivity
+import to.wim.quicksettings.ui.main.MainActivity
 import to.wim.quicksettings.ui.theme.AppTheme
 
 /**
  * A popup, shaped like Android's Quick Settings Internet dialog: one per [Group], opened from its
- * tile, a notification, a long press on a single tile or the main screen. A floating window:
+ * tile, a notification, a long press on a single tile or the main screen. It shows the rows the
+ * user chose for it on the main screen. A floating window:
  * tapping outside it closes it.
  */
 class PanelActivity : ComponentActivity() {
     private val app get() = quickSettingsApp
     private val uiState = mutableStateOf<PanelUiState?>(null)
-    private val editingDefaults = mutableStateOf(false)
     private var group = Group.Screen
     private var askedForNotifications = false
 
@@ -63,7 +64,7 @@ class PanelActivity : ComponentActivity() {
         lifecycleScope.launch { app.repository.defaults.drop(1).collect { refresh() } }
         setContent {
             AppTheme {
-                uiState.value?.let { state -> PanelScreen(state = state, editingDefaults = editingDefaults.value, actions = actions) }
+                uiState.value?.let { state -> PanelScreen(state = state, actions = actions) }
             }
         }
     }
@@ -72,7 +73,6 @@ class PanelActivity : ComponentActivity() {
         super.onNewIntent(intent)
         setIntent(intent)
         group = groupOf(intent)
-        editingDefaults.value = false
         refresh()
     }
 
@@ -99,12 +99,12 @@ class PanelActivity : ComponentActivity() {
             onLevel = { level, position -> change(sync = false) { app.controller.setLevel(level, position) } },
             onLevelFinished = { change { } },
             onWrite = { setting, value -> change { app.controller.write(setting, value) } },
-            onSetDefault = { setting, value -> app.repository.setDefault(setting, value) },
-            onNotify = { on -> app.repository.setNotify(group, on) },
-            onUseCurrent = { app.repository.setDefaults(app.controller.currentAsDefaults(group)) },
             onAddHostname = ::addHostname,
             onRemoveHostname = { app.repository.removeHostname(it) },
-            onEditDefaults = { editingDefaults.value = it },
+            onSetUp = {
+                startActivity(MainActivity.setUpIntent(this, group))
+                finish()
+            },
             onReset = { change { app.controller.reset(group) } },
             onAllowSystemSettings = ::openWriteSettings,
             onCopyCommand = ::copyAdbCommand,
@@ -119,22 +119,19 @@ class PanelActivity : ComponentActivity() {
             PanelUiState(
                 group = group,
                 rows =
-                    group.rows.map { row ->
+                    defaults.rowsOf(group).map { row ->
                         val tracked = row.setting as? Tracked
                         RowState(
                             row = row,
                             value = tracked?.let { c.encoded(it) },
-                            default = tracked?.let { defaults.of(it) },
                             changed = tracked?.let { c.isChanged(it) } ?: false,
                             position = (row.setting as? Level)?.let { c.read(it) },
                             levelPosition = row.level?.let { c.read(it) },
                         )
                     },
                 hasChanges = c.changes(group).isNotEmpty(),
-                notifies = defaults.notifies(group),
                 hostnames = Hostnames.merge(defaults.hostnames, c.dnsHostname()),
                 savedHostnames = defaults.hostnames,
-                dnsHostname = c.dnsHostname(),
                 permissions = AndroidRawSettings.permissions(this),
                 adbCommand = adbCommand(),
             )
@@ -156,7 +153,7 @@ class PanelActivity : ComponentActivity() {
         refresh()
         if (sync) {
             app.sync()
-            if (app.repository.defaults.value.notifies(group) && app.controller.changes(group).isNotEmpty()) askForNotifications()
+            if (app.controller.notifiedChanges(group).isNotEmpty()) askForNotifications()
         }
     }
 

@@ -5,50 +5,34 @@ import android.os.Bundle
 import android.widget.Toast
 import to.wim.quicksettings.R
 import to.wim.quicksettings.quickSettingsApp
-import to.wim.quicksettings.settings.Catalog
 import to.wim.quicksettings.system.AndroidRawSettings
-import to.wim.quicksettings.ui.valueText
+import to.wim.quicksettings.tile.TileLook
+import to.wim.quicksettings.ui.labelOf
 import to.wim.quicksettings.ui.main.MainActivity
 
 /**
- * Invisible activity behind the launcher (long-press) shortcuts, which also work with Quick Tap
- * and other gesture apps. It switches one setting, confirms with a toast and finishes at once
- * (Theme.NoDisplay). Without the permission a shortcut needs, it opens the main screen instead.
+ * Invisible activity behind the four launcher (long-press) shortcuts, which also work with Quick
+ * Tap and other gesture apps. Each shortcut is a slot; it taps the tile the user chose for it
+ * (see Shortcuts), confirms with a toast and finishes at once (Theme.NoDisplay). Without the
+ * permission the tile needs, it opens the main screen instead.
  */
 class ShortcutActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val app = quickSettingsApp
-        val needsSecure = intent?.action in setOf(ACTION_DNS, ACTION_ALWAYS_ON, ACTION_TAP_TO_WAKE)
-        val allowed =
-            if (needsSecure) AndroidRawSettings.canWriteSecure(this) else AndroidRawSettings.canWriteSystem(this)
-        var timeoutMessage: String? = null
-        val message: Int? =
+        val slot = ACTIONS.indexOf(intent?.action) + 1
+        val tile = if (slot > 0) app.repository.defaults.value.shortcut(slot) else null
+        val text =
             when {
-                intent?.action !in ALL -> null
-                !allowed -> {
+                slot == 0 -> null
+                tile == null -> getString(R.string.shortcut_empty)
+                !AndroidRawSettings.permissions(this).allows(tile.access) -> {
                     startActivity(MainActivity.intent(this))
                     null
                 }
-                intent?.action == ACTION_DNS ->
-                    if (!app.controller.toggleDns()) {
-                        R.string.main_dns_no_hostname
-                    } else if (app.controller.dnsOnHostname()) {
-                        R.string.toast_dns_hostname
-                    } else {
-                        R.string.toast_dns_automatic
-                    }
-                intent?.action == ACTION_TIMEOUT -> {
-                    app.controller.toggleTimeout()
-                    timeoutMessage = getString(R.string.toast_timeout, valueText(resources, Catalog.Timeout, app.controller.read(Catalog.Timeout)))
-                    null
-                }
-                intent?.action == ACTION_ALWAYS_ON ->
-                    if (app.controller.toggle(Catalog.AlwaysOn)) R.string.toast_always_on_on else R.string.toast_always_on_off
-                else ->
-                    if (app.controller.toggle(Catalog.TapToWake)) R.string.toast_tap_on else R.string.toast_tap_off
+                !app.controller.tap(tile) -> getString(R.string.main_dns_no_hostname)
+                else -> getString(R.string.change_format, getString(labelOf(tile)), TileLook.of(this, tile).subtitle.orEmpty())
             }
-        val text = timeoutMessage ?: message?.let(::getString)
         if (text != null) {
             app.sync()
             Toast.makeText(app, text, Toast.LENGTH_SHORT).show()
@@ -57,11 +41,17 @@ class ShortcutActivity : Activity() {
     }
 
     companion object {
-        // Also named in res/xml/shortcuts.xml (and the debug copy).
-        const val ACTION_DNS = "to.wim.quicksettings.action.TOGGLE_PRIVATE_DNS"
-        const val ACTION_TIMEOUT = "to.wim.quicksettings.action.TOGGLE_TIMEOUT"
-        const val ACTION_ALWAYS_ON = "to.wim.quicksettings.action.TOGGLE_ALWAYS_ON"
-        const val ACTION_TAP_TO_WAKE = "to.wim.quicksettings.action.TOGGLE_TAP_TO_WAKE"
-        private val ALL = setOf(ACTION_DNS, ACTION_TIMEOUT, ACTION_ALWAYS_ON, ACTION_TAP_TO_WAKE)
+        /**
+         * The slots' actions, in slot order. Also named in res/xml/shortcuts.xml (and the debug
+         * copy); they keep the names from when each slot had a fixed setting, so shortcuts already
+         * on a home screen or set as Quick Tap keep working.
+         */
+        private val ACTIONS =
+            listOf(
+                "to.wim.quicksettings.action.TOGGLE_PRIVATE_DNS",
+                "to.wim.quicksettings.action.TOGGLE_TIMEOUT",
+                "to.wim.quicksettings.action.TOGGLE_ALWAYS_ON",
+                "to.wim.quicksettings.action.TOGGLE_TAP_TO_WAKE",
+            )
     }
 }

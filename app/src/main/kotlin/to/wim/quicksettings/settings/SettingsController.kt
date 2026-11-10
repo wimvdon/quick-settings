@@ -20,8 +20,11 @@ class SettingsController(
 
     fun isChanged(setting: Tracked): Boolean = !setting.matches(setting.encoded(device), defaults().of(setting))
 
-    /** The settings of [group] that differ from their default, in popup order. */
-    fun changes(group: Group): List<Tracked> = group.tracked.filter(::isChanged)
+    /** The settings [group]'s popup shows that differ from their default, in popup order. */
+    fun changes(group: Group): List<Tracked> = defaults().trackedOf(group).filter(::isChanged)
+
+    /** The settings of [group] that differ and notify while they do: what its notification lists. */
+    fun notifiedChanges(group: Group): List<Tracked> = group.tracked.filter { isChanged(it) && defaults().notifies(it) }
 
     fun set(
         toggle: Toggle,
@@ -46,8 +49,33 @@ class SettingsController(
     /** Puts one setting back to its default. */
     fun reset(setting: Tracked) = setting.writeEncoded(device, defaults().of(setting))
 
-    /** Puts everything changed in [group] back to its default. */
+    /** Puts everything changed in [group]'s popup back to its default. */
     fun reset(group: Group) = changes(group).forEach(::reset)
+
+    /** Puts back what [group]'s notification lists. */
+    fun resetNotified(group: Group) = notifiedChanges(group).forEach(::reset)
+
+    /**
+     * What a tap on a one-tap tile (or a shortcut to it) does. False when nothing changed:
+     * Private DNS without any hostname, or a tile that doesn't change a setting.
+     */
+    fun tap(tile: TileId): Boolean =
+        when (val kind = tile.kind) {
+            is TileKind.Switch -> {
+                toggle(kind.toggle)
+                true
+            }
+            is TileKind.Cycle -> {
+                cycle(kind.choice)
+                true
+            }
+            TileKind.Timeout -> {
+                toggleTimeout()
+                true
+            }
+            TileKind.Dns -> toggleDns()
+            is TileKind.Popup, TileKind.Keyboard, TileKind.Volume -> false
+        }
 
     /** Switches [toggle] and returns the new state. */
     fun toggle(toggle: Toggle): Boolean {
@@ -106,7 +134,7 @@ class SettingsController(
         }
     }
 
-    /** The first start: the phone's current values become the defaults of [Catalog.seeded]. */
+    /** The first start: the phone's current values become the defaults (see [Catalog.seeded]). */
     fun seedDefaults(base: Defaults = defaults()): Defaults = currentAs(Catalog.seeded, base).copy(seeded = true)
 
     /** The current values of [group] as defaults: what "Use current" stores. Unknown values are skipped. */

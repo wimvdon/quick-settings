@@ -62,6 +62,17 @@ enum class TileId(
 
     val isPopup: Boolean get() = kind is TileKind.Popup
 
+    /** The setting a one-tap tile changes, which its tune button sets up; null for popups, Keyboard and Volume. */
+    val setting: Tracked?
+        get() =
+            when (val k = kind) {
+                is TileKind.Switch -> k.toggle
+                is TileKind.Cycle -> k.choice
+                TileKind.Timeout -> Catalog.Timeout
+                TileKind.Dns -> PrivateDnsSetting
+                is TileKind.Popup, TileKind.Keyboard, TileKind.Volume -> null
+            }
+
     /** What the tile needs permission for. */
     val access: Access
         get() =
@@ -91,11 +102,23 @@ enum class TileId(
         val popups: List<TileId> get() = entries.filter { it.isPopup }
         val singles: List<TileId> get() = entries.filterNot { it.isPopup }
 
-        /** The single tiles grouped under their heading, in heading order; empty headings left out. */
-        fun singlesByCategory(): List<Pair<Category, List<TileId>>> =
-            Category.entries.map { c -> c to singles.filter { it.category == c } }.filter { it.second.isNotEmpty() }
+        /** The one-tap tile that changes [setting], if there is one. */
+        fun of(setting: Tracked): TileId? = singles.firstOrNull { it.setting == setting }
+
+        /** The main screen's sections, in heading order: each popup's tile with the single tiles below it. */
+        fun sections(): List<Section> =
+            Category.entries
+                .map { c -> Section(c, popups.firstOrNull { it.category == c }, singles.filter { it.category == c }) }
+                .filter { it.popup != null || it.tiles.isNotEmpty() }
     }
 }
+
+/** One section of the main screen: a popup's wide tile (none for Other) and the tiles below it. */
+data class Section(
+    val category: Category,
+    val popup: TileId?,
+    val tiles: List<TileId>,
+)
 
 /** What the app may do right now. */
 data class Permissions(

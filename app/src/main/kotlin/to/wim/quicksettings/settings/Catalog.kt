@@ -301,13 +301,11 @@ object Catalog {
     val all: List<Setting> by lazy { Group.entries.flatMap { g -> g.rows.flatMap { listOfNotNull(it.setting, it.level) } } }
 
     /**
-     * The settings whose default the first start takes from the phone, so an update doesn't light
-     * up tiles for how the owner already had things. The four screen settings and Private DNS
-     * keep the defaults earlier versions had.
+     * The settings whose default the first start takes from the phone, so nothing lights up for
+     * how the owner already has things. Values the app doesn't offer (a 2-minute timeout) keep the
+     * app's default.
      */
-    val seeded: List<Tracked> by lazy {
-        all.filterIsInstance<Tracked>() - setOf(BrightnessMode, Timeout, AlwaysOn, TapToWake, PrivateDns)
-    }
+    val seeded: List<Tracked> by lazy { all.filterIsInstance<Tracked>() }
 
     /** The tracked setting with this [id], if any. */
     fun tracked(id: String): Tracked? = all.filterIsInstance<Tracked>().firstOrNull { it.id == id }

@@ -2,7 +2,8 @@
 
 ## This app
 Quick Settings adds five popup tiles and fifteen single tiles, and a main screen that shows them
-all the way Quick Settings draws them (tap to add).
+all the way Quick Settings draws them: a section per popup, its wide tile with the single tiles
+below, each with a tune button (set it up) and a plus (add it).
 
 **The catalogue** (`settings/Catalog.kt`, plain Kotlin, tested): every setting the app can
 change, where Android keeps it and what it needs.
@@ -28,8 +29,10 @@ change, where Android keeps it and what it needs.
 | Developer | Stay awake while charging | `Global` `stay_on_while_plugged_in` (7 = every charger) | adb | phone's* |
 | Network | Private DNS (off / automatic / a hostname) | `Global` `private_dns_mode`, `private_dns_specifier` | adb | any hostname |
 
-\* The first start takes the phone's value (`Catalog.seeded`, `SettingsController.seedDefaults`),
-so updating doesn't light anything up. "adb" is `WRITE_SECURE_SETTINGS`, granted once with adb.
+\* The first start takes the phone's value as the default of every setting (`Catalog.seeded`,
+`SettingsController.seedDefaults`), so nothing lights up after installing. A value in the column
+is the app's fallback, used when the phone has a value the app doesn't offer (a 2-minute
+timeout). "adb" is `WRITE_SECURE_SETTINGS`, granted once with adb.
 
 - **Settings model** (`settings/`): `Setting` is a `Toggle`, a `Choice` (options as text) or a
   `Level` (slider 0..1); toggles and choices are `Tracked` (they have a default). They read and
@@ -40,30 +43,36 @@ so updating doesn't light anything up. "adb" is `WRITE_SECURE_SETTINGS`, granted
   what differs from its default, reset, toggle, cycle, timeout default ↔ long, Private DNS
   hostname ↔ Automatic.
 - **Defaults** (`settings/Defaults.kt`, `data/SettingsRepository.kt`): the user's defaults (only
-  those that differ from the app's), whether each popup notifies, the saved hostnames and the
-  seeded flag, in the backed-up DataStore `backed_up_settings`. Which tiles are added lives in
+  those that differ from the app's), whether each setting notifies (falling back to the per-popup
+  choice of earlier versions), the rows each popup leaves out, what each shortcut slot taps, the
+  saved hostnames and the seeded flag, in the backed-up DataStore `backed_up_settings`. Which tiles are added lives in
   `device_state` (not backed up). Both are `StateFlow`s, read once at start.
 - **Tiles** (`tile/TileServices.kt`): one `AppTileService` subclass per tile; the class names are
   how Android remembers a tile (`ScreenTileService` and `DnsTileService` are the old names). A
   popup tile is lit while something in it differs from its default and names it; a switch tile
   while on; a cycle tile (rotation, ringer, animations) and the timeout tile while not at their
-  default. A tile without the permission it needs opens the main screen. Long-press
+  default. A tile without the permission it needs opens the main screen. A popup tile only counts the
+  rows its popup shows. Long-press
   (`TilePreferencesActivity`): a popup tile opens Android's settings page, a single tile its popup.
   Keyboard and Volume go through the invisible `action/ActionActivity`.
 - **Popups** (`ui/panel/`): one floating activity for every `Group`, styled like Android's Internet
-  dialog. Rows that differ from their default are highlighted. The tune button switches to the
-  defaults (same rows, plus "Notification while changed" and "Use current"); Reset puts
-  everything back. Network has radio rows for Off, Automatic and each hostname, with add and
+  dialog, with the rows the user chose. Rows that differ from their default are highlighted. The
+  tune button opens the popup's tune sheet on the main screen; Reset puts everything back. Network has radio rows for Off, Automatic and each hostname, with add and
   remove.
-- **Shortcuts** (`shortcut/ShortcutActivity.kt`, `res/xml/shortcuts.xml` plus a debug copy): four
-  static launcher shortcuts that toggle Private DNS, the timeout, always-on display and tap to
-  wake, with a toast. Quick Tap can start them too.
-- **Main screen** (`ui/main/`): Tiles (grouped by `Category`) and Popups, each drawn like a large
-  Quick Settings tile with its live state and a + (or a check once added). Tap adds it (Android
-  13+); long-press opens its popup. A banner shows while a permission is missing. The overflow
+- **Shortcuts** (`settings/Shortcuts.kt`, `shortcut/ShortcutActivity.kt`, `res/xml/shortcuts.xml`
+  plus a debug copy): four static launcher shortcuts, "Shortcut 1" to "Shortcut 4". Each taps the
+  tile the user picked for it (at first: Private DNS, timeout, always-on display, tap to wake)
+  and confirms with a toast. Quick Tap can start them too. Their ids and actions keep the names
+  from when each had a fixed setting.
+- **Main screen** (`ui/main/`): a section per `Category` (`TileId.sections`): the popup's wide
+  tile (its state and the rows it shows), then its single tiles, each drawn like a Quick Settings
+  tile with its live state. A tap opens the popup; + adds the tile (Android 13+, a check once
+  added); the tune button opens a bottom sheet (`SetUp`). A popup's sheet chooses its rows, each
+  with its own tune button; a setting's sheet sets its default, its notification and its
+  shortcut slot (a dropdown). A banner shows while a permission is missing. The overflow
   menu opens Permissions (with the adb guide, from Snoozer) and Instructions.
-- **Notifications** (`notify/Notifications.kt`): one per popup while something differs (for the
-  popups that notify), with a Reset button, in a channel per popup (`display` and `private_dns`
+- **Notifications** (`notify/Notifications.kt`): one per popup while a setting in it that notifies
+  differs, listing those settings, with a Reset button for them, in a channel per popup (`display` and `private_dns`
   keep their old ids).
 - **Keeping in step**: `QuickSettingsApp` watches every catalogue key with a `ContentObserver`
   while the process runs, and the tiles, popups and main screen re-read them whenever they are

@@ -23,9 +23,9 @@ import to.wim.quicksettings.ui.panel.PanelActivity
 import to.wim.quicksettings.ui.titleOf
 
 /**
- * One notification per popup while something in it differs from its default (for the popups
- * that notify; the user can switch each on or off in the popup's defaults). Its Reset button puts
- * everything back. Plain ongoing notifications, no service.
+ * One notification per popup while one of its settings that notify differs from its default
+ * (the user chooses per setting, with the tune button on the main screen). Its Reset button puts
+ * those back. Plain ongoing notifications, no service.
  */
 object Notifications {
     /** Channel ids: the first two are the ones earlier versions created, kept so users' choices stay. */
@@ -71,10 +71,9 @@ object Notifications {
     /** Shows exactly the notifications that match the current settings and defaults. */
     fun update(context: Context) {
         val app = context.quickSettingsApp
-        val defaults = app.repository.defaults.value
         NotificationManagerCompat.from(context).cancel(OLD_TIMEOUT_ID)
         Group.entries.forEach { group ->
-            val changes = if (defaults.notifies(group)) app.controller.changes(group) else emptyList()
+            val changes = app.controller.notifiedChanges(group)
             show(
                 context,
                 id(group),
@@ -159,7 +158,7 @@ class ResetReceiver : BroadcastReceiver() {
         if (intent.action != ACTION_RESET) return
         val group = Group.entries.firstOrNull { it.name == intent.getStringExtra(EXTRA_GROUP) } ?: return
         val app = context.quickSettingsApp
-        app.controller.reset(group)
+        app.controller.resetNotified(group)
         app.sync()
     }
 
