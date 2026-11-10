@@ -21,18 +21,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 import to.wim.quicksettings.settings.Defaults
-import to.wim.quicksettings.settings.Group
 import to.wim.quicksettings.settings.TileId
 import to.wim.quicksettings.settings.Tracked
 import java.io.IOException
 
-/** The user's defaults, notification choices and hostnames: backed up (see docs/architecture.md, "Backup"). */
+/** The user's defaults, notification, popup and shortcut choices and hostnames: backed up (see docs/architecture.md, "Backup"). */
 private val Context.settingsStore: DataStore<Preferences> by preferencesDataStore(name = "backed_up_settings")
 
 /** Which tiles are in Quick Settings: only true on this phone, so never backed up. */
 private val Context.deviceStore: DataStore<Preferences> by preferencesDataStore(name = "device_state")
 
 private val HOSTNAMES = stringSetPreferencesKey(Defaults.Keys.HOSTNAMES)
+private val HIDDEN_ROWS = stringSetPreferencesKey(Defaults.Keys.HIDDEN_ROWS)
 private val ADDED_TILES = stringSetPreferencesKey("added_tiles")
 
 private fun Flow<Preferences>.ignoringReadErrors(): Flow<Preferences> =
@@ -61,14 +61,12 @@ class SettingsRepository(
     fun setDefault(
         setting: Tracked,
         value: String,
-    ) = edit { it.update(defaults.value.with(setting, value)) }
+    ) = update { it.with(setting, value) }
 
     fun setDefaults(updated: Defaults) = edit { it.update(updated) }
 
-    fun setNotify(
-        group: Group,
-        on: Boolean,
-    ) = edit { it[booleanPreferencesKey(Defaults.Keys.notify(group))] = on }
+    /** Stores [change] applied to what is stored, read in the same edit so quick changes don't overwrite each other. */
+    fun update(change: (Defaults) -> Defaults) = edit { it.update(change(toDefaults(it))) }
 
     fun addHostname(name: String) = edit { it[HOSTNAMES] = it[HOSTNAMES].orEmpty() + name }
 
@@ -91,11 +89,21 @@ class SettingsRepository(
         scope.launch { settings.edit(block) }
     }
 
-    /** Writes every default of [updated]: stored values replace the old ones. */
+    /**
+     * Writes the choices of [updated]: stored defaults, notification choices, shortcuts and
+     * popup rows replace the old ones. Hostnames and the per-popup notify keys of earlier
+     * versions are left as they are.
+     */
     private fun androidx.datastore.preferences.core.MutablePreferences.update(updated: Defaults) {
         if (updated.seeded) this[booleanPreferencesKey(Defaults.Keys.SEEDED)] = true
-        asMap().keys.filter { it.name.startsWith(Defaults.Keys.VALUE_PREFIX) }.forEach { remove(it) }
+        val replaced = listOf(Defaults.Keys.VALUE_PREFIX, Defaults.Keys.NOTIFY_SETTING_PREFIX, Defaults.Keys.SHORTCUT_PREFIX)
+        asMap().keys.filter { key -> replaced.any { key.name.startsWith(it) } }.forEach { remove(it) }
         updated.values.forEach { (id, value) -> this[stringPreferencesKey(Defaults.Keys.VALUE_PREFIX + id)] = value }
+        updated.notifySettings.forEach { (id, on) -> this[booleanPreferencesKey(Defaults.Keys.NOTIFY_SETTING_PREFIX + id)] = on }
+        updated.shortcuts.forEach { (slot, tile) ->
+            this[stringPreferencesKey(Defaults.Keys.shortcut(slot))] = Defaults.Keys.shortcutValue(tile)
+        }
+        this[HIDDEN_ROWS] = updated.hiddenRows
     }
 
     private fun <T> Flow<T>.stateInFirst(fallback: T): StateFlow<T> {
@@ -109,6 +117,7 @@ class SettingsRepository(
             strings = all.entries.mapNotNull { (k, v) -> (v as? String)?.let { k.name to it } }.toMap(),
             booleans = all.entries.mapNotNull { (k, v) -> (v as? Boolean)?.let { k.name to it } }.toMap(),
             hostnames = prefs[HOSTNAMES].orEmpty(),
+            hiddenRows = prefs[HIDDEN_ROWS].orEmpty(),
         )
     }
 

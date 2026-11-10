@@ -134,19 +134,59 @@ class SettingsControllerTest {
     }
 
     @Test
-    fun `the first start takes new settings from the phone, not the screen settings`() {
+    fun `the first start takes every default from the phone`() {
         val (c, _) =
             controller(
                 "global/adb_enabled" to "1",
                 "system/accelerometer_rotation" to "1",
                 "secure/doze_always_on" to "1",
                 "system/screen_brightness_mode" to "0",
+                "global/private_dns_mode" to "opportunistic",
             )
         val seeded = c.seedDefaults()
         assertTrue(seeded.seeded)
-        assertEquals(mapOf("usb_debugging" to "on", "rotation" to "auto"), seeded.values)
+        assertEquals("on", seeded.values["usb_debugging"])
+        assertEquals("on", seeded.values["always_on"])
+        assertEquals("manual", seeded.values["brightness"])
+        assertEquals(PrivateDnsSetting.AUTOMATIC, seeded.values["private_dns"])
         defaults = seeded
-        assertEquals(listOf(Catalog.BrightnessMode, Catalog.AlwaysOn), c.changes(Group.Screen))
-        assertTrue(c.changes(Group.Developer).isEmpty())
+        Group.entries.forEach { assertEquals(it.name, emptyList<Tracked>(), c.changes(it)) }
+    }
+
+    @Test
+    fun `a value the app doesn't offer keeps the app's default`() {
+        val (c, _) = controller("system/screen_off_timeout" to "120000")
+        assertFalse("timeout" in c.seedDefaults().values)
+    }
+
+    @Test
+    fun `a row left out of the popup no longer lights it up`() {
+        val (c, _) = controller("secure/doze_always_on" to "1")
+        assertEquals(listOf(Catalog.AlwaysOn), c.changes(Group.Screen))
+        defaults = defaults.withRow(Group.Screen.rows.first { it.setting == Catalog.AlwaysOn }, shown = false)
+        assertTrue(c.changes(Group.Screen).isEmpty())
+    }
+
+    @Test
+    fun `the notification lists only settings that notify`() {
+        val (c, raw) = controller("secure/doze_always_on" to "1", "secure/doze_tap_gesture" to "0")
+        assertEquals(listOf(Catalog.AlwaysOn, Catalog.TapToWake), c.notifiedChanges(Group.Screen))
+        defaults = defaults.withNotify(Catalog.TapToWake, false)
+        assertEquals(listOf(Catalog.AlwaysOn), c.notifiedChanges(Group.Screen))
+        c.resetNotified(Group.Screen)
+        assertEquals("0", raw.values["secure/doze_always_on"])
+        assertEquals("0", raw.values["secure/doze_tap_gesture"])
+    }
+
+    @Test
+    fun `a tap on a tile changes its setting`() {
+        val (c, raw) = controller()
+        assertTrue(c.tap(TileId.AlwaysOn))
+        assertEquals("1", raw.values["secure/doze_always_on"])
+        assertTrue(c.tap(TileId.Timeout))
+        assertEquals("1800000", raw.values["system/screen_off_timeout"])
+        assertTrue(c.tap(TileId.Ringer))
+        assertFalse(c.tap(TileId.PrivateDns))
+        assertFalse(c.tap(TileId.Keyboard))
     }
 }

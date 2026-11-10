@@ -2,6 +2,23 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-10: Main screen by section, set up per tile, shortcut slots
+
+The owner asked for a main screen with a wide tile per popup and its single tiles below, each
+with a tune button and a plus. The tune button replaces the popup's defaults mode, so defaults
+live in one place: a setting's sheet has its default, whether it notifies (now per setting, the
+per-popup choice stays as the fallback) and which launcher shortcut taps it. A popup's sheet
+chooses the rows the popup shows. The popup's own tune button opens that sheet in the app.
+
+The shortcuts stay the four manifest shortcuts, because Quick Tap only offers those (see the
+2026-11-09 entries). Android can't relabel a manifest shortcut, so they are now "Shortcut 1" to
+"Shortcut 4" with one icon, and the toast says what changed. Their ids and actions are unchanged,
+so shortcuts on a home screen or set as Quick Tap keep working, and each slot starts with the
+setting it had.
+
+A clean install now takes every default from the phone, also for the five screen and network
+settings that kept fixed defaults so far. Existing installs are not seeded again.
+
 ## 2026-11-09: Every possible tile, popups with defaults, DataStore, a new main screen
 
 The owner asked for every tile an app can offer, popups that group related settings, and

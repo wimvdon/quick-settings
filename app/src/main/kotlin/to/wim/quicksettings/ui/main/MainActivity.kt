@@ -23,6 +23,8 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import to.wim.quicksettings.quickSettingsApp
+import to.wim.quicksettings.settings.Group
+import to.wim.quicksettings.settings.Hostnames
 import to.wim.quicksettings.settings.TileId
 import to.wim.quicksettings.system.AndroidRawSettings
 import to.wim.quicksettings.tile.TileLook
@@ -32,9 +34,12 @@ import to.wim.quicksettings.ui.labelOf
 import to.wim.quicksettings.ui.panel.PanelActivity
 import to.wim.quicksettings.ui.theme.AppTheme
 
-/** The launcher screen: every tile and popup, ready to add, plus permissions and instructions. */
+/** The launcher screen: every tile and popup, ready to add and set up, plus permissions and instructions. */
 class MainActivity : ComponentActivity() {
     private val uiState = mutableStateOf<MainUiState?>(null)
+
+    /** A tune sheet asked for in the intent (a popup's own tune button). */
+    private val setUpRequest = mutableStateOf<SetUp?>(null)
 
     private val notificationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -52,6 +57,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        if (savedInstanceState == null) setUpRequest.value = SetUp.parse(intent?.getStringExtra(EXTRA_SET_UP))
         refresh()
         val repository = quickSettingsApp.repository
         lifecycleScope.launch { repository.defaults.combine(repository.addedTiles) { _, _ -> }.collect { refresh() } }
@@ -60,10 +66,17 @@ class MainActivity : ComponentActivity() {
                 uiState.value?.let { state ->
                     MainScreen(
                         state = state,
+                        setUpRequest = setUpRequest.value,
+                        onSetUpRequestHandled = { setUpRequest.value = null },
                         actions =
                             MainActions(
                                 onAddTile = ::addTile,
                                 onOpenPopup = { open(PanelActivity.intent(this, it)) },
+                                onSetDefault = { setting, value -> repository.setDefault(setting, value) },
+                                onNotify = { setting, on -> repository.update { it.withNotify(setting, on) } },
+                                onShortcut = { tile, slot -> repository.update { it.withShortcut(tile, slot) } },
+                                onShowRow = { row, shown -> repository.update { it.withRow(row, shown) } },
+                                onUseCurrent = { group -> repository.update { quickSettingsApp.controller.currentAsDefaults(group, it) } },
                                 onAllowSystemSettings = {
                                     open(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, "package:$packageName".toUri()))
                                 },
@@ -77,6 +90,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        setUpRequest.value = SetUp.parse(intent.getStringExtra(EXTRA_SET_UP))
+    }
+
     override fun onResume() {
         super.onResume()
         // Permissions and settings may have changed in Settings or with adb meanwhile.
@@ -86,6 +105,8 @@ class MainActivity : ComponentActivity() {
 
     private fun refresh() {
         val added = quickSettingsApp.repository.addedTiles.value
+        val defaults = quickSettingsApp.repository.defaults.value
+        val dnsHostname = quickSettingsApp.controller.dnsHostname()
         uiState.value =
             MainUiState(
                 canAddTilesHere = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU,
@@ -95,6 +116,9 @@ class MainActivity : ComponentActivity() {
                         val look = TileLook.of(this, tile)
                         TileCard(tile, look.active, look.subtitle, added = tile in added)
                     },
+                defaults = defaults,
+                hostnames = Hostnames.merge(defaults.hostnames, dnsHostname),
+                dnsHostname = dnsHostname,
                 adbCommand = PanelActivity.adbCommand(packageName),
             )
     }
@@ -146,8 +170,16 @@ class MainActivity : ComponentActivity() {
         /** Google's download page for adb (Android SDK Platform-Tools). Opens in the browser. */
         private const val PLATFORM_TOOLS = "https://developer.android.com/tools/releases/platform-tools"
 
+        private const val EXTRA_SET_UP = "set_up"
+
         fun intent(context: Context): Intent =
             Intent(context, MainActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+
+        /** Opens the main screen with [group]'s tune sheet. */
+        fun setUpIntent(
+            context: Context,
+            group: Group,
+        ): Intent = intent(context).putExtra(EXTRA_SET_UP, SetUp.Popup(group).key)
     }
 }

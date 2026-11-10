@@ -2,6 +2,7 @@ package to.wim.quicksettings.settings
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -12,10 +13,30 @@ class TilesTest {
     }
 
     @Test
-    fun `single tiles are grouped in heading order`() {
-        val categories = TileId.singlesByCategory().map { it.first }
+    fun `sections hold every tile once, in heading order`() {
+        val sections = TileId.sections()
+        val categories = sections.map { it.category }
         assertEquals(categories.sortedBy { it.ordinal }, categories)
-        assertEquals(TileId.singles.size, TileId.singlesByCategory().sumOf { it.second.size })
+        assertEquals(TileId.entries.toSet(), sections.flatMap { listOfNotNull(it.popup) + it.tiles }.toSet())
+        assertEquals(TileId.entries.size, sections.sumOf { it.tiles.size + if (it.popup != null) 1 else 0 })
+    }
+
+    @Test
+    fun `each popup heads the section of its own tiles`() {
+        val display = TileId.sections().first { it.category == Category.Display }
+        assertEquals(TileId.ScreenPopup, display.popup)
+        assertTrue(TileId.AlwaysOn in display.tiles)
+        assertNull(TileId.sections().first { it.category == Category.Other }.popup)
+    }
+
+    @Test
+    fun `single tiles name the setting they set up`() {
+        assertEquals(Catalog.Timeout, TileId.Timeout.setting)
+        assertEquals(PrivateDnsSetting, TileId.PrivateDns.setting)
+        assertNull(TileId.Keyboard.setting)
+        assertNull(TileId.ScreenPopup.setting)
+        assertEquals(TileId.Grayscale, TileId.of(Catalog.Grayscale))
+        assertNull(TileId.of(Catalog.NightLight))
     }
 
     @Test

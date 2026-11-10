@@ -61,12 +61,9 @@ abstract class AppTileService(
                 openAndCollapse(PanelActivity.intent(this, kind.group))
                 return
             }
-            is TileKind.Switch -> app.controller.toggle(kind.toggle)
-            is TileKind.Cycle -> app.controller.cycle(kind.choice)
-            TileKind.Timeout -> app.controller.toggleTimeout()
-            TileKind.Dns ->
-                if (!app.controller.toggleDns()) {
-                    // No hostname anywhere: the Network popup is where one is added.
+            is TileKind.Switch, is TileKind.Cycle, TileKind.Timeout, TileKind.Dns ->
+                if (!app.controller.tap(tile)) {
+                    // Private DNS without any hostname: the Network popup is where one is added.
                     openAndCollapse(PanelActivity.intent(this, Group.Network))
                     return
                 }

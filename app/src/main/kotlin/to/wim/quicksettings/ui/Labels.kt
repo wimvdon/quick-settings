@@ -82,17 +82,6 @@ fun titleOf(group: Group): Int =
         Group.Network -> R.string.group_network
     }
 
-/** What a popup contains, for its card on the main screen. */
-@StringRes
-fun summaryOf(group: Group): Int =
-    when (group) {
-        Group.Screen -> R.string.main_tile_screen_text
-        Group.Colour -> R.string.group_colour_summary
-        Group.Sound -> R.string.group_sound_summary
-        Group.Developer -> R.string.group_developer_summary
-        Group.Network -> R.string.group_network_summary
-    }
-
 @DrawableRes
 fun iconOf(group: Group): Int =
     when (group) {

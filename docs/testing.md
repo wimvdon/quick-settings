@@ -41,24 +41,27 @@ description. In addition, check every now and then (always before a release):
 - [ ] **Back** gesture/button behaves as expected.
 - [ ] After a release: install the release APK over the previous release. It updates without
       losing data.
-- [ ] **Main screen**: every tile and popup shows its live state; a tap offers to add it, a
-      check shows once it is in Quick Settings; long-press opens its popup. The banner shows
-      while a permission is missing; ⋮ opens Permissions and Instructions.
+- [ ] **Main screen**: a section per popup: its wide tile, then its tiles, all with their live
+      state. A tap opens the popup; + offers to add the tile, a check shows once it is in Quick
+      Settings. The banner shows while a permission is missing; ⋮ opens Permissions and
+      Instructions.
 - [ ] **Popup tiles**: with everything at its default the tile is off and says "Default";
       change one setting and it lights up and names it. Reset puts it back. Long-press opens
       Android's matching settings page.
-- [ ] **Defaults**: in a popup, the tune button shows the defaults; changing one makes the
-      current value count as normal (or not). "Use current" takes every value as it is now.
+- [ ] **Set up**: a tile's tune button sets its default (the tile lights up or goes off at once),
+      its notification and its shortcut. A wide tile's tune button chooses the popup's rows (the
+      last one can't be switched off); "Use current" takes every value as it is now. The tune
+      button in a popup opens the same sheet in the app.
 - [ ] **Brightness**: drag the slider while auto brightness is on: auto switches off and the
       level follows the slider. The X brings auto back.
 - [ ] **Single tiles**: each switches its setting; Rotation, Ringer and Animations step through
       their choices. Keyboard opens the keyboard picker, Volume the volume panel.
 - [ ] **Private DNS**: the tile switches hostname ↔ Automatic. In the Network popup, add a
       hostname, pick it, and remove a hostname that isn't in use.
-- [ ] **Notifications**: a popup that notifies shows one while something differs; its Reset
-      button puts everything back.
-- [ ] **Shortcuts**: touch and hold the app icon; each of the four shortcuts switches its
-      setting and shows a toast.
+- [ ] **Notifications**: a popup shows one while a setting that notifies differs; its Reset
+      button puts those back.
+- [ ] **Shortcuts**: touch and hold the app icon; each of Shortcut 1 to 4 switches the setting
+      chosen for it and shows a toast. An empty one says so.
 - [ ] **Changes made elsewhere** (Android's Settings) show up in the tile, popup and notifications.
 
 ## Reading a crash from a release build

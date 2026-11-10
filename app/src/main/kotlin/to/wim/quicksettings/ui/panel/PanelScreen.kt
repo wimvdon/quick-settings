@@ -76,7 +76,6 @@ import to.wim.quicksettings.ui.valueText
 data class RowState(
     val row: SettingRow,
     val value: String? = null,
-    val default: String? = null,
     val changed: Boolean = false,
     val position: Float? = null,
     val levelPosition: Float? = null,
@@ -86,13 +85,10 @@ data class PanelUiState(
     val group: Group,
     val rows: List<RowState>,
     val hasChanges: Boolean,
-    val notifies: Boolean,
     /** Private DNS: every hostname to offer (saved ones and the one Android has). */
     val hostnames: List<String>,
     /** Private DNS: the saved hostnames, which can be removed. */
     val savedHostnames: Set<String>,
-    /** Private DNS: the hostname Android has, which the "any hostname" default means. */
-    val dnsHostname: String?,
     val permissions: Permissions,
     val adbCommand: String,
 )
@@ -103,13 +99,11 @@ class PanelActions(
     val onLevel: (Level, Float) -> Unit = { _, _ -> },
     val onLevelFinished: () -> Unit = {},
     val onWrite: (Tracked, String) -> Unit = { _, _ -> },
-    val onSetDefault: (Tracked, String) -> Unit = { _, _ -> },
-    val onNotify: (Boolean) -> Unit = {},
-    val onUseCurrent: () -> Unit = {},
     /** Returns false when the hostname isn't valid, so the dialog stays open. */
     val onAddHostname: (String) -> Boolean = { true },
     val onRemoveHostname: (String) -> Unit = {},
-    val onEditDefaults: (Boolean) -> Unit = {},
+    /** The tune button: the popup's setup on the main screen. */
+    val onSetUp: () -> Unit = {},
     val onReset: () -> Unit = {},
     val onAllowSystemSettings: () -> Unit = {},
     val onCopyCommand: () -> Unit = {},
@@ -138,12 +132,11 @@ private typealias RowContent = @Composable (Shape) -> Unit
 /**
  * The popup: a title, one group of rows (a setting that differs from its default is highlighted,
  * like the connected network in the Internet dialog), and Settings / Reset / Done at the bottom.
- * The tune button switches to its defaults: the same rows, setting what "normal" is.
+ * The tune button opens the popup's setup on the main screen.
  */
 @Composable
 fun PanelScreen(
     state: PanelUiState,
-    editingDefaults: Boolean,
     actions: PanelActions,
     modifier: Modifier = Modifier,
 ) {
@@ -163,13 +156,12 @@ fun PanelScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 16.dp),
         ) {
-            Header(state.group, editingDefaults, actions)
+            Header(state.group, actions)
             Spacer(Modifier.height(16.dp))
 
-            if (!editingDefaults) SetupCards(state, actions)
+            SetupCards(state, actions)
 
-            val rows: List<RowContent> =
-                if (editingDefaults) defaultRows(state, actions) else liveRows(state, actions) { addingHostname = true }
+            val rows: List<RowContent> = liveRows(state, actions) { addingHostname = true }
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 rows.forEachIndexed { index, row -> row(rowShape(index, rows.size)) }
             }
@@ -179,16 +171,10 @@ fun PanelScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                if (editingDefaults) {
-                    OutlinedButton(onClick = actions.onUseCurrent) { Text(stringResource(R.string.panel_use_current)) }
-                    Spacer(Modifier.weight(1f))
-                    Button(onClick = { actions.onEditDefaults(false) }) { Text(stringResource(R.string.panel_done)) }
-                } else {
-                    OutlinedButton(onClick = actions.onOpenSettings) { Text(stringResource(R.string.panel_settings)) }
-                    Spacer(Modifier.weight(1f))
-                    TextButton(onClick = actions.onReset, enabled = state.hasChanges) { Text(stringResource(R.string.panel_reset)) }
-                    Button(onClick = actions.onDone) { Text(stringResource(R.string.panel_done)) }
-                }
+                OutlinedButton(onClick = actions.onOpenSettings) { Text(stringResource(R.string.panel_settings)) }
+                Spacer(Modifier.weight(1f))
+                TextButton(onClick = actions.onReset, enabled = state.hasChanges) { Text(stringResource(R.string.panel_reset)) }
+                Button(onClick = actions.onDone) { Text(stringResource(R.string.panel_done)) }
             }
         }
     }
@@ -200,28 +186,18 @@ fun PanelScreen(
 @Composable
 private fun Header(
     group: Group,
-    editingDefaults: Boolean,
     actions: PanelActions,
 ) {
+    val title = stringResource(titleOf(group))
     Box(Modifier.fillMaxWidth().heightIn(min = 48.dp), contentAlignment = Alignment.Center) {
-        Column(Modifier.padding(horizontal = 48.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(
-                text = stringResource(titleOf(group)),
-                style = MaterialTheme.typography.headlineSmall,
-                textAlign = TextAlign.Center,
-            )
-            if (editingDefaults) {
-                Text(
-                    text = stringResource(R.string.panel_defaults),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                )
-            }
-        }
-        if (!editingDefaults) {
-            IconButton(onClick = { actions.onEditDefaults(true) }, modifier = Modifier.align(Alignment.CenterEnd)) {
-                Icon(painterResource(R.drawable.ic_tune), contentDescription = stringResource(R.string.panel_defaults))
-            }
+        Text(
+            text = title,
+            style = MaterialTheme.typography.headlineSmall,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 48.dp),
+        )
+        IconButton(onClick = actions.onSetUp, modifier = Modifier.align(Alignment.CenterEnd)) {
+            Icon(painterResource(R.drawable.ic_tune), contentDescription = stringResource(R.string.main_set_up, title))
         }
     }
 }
@@ -322,68 +298,6 @@ private fun dnsRows(
             ActionRow(R.drawable.ic_add, stringResource(R.string.dns_add_hostname), enabled, shape, onAddHostname)
         }
 }
-
-// ---- Defaults rows: what "normal" is -------------------------------------------------------
-
-private fun defaultRows(
-    state: PanelUiState,
-    actions: PanelActions,
-): List<RowContent> =
-    state.rows.flatMap { rs ->
-        val setting = rs.row.setting
-        val default = rs.default
-        when {
-            setting !is Tracked || default == null -> emptyList()
-            setting == PrivateDnsSetting -> {
-                val options = listOf(PrivateDnsSetting.OFF, PrivateDnsSetting.AUTOMATIC) + state.hostnames.map(PrivateDnsSetting::hostnameValue)
-                options.map { option ->
-                    val selected =
-                        default == option ||
-                            (default == PrivateDnsSetting.ANY_HOSTNAME && PrivateDnsSetting.hostnameOf(option) == state.dnsHostname)
-                    val content: RowContent = { shape ->
-                        RadioRow(
-                            icon = if (PrivateDnsSetting.hostnameOf(option) != null) R.drawable.ic_dns else null,
-                            title = valueText(LocalResources.current, PrivateDnsSetting, option),
-                            selected = selected,
-                            highlighted = false,
-                            enabled = true,
-                            shape = shape,
-                            onClick = { actions.onSetDefault(PrivateDnsSetting, option) },
-                        )
-                    }
-                    content
-                }
-            }
-            setting is Toggle ->
-                listOf<RowContent> { shape ->
-                    ToggleRow(
-                        setting = setting,
-                        checked = default == Toggle.ON,
-                        highlighted = false,
-                        enabled = true,
-                        shape = shape,
-                        onCheckedChange = { actions.onSetDefault(setting, Toggle.encode(it)) },
-                        actions = actions,
-                    )
-                }
-            setting is Choice ->
-                listOf<RowContent> { shape ->
-                    ChoiceRow(setting, default, highlighted = false, enabled = true, shape = shape) { actions.onSetDefault(setting, it) }
-                }
-            else -> emptyList()
-        }
-    } +
-        listOf<RowContent> { shape ->
-            SwitchLine(
-                icon = R.drawable.ic_notifications,
-                title = stringResource(R.string.panel_notify),
-                checked = state.notifies,
-                highlighted = false,
-                enabled = true,
-                shape = shape,
-                onCheckedChange = actions.onNotify,
-            )
-        }
 
 // ---- Row building blocks -------------------------------------------------------------------
 
@@ -723,17 +637,14 @@ private fun previewState(
             RowState(
                 row = it,
                 value = tracked?.appDefault,
-                default = tracked?.appDefault,
                 changed = changed && it.setting == Catalog.AlwaysOn,
                 position = 0.5f,
                 levelPosition = 0.4f,
             )
         },
     hasChanges = changed,
-    notifies = true,
     hostnames = listOf("dns.example.com"),
     savedHostnames = setOf("dns.example.com"),
-    dnsHostname = "dns.example.com",
     permissions = Permissions(system = true, secure = !changed, notifications = true),
     adbCommand = "adb shell pm grant to.wim.quicksettings android.permission.WRITE_SECURE_SETTINGS",
 )
@@ -744,11 +655,11 @@ private fun PanelScreenPreview() =
     AppTheme {
         Column {
             Spacer(Modifier.size(1.dp))
-            PanelScreen(previewState(Group.Screen, changed = true), editingDefaults = false, actions = PanelActions())
+            PanelScreen(previewState(Group.Screen, changed = true), actions = PanelActions())
         }
     }
 
 @Preview(uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun PanelDefaultsPreview() =
-    AppTheme { PanelScreen(previewState(Group.Network, changed = false), editingDefaults = true, actions = PanelActions()) }
+private fun PanelNetworkPreview() =
+    AppTheme { PanelScreen(previewState(Group.Network, changed = false), actions = PanelActions()) }

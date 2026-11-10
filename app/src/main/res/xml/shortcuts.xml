@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Long-press shortcuts on the app icon (also usable with Quick Tap). Keep in sync with
+<!-- Long-press shortcuts on the app icon (also usable with Quick Tap): four slots, each tapping
+     the tile chosen in the app (settings/Shortcuts.kt). Ids and actions keep their old names, so
+     shortcuts already on a home screen or set as Quick Tap keep working. Keep in sync with
      src/debug/res/xml/shortcuts.xml. -->
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_dns"
+        android:icon="@drawable/ic_shortcut_slot"
         android:shortcutId="toggle_private_dns"
-        android:shortcutLongLabel="@string/shortcut_dns_long"
-        android:shortcutShortLabel="@string/shortcut_dns_short">
+        android:shortcutLongLabel="@string/shortcut_slot_1"
+        android:shortcutShortLabel="@string/shortcut_slot_1">
         <intent
             android:action="to.wim.quicksettings.action.TOGGLE_PRIVATE_DNS"
             android:targetClass="to.wim.quicksettings.shortcut.ShortcutActivity"
@@ -15,10 +17,10 @@
     </shortcut>
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_timer"
+        android:icon="@drawable/ic_shortcut_slot"
         android:shortcutId="toggle_timeout"
-        android:shortcutLongLabel="@string/shortcut_timeout_long"
-        android:shortcutShortLabel="@string/shortcut_timeout_short">
+        android:shortcutLongLabel="@string/shortcut_slot_2"
+        android:shortcutShortLabel="@string/shortcut_slot_2">
         <intent
             android:action="to.wim.quicksettings.action.TOGGLE_TIMEOUT"
             android:targetClass="to.wim.quicksettings.shortcut.ShortcutActivity"
@@ -26,10 +28,10 @@
     </shortcut>
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_always_on"
+        android:icon="@drawable/ic_shortcut_slot"
         android:shortcutId="toggle_always_on"
-        android:shortcutLongLabel="@string/shortcut_always_on_long"
-        android:shortcutShortLabel="@string/shortcut_always_on_short">
+        android:shortcutLongLabel="@string/shortcut_slot_3"
+        android:shortcutShortLabel="@string/shortcut_slot_3">
         <intent
             android:action="to.wim.quicksettings.action.TOGGLE_ALWAYS_ON"
             android:targetClass="to.wim.quicksettings.shortcut.ShortcutActivity"
@@ -37,10 +39,10 @@
     </shortcut>
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_tap"
+        android:icon="@drawable/ic_shortcut_slot"
         android:shortcutId="toggle_tap_to_wake"
-        android:shortcutLongLabel="@string/shortcut_tap_long"
-        android:shortcutShortLabel="@string/shortcut_tap_short">
+        android:shortcutLongLabel="@string/shortcut_slot_4"
+        android:shortcutShortLabel="@string/shortcut_slot_4">
         <intent
             android:action="to.wim.quicksettings.action.TOGGLE_TAP_TO_WAKE"
             android:targetClass="to.wim.quicksettings.shortcut.ShortcutActivity"

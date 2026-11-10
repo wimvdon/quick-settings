@@ -1,7 +1,8 @@
 # Quick Settings
 
-Extra Quick Settings tiles, in Android's own colors. The app's main screen shows every tile and
-popup the way Quick Settings draws it: tap one to add it.
+Extra Quick Settings tiles, in Android's own colors. The app's main screen shows a section per
+popup: its wide tile, with its single tiles below, drawn the way Quick Settings draws them. Tap a
+tile to open its popup, **+** to add it to Quick Settings and the sliders to set it up.
 
 ## Popups
 A popup tile opens a window (laid out like Android's Internet dialog) with related settings:
@@ -15,11 +16,11 @@ A popup tile opens a window (laid out like Android's Internet dialog) with relat
 | **Network** | Private DNS: off, automatic or one of your saved hostnames (add and remove them here) |
 
 Every setting has a **default**: what is normal for you. The tile lights up and names whatever
-differs; **Reset** in the popup puts it all back. Tap the sliders button at the top of a popup to
-choose the defaults, or **Use current** to take the values as they are now, and whether a
-notification (with a Reset button) shows while something differs. On by default for Screen,
-Developer and Network. The first start takes the phone's current values as the defaults of
-everything new, so nothing lights up after updating.
+differs; **Reset** in the popup puts it all back. The sliders on a tile choose its default and
+whether a notification (with a Reset button) shows while it differs; on at first for Screen,
+Developer and Network. The sliders on a popup's tile choose which settings the popup shows, and
+**Use current** takes the values as they are now. The first start takes the phone's current
+values as the defaults, so nothing lights up after installing.
 
 Long-press a popup tile to open Android's matching settings page.
 
@@ -35,8 +36,9 @@ Not possible for an app, even with adb: mobile data, airplane mode, mono audio, 
 smooth display (Android keeps them for itself), and silent mode (needs Do Not Disturb access).
 
 ## Shortcuts
-Touch and hold the app icon for four shortcuts: **Private DNS** (hostname ↔ Automatic),
-**Timeout** (default ↔ long), **Always on** and **Tap to wake**. Drag one to the home screen, or
+Touch and hold the app icon for four shortcuts, **Shortcut 1** to **4**. Each one taps a tile
+you choose with the tile's sliders; at first they are Private DNS (hostname ↔ Automatic),
+Timeout (default ↔ long), Always-on display and Tap to wake. Drag one to the home screen, or
 use it with Quick Tap (double-tap the back of a Pixel) or a gesture app such as RegiStar.
 
 ## Setting it up
