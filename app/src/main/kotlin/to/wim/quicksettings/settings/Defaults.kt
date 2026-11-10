@@ -80,6 +80,17 @@ data class Defaults(
                 },
         )
 
+    /** A copy where [slot] taps [tile] (null: nothing); a slot that tapped [tile] before is emptied. */
+    fun withSlot(
+        slot: Int,
+        tile: TileId?,
+    ): Defaults =
+        if (tile != null) {
+            withShortcut(tile, slot)
+        } else {
+            copy(shortcuts = Shortcuts.slots.associateWith { s -> if (s == slot) null else shortcut(s) })
+        }
+
     /** Converts to and from the flat keys DataStore stores. */
     object Keys {
         const val VALUE_PREFIX = "default."

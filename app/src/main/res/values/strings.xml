@@ -49,8 +49,6 @@
     <string name="main_adb_title">Grant it with adb</string>
     <string name="main_adb_steps">On your phone, open Settings › About phone and tap Build number seven times to turn on Developer options.\nOpen Settings › System › Developer options and switch on USB debugging.\nConnect your phone to a computer that has Android\'s platform tools (adb) and allow USB debugging when your phone asks.\nTap Copy, send the command to the computer, and run it there in a command window:</string>
     <string name="main_dns_no_hostname">No hostname set</string>
-    <string name="main_shortcut_title">Launcher shortcuts</string>
-    <string name="main_shortcut_steps">Pick a shortcut with the sliders on a tile.\nTouch and hold the %1$s app icon and tap the shortcut, or drag it to your home screen. Quick Tap can use it too.</string>
     <string name="main_section_instructions">Instructions</string>
     <string name="animations_title">Animations</string>
     <string name="back">Back</string>
@@ -123,11 +121,12 @@
     <string name="main_add_named">Add %1$s</string>
     <string name="preset_rows">In the popup</string>
     <string name="preset_default">Default</string>
-    <string name="preset_shortcut">Shortcut</string>
     <string name="preset_shortcut_none">None</string>
     <string name="shortcut_empty">No setting chosen for this shortcut</string>
     <string name="shortcut_slot_1">Shortcut 1</string>
     <string name="shortcut_slot_2">Shortcut 2</string>
     <string name="shortcut_slot_3">Shortcut 3</string>
     <string name="shortcut_slot_4">Shortcut 4</string>
+    <string name="main_section_shortcuts">Shortcuts</string>
+    <string name="main_shortcuts_hint">Touch and hold the %1$s app icon to use these, drag one to your home screen, or pick one in Quick Tap.</string>
 </resources>

@@ -49,7 +49,7 @@ description. In addition, check every now and then (always before a release):
       change one setting and it lights up and names it. Reset puts it back. Long-press opens
       Android's matching settings page.
 - [ ] **Set up**: a tile's tune button sets its default (the tile lights up or goes off at once),
-      its notification and its shortcut. A wide tile's tune button chooses the popup's rows (the
+      and its notification. A wide tile's tune button chooses the popup's rows (the
       last one can't be switched off); "Use current" takes every value as it is now. The tune
       button in a popup opens the same sheet in the app.
 - [ ] **Brightness**: drag the slider while auto brightness is on: auto switches off and the
@@ -61,7 +61,7 @@ description. In addition, check every now and then (always before a release):
 - [ ] **Notifications**: a popup shows one while a setting that notifies differs; its Reset
       button puts those back.
 - [ ] **Shortcuts**: touch and hold the app icon; each of Shortcut 1 to 4 switches the setting
-      chosen for it and shows a toast. An empty one says so.
+      chosen for it in ⋮ › Shortcuts and shows a toast. An empty one says so.
 - [ ] **Changes made elsewhere** (Android's Settings) show up in the tile, popup and notifications.
 
 ## Reading a crash from a release build
