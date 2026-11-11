@@ -2,8 +2,8 @@ package to.wim.quicksettings.settings
 
 /**
  * What the user chose as normal: a default per setting (only those they changed are stored),
- * which settings notify while they differ, the rows each popup shows, what each launcher
- * shortcut taps, and the saved Private DNS hostnames.
+ * which settings notify while they differ, the rows each popup shows, and the saved Private DNS
+ * hostnames.
  *
  * Kept in the backed-up DataStore (see data/SettingsRepository.kt), so it comes along to a new
  * phone. Plain Kotlin, tested on the JVM (see DefaultsTest).
@@ -16,8 +16,6 @@ data class Defaults(
     val notifySettings: Map<String, Boolean> = emptyMap(),
     /** Ids of the row settings a popup leaves out. */
     val hiddenRows: Set<String> = emptySet(),
-    /** Slot → the tile it taps (null: nothing). Slots not stored do what [Shortcuts.defaults] says. */
-    val shortcuts: Map<Int, TileId?> = emptyMap(),
     val hostnames: Set<String> = emptySet(),
     /** Whether the first start has taken the phone's values as defaults (see [Catalog.seeded]). */
     val seeded: Boolean = false,
@@ -58,62 +56,22 @@ data class Defaults(
         return copy(hiddenRows = if (shown) hiddenRows - id else hiddenRows + id)
     }
 
-    /** The tile [slot] taps, or null when it taps nothing. */
-    fun shortcut(slot: Int): TileId? = if (slot in shortcuts) shortcuts[slot] else Shortcuts.defaultOf(slot)
-
-    /** The slot that taps [tile], if any. */
-    fun slotOf(tile: TileId): Int? = Shortcuts.slots.firstOrNull { shortcut(it) == tile }
-
-    /** A copy where [slot] taps [tile] (null: no slot); a slot that tapped it before is emptied. */
-    fun withShortcut(
-        tile: TileId,
-        slot: Int?,
-    ): Defaults =
-        copy(
-            shortcuts =
-                Shortcuts.slots.associateWith { s ->
-                    when {
-                        s == slot -> tile
-                        shortcut(s) == tile -> null
-                        else -> shortcut(s)
-                    }
-                },
-        )
-
-    /** A copy where [slot] taps [tile] (null: nothing); a slot that tapped [tile] before is emptied. */
-    fun withSlot(
-        slot: Int,
-        tile: TileId?,
-    ): Defaults =
-        if (tile != null) {
-            withShortcut(tile, slot)
-        } else {
-            copy(shortcuts = Shortcuts.slots.associateWith { s -> if (s == slot) null else shortcut(s) })
-        }
-
     /** Converts to and from the flat keys DataStore stores. */
     object Keys {
         const val VALUE_PREFIX = "default."
         const val NOTIFY_PREFIX = "notify."
         const val NOTIFY_SETTING_PREFIX = "notify_setting."
+        /** What each launcher shortcut tapped, before they opened the popups (#24): removed on the next write. */
         const val SHORTCUT_PREFIX = "shortcut."
         const val HIDDEN_ROWS = "hidden_rows"
         const val HOSTNAMES = "hostnames"
         const val SEEDED = "defaults_seeded"
-
-        /** Stored for a slot that taps nothing. */
-        const val NO_SHORTCUT = ""
 
         fun value(setting: Tracked) = VALUE_PREFIX + setting.id
 
         fun notify(group: Group) = NOTIFY_PREFIX + group.name
 
         fun notify(setting: Tracked) = NOTIFY_SETTING_PREFIX + setting.id
-
-        fun shortcut(slot: Int) = SHORTCUT_PREFIX + slot
-
-        /** What a slot stores: the tile's name, or [NO_SHORTCUT]. */
-        fun shortcutValue(tile: TileId?) = tile?.name ?: NO_SHORTCUT
 
         /** Rebuilds [Defaults] from stored strings, booleans and string sets; unknown keys are ignored. */
         fun read(
@@ -131,17 +89,6 @@ data class Defaults(
                 notifySettings =
                     booleans.filterKeys { it.startsWith(NOTIFY_SETTING_PREFIX) }.mapKeys { it.key.removePrefix(NOTIFY_SETTING_PREFIX) },
                 hiddenRows = hiddenRows,
-                shortcuts =
-                    strings.mapNotNull { (key, value) ->
-                        val slot = key.removePrefix(SHORTCUT_PREFIX).takeIf { key.startsWith(SHORTCUT_PREFIX) }?.toIntOrNull()
-                        val tile = Shortcuts.targets.firstOrNull { it.name == value }
-                        when {
-                            slot == null || slot !in Shortcuts.slots -> null
-                            value == NO_SHORTCUT -> slot to null
-                            tile != null -> slot to tile
-                            else -> null
-                        }
-                    }.toMap(),
                 hostnames = hostnames.filter(Hostnames::isValid).toSet(),
                 seeded = booleans[SEEDED] == true,
             )

@@ -248,10 +248,10 @@ Quick Settings (formerly Screener) is Snoozer's sister app.
   looked like a flash.
 - Main screen: a section per popup under a heading (Title Small in `primary`), its wide tile
   above its single tiles in two columns, all shaped like Quick Settings tiles (`AppShapes.Item`,
-  lit in `primary`) and showing only their name. Each tile has a tune button (opens a
+  lit in `primary`) and showing only their name; a wide tile also lists the settings its popup
+  bundles (Body Small, at most two lines). Each tile has a tune button (opens a
   `ModalBottomSheet`: a popup's rows with checkboxes, or a setting's default as segmented
-  buttons and its notification switch) and a plus (a check once added). Shortcuts (a dropdown
-  per slot), Permissions (with the adb steps) and Instructions are pages behind the overflow menu.
+  buttons and its notification switch) and a plus (a check once added). Permissions (with the adb steps) and Instructions are pages behind the overflow menu.
   Steps are numbered in primary-coloured circles, like Snoozer's guides. No settings, so no Theme or Dynamic color choice: it follows the
   phone's light/dark setting and always uses dynamic colours.
 - Setup needed (a permission missing) shows as a `tertiaryContainer` card above the popup's

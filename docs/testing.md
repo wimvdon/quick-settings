@@ -41,8 +41,8 @@ description. In addition, check every now and then (always before a release):
 - [ ] **Back** gesture/button behaves as expected.
 - [ ] After a release: install the release APK over the previous release. It updates without
       losing data.
-- [ ] **Main screen**: a section per popup: its wide tile, then its tiles, all with their live
-      state. A tap opens the popup; + offers to add the tile, a check shows once it is in Quick
+- [ ] **Main screen**: no hint text on top; a section per popup: its wide tile, listing the
+      settings in its popup under its name, then its tiles, all with their live state. A tap opens the popup; + offers to add the tile, a check shows once it is in Quick
       Settings. The banner shows while a permission is missing; ⋮ opens Permissions and
       Instructions.
 - [ ] **Popup tiles**: with everything at its default the tile is off and says "Default";
@@ -60,8 +60,8 @@ description. In addition, check every now and then (always before a release):
       hostname, pick it, and remove a hostname that isn't in use.
 - [ ] **Notifications**: a popup shows one while a setting that notifies differs; its Reset
       button puts those back.
-- [ ] **Shortcuts**: touch and hold the app icon; each of Shortcut 1 to 4 switches the setting
-      chosen for it in ⋮ › Shortcuts and shows a toast. An empty one says so.
+- [ ] **Shortcuts**: touch and hold the app icon; Screen, Color, Sound and Network each open
+      their popup (no Developer). A shortcut on the home screen or set as Quick Tap does the same.
 - [ ] **Changes made elsewhere** (Android's Settings) show up in the tile, popup and notifications.
 
 ## Reading a crash from a release build

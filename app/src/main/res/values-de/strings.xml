@@ -48,7 +48,6 @@
     <string name="main_granted">Erlaubt</string>
     <string name="main_adb_title">Mit adb erlauben</string>
     <string name="main_adb_steps">Öffne auf deinem Smartphone Einstellungen › Über das Telefon und tippe siebenmal auf Build-Nummer, um die Entwickleroptionen einzuschalten.\nÖffne Einstellungen › System › Entwickleroptionen und aktiviere USB-Debugging.\nVerbinde dein Smartphone mit einem Computer mit den Android-Plattformtools (adb) und erlaube USB-Debugging, wenn dein Smartphone fragt.\nTippe auf Kopieren, schick den Befehl an den Computer und führe ihn dort in einem Befehlsfenster aus:</string>
-    <string name="main_dns_no_hostname">Kein Hostname festgelegt</string>
     <string name="main_section_instructions">Anleitung</string>
     <string name="animations_title">Animationen</string>
     <string name="back">Zurück</string>
@@ -85,8 +84,6 @@
     <string name="main_open_popup">Öffnen</string>
     <string name="main_tile_added">In den Schnelleinstellungen</string>
     <string name="main_tile_not_added">Nicht hinzugefügt</string>
-    <string name="main_tiles_hint">Tippe auf +, um eine Kachel zu den Schnelleinstellungen hinzuzufügen.</string>
-    <string name="main_tiles_hint_edit">Öffne die Schnelleinstellungen und tippe auf den Stift, um Kacheln hinzuzufügen.</string>
     <string name="minutes_short">%1$d Min.</string>
     <string name="night_light_title">Nachtlicht</string>
     <string name="night_light_warmth">Wärme</string>
@@ -121,12 +118,4 @@
     <string name="main_add_named">%1$s hinzufügen</string>
     <string name="preset_rows">Im Pop-up</string>
     <string name="preset_default">Standard</string>
-    <string name="preset_shortcut_none">Keine</string>
-    <string name="shortcut_empty">Für diese Verknüpfung ist keine Einstellung gewählt</string>
-    <string name="shortcut_slot_1">Verknüpfung 1</string>
-    <string name="shortcut_slot_2">Verknüpfung 2</string>
-    <string name="shortcut_slot_3">Verknüpfung 3</string>
-    <string name="shortcut_slot_4">Verknüpfung 4</string>
-    <string name="main_section_shortcuts">Verknüpfungen</string>
-    <string name="main_shortcuts_hint">Halte das App-Symbol von %1$s gedrückt, um sie zu nutzen, zieh eine auf den Startbildschirm oder wähle eine in Quick Tap.</string>
 </resources>

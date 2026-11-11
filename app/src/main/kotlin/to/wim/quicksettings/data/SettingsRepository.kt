@@ -90,9 +90,9 @@ class SettingsRepository(
     }
 
     /**
-     * Writes the choices of [updated]: stored defaults, notification choices, shortcuts and
-     * popup rows replace the old ones. Hostnames and the per-popup notify keys of earlier
-     * versions are left as they are.
+     * Writes the choices of [updated]: stored defaults, notification choices and popup rows
+     * replace the old ones, and the shortcut choices of earlier versions go. Hostnames and the
+     * per-popup notify keys of earlier versions are left as they are.
      */
     private fun androidx.datastore.preferences.core.MutablePreferences.update(updated: Defaults) {
         if (updated.seeded) this[booleanPreferencesKey(Defaults.Keys.SEEDED)] = true
@@ -100,9 +100,6 @@ class SettingsRepository(
         asMap().keys.filter { key -> replaced.any { key.name.startsWith(it) } }.forEach { remove(it) }
         updated.values.forEach { (id, value) -> this[stringPreferencesKey(Defaults.Keys.VALUE_PREFIX + id)] = value }
         updated.notifySettings.forEach { (id, on) -> this[booleanPreferencesKey(Defaults.Keys.NOTIFY_SETTING_PREFIX + id)] = on }
-        updated.shortcuts.forEach { (slot, tile) ->
-            this[stringPreferencesKey(Defaults.Keys.shortcut(slot))] = Defaults.Keys.shortcutValue(tile)
-        }
         this[HIDDEN_ROWS] = updated.hiddenRows
     }
 

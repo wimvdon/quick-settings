@@ -44,7 +44,7 @@ timeout). "adb" is `WRITE_SECURE_SETTINGS`, granted once with adb.
   hostname ↔ Automatic.
 - **Defaults** (`settings/Defaults.kt`, `data/SettingsRepository.kt`): the user's defaults (only
   those that differ from the app's), whether each setting notifies (falling back to the per-popup
-  choice of earlier versions), the rows each popup leaves out, what each shortcut slot taps, the
+  choice of earlier versions), the rows each popup leaves out, the
   saved hostnames and the seeded flag, in the backed-up DataStore `backed_up_settings`. Which tiles are added lives in
   `device_state` (not backed up). Both are `StateFlow`s, read once at start.
 - **Tiles** (`tile/TileServices.kt`): one `AppTileService` subclass per tile; the class names are
@@ -60,17 +60,18 @@ timeout). "adb" is `WRITE_SECURE_SETTINGS`, granted once with adb.
   tune button opens the popup's tune sheet on the main screen; Reset puts everything back. Network has radio rows for Off, Automatic and each hostname, with add and
   remove.
 - **Shortcuts** (`settings/Shortcuts.kt`, `shortcut/ShortcutActivity.kt`, `res/xml/shortcuts.xml`
-  plus a debug copy): four static launcher shortcuts, "Shortcut 1" to "Shortcut 4". Each taps the
-  tile the user picked for it in ⋮ › Shortcuts (at first: Private DNS, timeout, always-on display, tap to wake)
-  and confirms with a toast. Quick Tap can start them too. Their ids and actions keep the names
-  from when each had a fixed setting.
+  plus a debug copy): four static launcher shortcuts, one per popup but Developer: Screen, Color,
+  Sound and Network, each with its popup's name and icon (#24). Each opens its popup. Quick Tap can
+  start them too. Their ids and actions keep the names from when each had a fixed setting, so
+  shortcuts on a home screen or set as Quick Tap keep working; the shortcut choices stored by
+  earlier versions (`shortcut.<slot>`) are removed on the next write.
 - **Main screen** (`ui/main/`): a section per `Category` (`TileId.sections`): the popup's wide
-  tile (its state and the rows it shows), then its single tiles, each drawn like a Quick Settings
+  tile (its name, with the settings its popup shows under it, so it reads as a group, #25), then its single tiles, each drawn like a Quick Settings
   tile with its live state. A tap opens the popup; + adds the tile (Android 13+, a check once
   added); the tune button opens a bottom sheet (`SetUp`). A popup's sheet chooses its rows, each
   with its own tune button; a setting's sheet sets its default and its notification. Tiles show
-  only their name and light up like in Quick Settings; a heading names each section. ⋮ ›
-  Shortcuts has a dropdown per slot: what it taps. A banner shows while a permission is missing. The overflow
+  only their name and light up like in Quick Settings; a heading names each section. No hint text
+  above the tiles (#25): the Instructions page explains adding them. A banner shows while a permission is missing. The overflow
   menu opens Permissions (with the adb guide, from Snoozer) and Instructions.
 - **Notifications** (`notify/Notifications.kt`): one per popup while a setting in it that notifies
   differs, listing those settings, with a Reset button for them, in a channel per popup (`display` and `private_dns`

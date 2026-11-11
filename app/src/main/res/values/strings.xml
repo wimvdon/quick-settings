@@ -48,7 +48,6 @@
     <string name="main_granted">Allowed</string>
     <string name="main_adb_title">Grant it with adb</string>
     <string name="main_adb_steps">On your phone, open Settings › About phone and tap Build number seven times to turn on Developer options.\nOpen Settings › System › Developer options and switch on USB debugging.\nConnect your phone to a computer that has Android\'s platform tools (adb) and allow USB debugging when your phone asks.\nTap Copy, send the command to the computer, and run it there in a command window:</string>
-    <string name="main_dns_no_hostname">No hostname set</string>
     <string name="main_section_instructions">Instructions</string>
     <string name="animations_title">Animations</string>
     <string name="back">Back</string>
@@ -85,8 +84,6 @@
     <string name="main_open_popup">Open</string>
     <string name="main_tile_added">In Quick Settings</string>
     <string name="main_tile_not_added">Not added</string>
-    <string name="main_tiles_hint">Tap + to add a tile to Quick Settings.</string>
-    <string name="main_tiles_hint_edit">To add tiles, open Quick Settings and tap the pencil.</string>
     <string name="minutes_short">%1$d min</string>
     <string name="night_light_title">Night Light</string>
     <string name="night_light_warmth">Warmth</string>
@@ -121,12 +118,4 @@
     <string name="main_add_named">Add %1$s</string>
     <string name="preset_rows">In the popup</string>
     <string name="preset_default">Default</string>
-    <string name="preset_shortcut_none">None</string>
-    <string name="shortcut_empty">No setting chosen for this shortcut</string>
-    <string name="shortcut_slot_1">Shortcut 1</string>
-    <string name="shortcut_slot_2">Shortcut 2</string>
-    <string name="shortcut_slot_3">Shortcut 3</string>
-    <string name="shortcut_slot_4">Shortcut 4</string>
-    <string name="main_section_shortcuts">Shortcuts</string>
-    <string name="main_shortcuts_hint">Touch and hold the %1$s app icon to use these, drag one to your home screen, or pick one in Quick Tap.</string>
 </resources>

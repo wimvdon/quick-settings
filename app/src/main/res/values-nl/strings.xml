@@ -48,7 +48,6 @@
     <string name="main_granted">Toegestaan</string>
     <string name="main_adb_title">Toestaan met adb</string>
     <string name="main_adb_steps">Open op je telefoon Instellingen › Over de telefoon en tik zeven keer op Buildnummer om Ontwikkelaarsopties aan te zetten.\nOpen Instellingen › Systeem › Ontwikkelaarsopties en zet USB-foutopsporing aan.\nVerbind je telefoon met een computer met de platformtools van Android (adb) en sta USB-foutopsporing toe als je telefoon erom vraagt.\nTik op Kopiëren, stuur de opdracht naar de computer en voer hem daar uit in een opdrachtvenster:</string>
-    <string name="main_dns_no_hostname">Geen hostnaam ingesteld</string>
     <string name="main_section_instructions">Instructies</string>
     <string name="animations_title">Animaties</string>
     <string name="back">Terug</string>
@@ -85,8 +84,6 @@
     <string name="main_open_popup">Openen</string>
     <string name="main_tile_added">In snelle instellingen</string>
     <string name="main_tile_not_added">Niet toegevoegd</string>
-    <string name="main_tiles_hint">Tik op + om een tegel aan snelle instellingen toe te voegen.</string>
-    <string name="main_tiles_hint_edit">Open snelle instellingen en tik op het potlood om tegels toe te voegen.</string>
     <string name="minutes_short">%1$d min</string>
     <string name="night_light_title">Nachtverlichting</string>
     <string name="night_light_warmth">Warmte</string>
@@ -121,12 +118,4 @@
     <string name="main_add_named">%1$s toevoegen</string>
     <string name="preset_rows">In de pop-up</string>
     <string name="preset_default">Standaard</string>
-    <string name="preset_shortcut_none">Geen</string>
-    <string name="shortcut_empty">Geen instelling gekozen voor deze snelkoppeling</string>
-    <string name="shortcut_slot_1">Snelkoppeling 1</string>
-    <string name="shortcut_slot_2">Snelkoppeling 2</string>
-    <string name="shortcut_slot_3">Snelkoppeling 3</string>
-    <string name="shortcut_slot_4">Snelkoppeling 4</string>
-    <string name="main_section_shortcuts">Snelkoppelingen</string>
-    <string name="main_shortcuts_hint">Houd het app-icoon van %1$s ingedrukt om ze te gebruiken, sleep er een naar je startscherm, of kies er een in Quick Tap.</string>
 </resources>

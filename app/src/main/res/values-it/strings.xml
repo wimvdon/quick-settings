@@ -52,7 +52,6 @@
     <string name="main_granted">Consentito</string>
     <string name="main_adb_title">Concederlo con adb</string>
     <string name="main_adb_steps">Sul telefono apri Impostazioni › Informazioni sullo smartphone e tocca sette volte Numero build per attivare le Opzioni sviluppatore.\nApri Impostazioni › Sistema › Opzioni sviluppatore e attiva Debug USB.\nCollega il telefono a un computer con gli strumenti della piattaforma Android (adb) e consenti il debug USB quando il telefono lo chiede.\nTocca Copia, invia il comando al computer ed eseguilo lì in una finestra dei comandi:</string>
-    <string name="main_dns_no_hostname">Nessun nome host impostato</string>
     <string name="main_section_instructions">Istruzioni</string>
     <string name="animations_title">Animazioni</string>
     <string name="back">Indietro</string>
@@ -89,8 +88,6 @@
     <string name="main_open_popup">Apri</string>
     <string name="main_tile_added">Nelle Impostazioni rapide</string>
     <string name="main_tile_not_added">Non aggiunto</string>
-    <string name="main_tiles_hint">Tocca + per aggiungere un riquadro alle Impostazioni rapide.</string>
-    <string name="main_tiles_hint_edit">Per aggiungere riquadri, apri le Impostazioni rapide e tocca la matita.</string>
     <string name="minutes_short">%1$d min</string>
     <string name="night_light_title">Luminosità notturna</string>
     <string name="night_light_warmth">Calore</string>
@@ -125,12 +122,4 @@
     <string name="main_add_named">Aggiungi %1$s</string>
     <string name="preset_rows">Nel popup</string>
     <string name="preset_default">Predefinito</string>
-    <string name="preset_shortcut_none">Nessuna</string>
-    <string name="shortcut_empty">Nessuna impostazione scelta per questa scorciatoia</string>
-    <string name="shortcut_slot_1">Scorciatoia 1</string>
-    <string name="shortcut_slot_2">Scorciatoia 2</string>
-    <string name="shortcut_slot_3">Scorciatoia 3</string>
-    <string name="shortcut_slot_4">Scorciatoia 4</string>
-    <string name="main_section_shortcuts">Scorciatoie</string>
-    <string name="main_shortcuts_hint">Tieni premuta l’icona dell’app %1$s per usarle, trascinane una nella schermata Home o scegline una in Quick Tap.</string>
 </resources>

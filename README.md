@@ -36,9 +36,8 @@ Not possible for an app, even with adb: mobile data, airplane mode, mono audio, 
 smooth display (Android keeps them for itself), and silent mode (needs Do Not Disturb access).
 
 ## Shortcuts
-Touch and hold the app icon for four shortcuts, **Shortcut 1** to **4**. Each one taps a tile
-you choose in ⋮ › Shortcuts; at first they are Private DNS (hostname ↔ Automatic),
-Timeout (default ↔ long), Always-on display and Tap to wake. Drag one to the home screen, or
+Touch and hold the app icon for four shortcuts, one per popup: **Screen**, **Color**, **Sound**
+and **Network** (Developer has none). Each opens its popup. Drag one to the home screen, or
 use it with Quick Tap (double-tap the back of a Pixel) or a gesture app such as RegiStar.
 
 ## Setting it up

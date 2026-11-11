@@ -2,18 +2,16 @@ package to.wim.quicksettings.settings
 
 /**
  * The launcher shortcuts: four fixed slots in res/xml/shortcuts.xml (Pixel Quick Tap only offers
- * shortcuts from the manifest, see docs/decisions.md). The user picks which tile each slot taps;
- * the choice is kept in [Defaults.shortcuts].
+ * shortcuts from the manifest, see docs/decisions.md). Each opens a popup: every popup but
+ * Developer, in the order of the main screen (#24).
  */
 object Shortcuts {
-    /** Slot numbers, as the shortcuts are labelled ("Shortcut 1" to "Shortcut 4"). */
-    val slots: IntRange = 1..4
+    /** The popup each slot opens, in slot order. */
+    val popups: List<Group> = listOf(Group.Screen, Group.Colour, Group.Sound, Group.Network)
 
-    /** What the slots did before they could be chosen, so existing shortcuts and Quick Tap keep working. */
-    val defaults: List<TileId> = listOf(TileId.PrivateDns, TileId.Timeout, TileId.AlwaysOn, TileId.TapToWake)
+    /** Slot numbers, 1 to 4, in the order of res/xml/shortcuts.xml. */
+    val slots: IntRange = 1..popups.size
 
-    /** Tiles a shortcut can tap: those that change a setting. */
-    val targets: List<TileId> get() = TileId.singles.filter { it.setting != null }
-
-    fun defaultOf(slot: Int): TileId? = defaults.getOrNull(slot - slots.first)
+    /** The popup [slot] opens, or null for a slot that doesn't exist. */
+    fun popupOf(slot: Int): Group? = popups.getOrNull(slot - slots.first)
 }
