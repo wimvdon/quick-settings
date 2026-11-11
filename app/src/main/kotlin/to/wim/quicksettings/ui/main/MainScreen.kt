@@ -78,7 +78,6 @@ import to.wim.quicksettings.settings.Group
 import to.wim.quicksettings.settings.Permissions
 import to.wim.quicksettings.settings.PrivateDnsSetting
 import to.wim.quicksettings.settings.Row as SettingRow
-import to.wim.quicksettings.settings.Shortcuts
 import to.wim.quicksettings.settings.TileId
 import to.wim.quicksettings.settings.TileKind
 import to.wim.quicksettings.settings.Toggle
@@ -117,7 +116,6 @@ class MainActions(
     val onOpenPopup: (Group) -> Unit = {},
     val onSetDefault: (Tracked, String) -> Unit = { _, _ -> },
     val onNotify: (Tracked, Boolean) -> Unit = { _, _ -> },
-    val onShortcut: (Int, TileId?) -> Unit = { _, _ -> },
     val onShowRow: (SettingRow, Boolean) -> Unit = { _, _ -> },
     val onUseCurrent: (Group) -> Unit = {},
     val onAllowSystemSettings: () -> Unit = {},
@@ -126,7 +124,7 @@ class MainActions(
     val onOpenPlatformTools: () -> Unit = {},
 )
 
-private enum class Page { Home, Shortcuts, Permissions, Instructions }
+private enum class Page { Home, Permissions, Instructions }
 
 /**
  * The launcher screen: a section per popup, its wide tile with the single tiles below, each drawn
@@ -164,7 +162,6 @@ fun MainScreen(
                         stringResource(
                             when (page) {
                                 Page.Home -> R.string.app_name
-                                Page.Shortcuts -> R.string.main_section_shortcuts
                                 Page.Permissions -> R.string.main_section_permissions
                                 Page.Instructions -> R.string.main_section_instructions
                             },
@@ -185,13 +182,6 @@ fun MainScreen(
                                 Icon(painterResource(R.drawable.ic_more_vert), contentDescription = stringResource(R.string.main_more))
                             }
                             DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.main_section_shortcuts)) },
-                                    onClick = {
-                                        menuOpen = false
-                                        page = Page.Shortcuts
-                                    },
-                                )
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.main_section_permissions)) },
                                     onClick = {
@@ -224,7 +214,6 @@ fun MainScreen(
         ) {
             when (page) {
                 Page.Home -> HomePage(state, actions, onSetUp = { setUpKey = it.key }) { page = Page.Permissions }
-                Page.Shortcuts -> ShortcutsPage(state, actions)
                 Page.Permissions -> PermissionsPage(state, actions)
                 Page.Instructions -> InstructionsPage(state)
             }
@@ -248,7 +237,6 @@ private fun HomePage(
     onOpenPermissions: () -> Unit,
 ) {
     if (state.permissions.anyMissing) PermissionBanner(onOpenPermissions)
-    Body(stringResource(if (state.canAddTilesHere) R.string.main_tiles_hint else R.string.main_tiles_hint_edit))
     val cards = state.tiles.associateBy { it.tile }
     TileId.sections().forEach { section ->
         Column(
@@ -265,6 +253,7 @@ private fun HomePage(
                 val group = (popup.tile.kind as TileKind.Popup).group
                 WideTile(
                     card = popup,
+                    contents = state.defaults.rowsOf(group).map { stringResource(titleOf(it.setting)) },
                     canAdd = state.canAddTilesHere,
                     onOpen = { actions.onOpenPopup(group) },
                     onSetUp = { onSetUp(SetUp.Popup(group)) },
@@ -292,10 +281,14 @@ private fun HomePage(
 
 // ---- Tiles ---------------------------------------------------------------------------------
 
-/** A popup's tile across the width: icon and name; lit while something in it differs. */
+/**
+ * A popup's tile across the width: icon and name, and under the name the settings it bundles
+ * ([contents]), so it reads as a group that opens a popup (#25); lit while something in it differs.
+ */
 @Composable
 private fun WideTile(
     card: TileCard,
+    contents: List<String>,
     canAdd: Boolean,
     onOpen: () -> Unit,
     onSetUp: () -> Unit,
@@ -307,11 +300,15 @@ private fun WideTile(
             modifier = Modifier.heightIn(min = 64.dp).padding(start = 16.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
         ) {
             Icon(painterResource(iconOf(card.tile)), contentDescription = null)
-            Text(
-                stringResource(labelOf(card.tile)),
-                style = MaterialTheme.typography.titleSmall,
-                modifier = Modifier.weight(1f).padding(horizontal = 12.dp),
-            )
+            Column(Modifier.weight(1f).padding(horizontal = 12.dp, vertical = 8.dp)) {
+                Text(stringResource(labelOf(card.tile)), style = MaterialTheme.typography.titleSmall)
+                Text(
+                    contents.joinToString(", "),
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
             TileButtons(card, canAdd, onSetUp, onAdd)
         }
     }
@@ -492,17 +489,6 @@ private fun SettingSheet(
 }
 
 @Composable
-private fun slotName(slot: Int): String =
-    stringResource(
-        when (slot) {
-            1 -> R.string.shortcut_slot_1
-            2 -> R.string.shortcut_slot_2
-            3 -> R.string.shortcut_slot_3
-            else -> R.string.shortcut_slot_4
-        },
-    )
-
-@Composable
 private fun SheetColumn(
     title: String,
     content: @Composable () -> Unit,
@@ -620,29 +606,6 @@ private fun PermissionBanner(onOpen: () -> Unit) {
                 modifier = Modifier.weight(1f).padding(horizontal = 16.dp),
             )
             TextButton(onClick = onOpen) { Text(stringResource(R.string.main_banner_open)) }
-        }
-    }
-}
-
-// ---- Shortcuts page ------------------------------------------------------------------------
-
-/** The four launcher shortcuts: what each one taps. */
-@Composable
-private fun ShortcutsPage(
-    state: MainUiState,
-    actions: MainActions,
-) {
-    val targets = listOf<TileId?>(null) + Shortcuts.targets
-    val names = targets.map { tile -> tile?.let { stringResource(labelOf(it)) } ?: stringResource(R.string.preset_shortcut_none) }
-    Body(stringResource(R.string.main_shortcuts_hint, stringResource(R.string.app_name)))
-    Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Shortcuts.slots.forEach { slot ->
-            Dropdown(
-                label = slotName(slot),
-                selected = names[targets.indexOf(state.defaults.shortcut(slot))],
-                options = names.map { it to null },
-                onSelect = { actions.onShortcut(slot, targets[it]) },
-            )
         }
     }
 }

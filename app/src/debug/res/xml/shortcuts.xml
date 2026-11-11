@@ -4,10 +4,10 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_slot"
+        android:icon="@drawable/ic_shortcut_screen"
         android:shortcutId="toggle_private_dns"
-        android:shortcutLongLabel="@string/shortcut_slot_1"
-        android:shortcutShortLabel="@string/shortcut_slot_1">
+        android:shortcutLongLabel="@string/tile_screen_label"
+        android:shortcutShortLabel="@string/tile_screen_label">
         <intent
             android:action="to.wim.quicksettings.action.TOGGLE_PRIVATE_DNS"
             android:targetClass="to.wim.quicksettings.shortcut.ShortcutActivity"
@@ -15,10 +15,10 @@
     </shortcut>
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_slot"
+        android:icon="@drawable/ic_shortcut_colour"
         android:shortcutId="toggle_timeout"
-        android:shortcutLongLabel="@string/shortcut_slot_2"
-        android:shortcutShortLabel="@string/shortcut_slot_2">
+        android:shortcutLongLabel="@string/group_colour"
+        android:shortcutShortLabel="@string/group_colour">
         <intent
             android:action="to.wim.quicksettings.action.TOGGLE_TIMEOUT"
             android:targetClass="to.wim.quicksettings.shortcut.ShortcutActivity"
@@ -26,10 +26,10 @@
     </shortcut>
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_slot"
+        android:icon="@drawable/ic_shortcut_sound"
         android:shortcutId="toggle_always_on"
-        android:shortcutLongLabel="@string/shortcut_slot_3"
-        android:shortcutShortLabel="@string/shortcut_slot_3">
+        android:shortcutLongLabel="@string/group_sound"
+        android:shortcutShortLabel="@string/group_sound">
         <intent
             android:action="to.wim.quicksettings.action.TOGGLE_ALWAYS_ON"
             android:targetClass="to.wim.quicksettings.shortcut.ShortcutActivity"
@@ -37,10 +37,10 @@
     </shortcut>
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_shortcut_slot"
+        android:icon="@drawable/ic_shortcut_network"
         android:shortcutId="toggle_tap_to_wake"
-        android:shortcutLongLabel="@string/shortcut_slot_4"
-        android:shortcutShortLabel="@string/shortcut_slot_4">
+        android:shortcutLongLabel="@string/group_network"
+        android:shortcutShortLabel="@string/group_network">
         <intent
             android:action="to.wim.quicksettings.action.TOGGLE_TAP_TO_WAKE"
             android:targetClass="to.wim.quicksettings.shortcut.ShortcutActivity"

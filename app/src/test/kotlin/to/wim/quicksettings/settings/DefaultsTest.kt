@@ -2,7 +2,6 @@ package to.wim.quicksettings.settings
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -47,7 +46,6 @@ class DefaultsTest {
         assertEquals("default.timeout", Defaults.Keys.value(Catalog.Timeout))
         assertEquals("notify.Screen", Defaults.Keys.notify(Group.Screen))
         assertEquals("notify_setting.timeout", Defaults.Keys.notify(Catalog.Timeout))
-        assertEquals("shortcut.2", Defaults.Keys.shortcut(2))
     }
 
     @Test
@@ -89,38 +87,6 @@ class DefaultsTest {
     }
 
     @Test
-    fun `shortcut slots keep their old settings until chosen`() {
-        val d = Defaults()
-        assertEquals(listOf(TileId.PrivateDns, TileId.Timeout, TileId.AlwaysOn, TileId.TapToWake), Shortcuts.slots.map(d::shortcut))
-        assertEquals(3, d.slotOf(TileId.AlwaysOn))
-        assertNull(d.slotOf(TileId.Grayscale))
-    }
-
-    @Test
-    fun `a tile moves to its new slot and leaves the old one empty`() {
-        val d = Defaults().withShortcut(TileId.PrivateDns, 3)
-        assertEquals(TileId.PrivateDns, d.shortcut(3))
-        assertNull(d.shortcut(1))
-        assertEquals(TileId.Timeout, d.shortcut(2))
-        assertEquals(3, d.slotOf(TileId.PrivateDns))
-        assertNull(d.slotOf(TileId.AlwaysOn))
-        val none = d.withShortcut(TileId.PrivateDns, null)
-        assertNull(none.slotOf(TileId.PrivateDns))
-        assertNull(none.shortcut(3))
-    }
-
-    @Test
-    fun `a slot gets a tile, which leaves its old slot`() {
-        val d = Defaults().withSlot(4, TileId.PrivateDns)
-        assertEquals(TileId.PrivateDns, d.shortcut(4))
-        assertNull(d.shortcut(1))
-        val empty = d.withSlot(2, null)
-        assertNull(empty.shortcut(2))
-        assertEquals(TileId.AlwaysOn, empty.shortcut(3))
-        assertEquals(TileId.PrivateDns, empty.shortcut(4))
-    }
-
-    @Test
     fun `new choices are read back`() {
         val d =
             Defaults.Keys.read(
@@ -129,18 +95,9 @@ class DefaultsTest {
                 hostnames = emptySet(),
                 hiddenRows = setOf("rotation"),
             )
-        assertEquals(mapOf(1 to null, 2 to TileId.Grayscale), d.shortcuts)
-        assertNull(d.shortcut(1))
-        assertEquals(TileId.Grayscale, d.shortcut(2))
-        assertEquals(TileId.AlwaysOn, d.shortcut(3))
+        // The shortcut choices of earlier versions are ignored: the shortcuts open the popups (#24).
+        assertEquals(Defaults(notifySettings = mapOf("grayscale" to true), hiddenRows = setOf("rotation")), d)
         assertEquals(mapOf("grayscale" to true), d.notifySettings)
         assertEquals(setOf("rotation"), d.hiddenRows)
-    }
-
-    @Test
-    fun `only tiles that change a setting can be a shortcut`() {
-        assertFalse(TileId.Keyboard in Shortcuts.targets)
-        assertFalse(TileId.ScreenPopup in Shortcuts.targets)
-        assertTrue(Shortcuts.defaults.all { it in Shortcuts.targets })
     }
 }

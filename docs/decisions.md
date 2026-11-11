@@ -2,6 +2,20 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-11: The shortcuts open the popups; wide tiles list what they bundle
+
+The owner asked for the launcher shortcuts to be the popups, all but Developer (#24). That is
+exactly four, the number of manifest slots, so each slot now opens one popup (Screen, Color,
+Sound, Network) and carries its popup's name and icon instead of "Shortcut 1" to "4". The
+choice per slot (⋮ › Shortcuts) is gone: with a fixed popup per slot there is nothing to choose,
+and a real name beats a numbered slot. Ids and actions stay, so Quick Tap and home-screen
+shortcuts keep working and now open the popup. Stored slot choices are removed on the next write.
+
+On the main screen a popup's wide tile looked like any other tile (#25). It now lists the
+settings its popup shows under its name (as many as fit on two lines), which says it is a group
+that opens a popup. The hint text above the tiles is gone at the owner's request; the
+Instructions page still explains adding tiles.
+
 ## 2026-11-10: Main screen by section, set up per tile, shortcut slots
 
 The owner asked for a main screen with a wide tile per popup and its single tiles below, each
