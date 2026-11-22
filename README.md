@@ -97,8 +97,8 @@ the icon with a green leaf"*). Steps 5–7 involve secrets and must be done by y
 - [ ] **3. Rename the app.** Change `app_name` in `app/src/main/res/values/strings.xml` and in
       every `values-xx/strings.xml`. Update the title of this README.
 - [ ] **4. Replace the icon.** The icon is a vector in
-      `app/src/main/res/drawable/ic_launcher_foreground.xml` with a background colour in
-      `res/values/ic_launcher_background.xml`. Follow the icon rules in `DESIGN.md`. In Android Studio: right-click `res` →
+      `app/src/main/res/drawable/ic_launcher_foreground.xml` with a background plate in
+      `res/drawable/ic_launcher_background.xml`. Follow the icon rules in `DESIGN.md`. In Android Studio: right-click `res` →
       **New → Image Asset**. Keep the important part inside the centre 66 dp of the 108 dp canvas.
 - [ ] **5. Create a signing key and add the four secrets.** See [Signing key](#signing-key) below.
 - [ ] **6. Apply the GitHub settings.** See [GitHub settings](#github-settings).
