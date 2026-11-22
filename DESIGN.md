@@ -19,9 +19,12 @@ rules too: copy this file into it and fill in "This app".
 - A detail inside the shape (a check, a play button) is solid in the plate's colour, not a
   hole and not white, so the icon also reads without its plate.
 - A themed (monochrome) layer: the same shape, with the detail cut out or half transparent.
-- Every other icon of the app follows the same shape: the status bar (notification) icon, Quick
-  Settings tiles, home-screen shortcuts (on the same plate), TV banners, in-app logos, and web
-  favicons, PWA and extension icons.
+- Every other icon of the app follows the same shape. Only icons the system shows as a tile
+  carry the plate: the launcher icon, home-screen shortcuts, TV banners and the icons of an
+  installed web app on a phone (maskable and Apple touch icons). Everywhere else the shape
+  stands on its own, without a plate: in-app logos, the TV home row logo, the status bar
+  (notification) icon, Quick Settings tiles, web favicons, desktop web app icons and extension
+  icons.
 
 | App | Shape | Gradient | Plate |
 | --- | --- | --- | --- |
@@ -32,8 +35,8 @@ rules too: copy this file into it and fill in "This app".
 | Quick Settings | Settings cogwheel with a lightning bolt | `#4FC3F7` → `#3D7BFF` → `#5B4FD9` | `#ECF2FF` → `#D8E5FF` |
 | TV Favorites | Heart with a play button | `#FF7AA8` → `#E83A7A` → `#A82BC4` | `#FDEBF2` → `#F6D5E6` |
 | Screensaver | Crescent moon | `#B388FF` → `#7C4DFF` → `#4527A0` | `#F2EDFF` → `#E5DBFF` |
-| Time Tracker for Notion | Stopwatch dial with a hand (not redesigned yet: white background) | `#FF8A3D` → `#F04438` → `#C81E5A` | |
-| Snoozer | Nine-lobed "cookie" with a bell (being redesigned) | `#22C3B4` → `#3E7BDA` → `#4E5BB0` | |
+| Time Tracker for Notion | Stopwatch with its elapsed time as a slice that fades in | `#FF8A3D` → `#F04438` → `#C81E5A` | `#FEECEB` → `#FCDAD7` |
+| Snoozer | Bell with one fat Z on it | `#22C3B4` → `#3E7BDA` → `#4E5BB0` | `#ECF2FB` → `#D8E5F8` |
 | Noter for Notion | Sticky note on a 3D box with a folded corner (not redesigned yet: white background) | `#FFC94D` → `#F5A623` → `#E8710A` | |
 
 ## Colour
