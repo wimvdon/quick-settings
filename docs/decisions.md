@@ -2,6 +2,17 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-22: Icons: same padding in every app, white background, white details; colour scheme follows the icon
+
+Decided by the owner for all ten apps. The launcher foreground, the themed layer and the four
+shortcut foregrounds sit in one group scaled 1.0331 about the centre, so the furthest point of the
+cogwheel is 26.3 units from the middle of the 108 canvas, like in every other app. The adaptive-icon
+background (and so the shortcut background) is plain white, and the lightning bolt is white
+(`#FFFFFFFF`) instead of the old plate tint; the themed layer still cuts it out. This replaces the
+entry below (the soft blue plate). Colour scheme: the app only uses Android's dynamic colours and
+has no fixed palette, so nothing changes there; the shortcut glyphs already use the gradient's
+middle stop `#3D7BFF`. The app shows no logo on a plate anywhere.
+
 ## 2026-11-22: The app icon sits on a soft blue plate, not white
 
 Part of making all of the owner's app icons one family (Content and TV Favorites went first).
