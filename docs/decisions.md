@@ -2,6 +2,16 @@
 
 Newest first. Add an entry for every notable choice: what was decided, why, and what was rejected.
 
+## 2026-11-22: The app icon sits on a soft blue plate, not white
+
+Part of making all of the owner's app icons one family (Content and TV Favorites went first).
+The white adaptive-icon background is replaced by a soft plate in the app's own blue
+(`#ECF2FF` → `#D8E5FF`), and the white lightning bolt takes the plate's colour (`#E2ECFF`). The
+bolt stays solid rather than becoming a see-through hole, so the icon still works where it has
+no plate. The cogwheel and its gradient are unchanged. The launcher shortcut icons use the same
+plate so they match the app icon. Rejected: a transparent background (Android always fills the
+mask, and the owner preferred a tinted plate) and keeping white.
+
 ## 2026-11-11: The shortcuts open the popups; wide tiles list what they bundle
 
 The owner asked for the launcher shortcuts to be the popups, all but Developer (#24). That is

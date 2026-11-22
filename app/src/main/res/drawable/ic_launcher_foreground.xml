@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Android's Settings cogwheel (Material "settings", without its centre hole) with a white
-     lightning bolt, on the white background. Scaled 2.6x from 24dp: it reaches about 25dp from the
+<!-- Android's Settings cogwheel (Material "settings", without its centre hole) with a lightning
+     bolt in the plate's colour (ic_launcher_background), so the icon also reads without a plate. Scaled 2.6x from 24dp: it reaches about 25dp from the
      centre, well inside the 33dp safe-zone radius. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
@@ -25,7 +25,7 @@
         </path>
         <!-- Lightning bolt -->
         <path
-            android:fillColor="#FFFFFFFF"
+            android:fillColor="#FFE2ECFF"
             android:pathData="M12.7,7.3L9,12.6H11.6L11,16.7L14.9,11.4H12.3L12.7,7.3Z" />
     </group>
 </vector>
